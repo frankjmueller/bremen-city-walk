@@ -3,7 +3,7 @@
    and answers HTTP Range requests from cache (required for
    audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v2';
+const CACHE_NAME = 'bremen-walk-v3';
 
 const ASSETS = [
   './',
@@ -43,7 +43,9 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
+      // cache:'reload' bypasses the browser HTTP cache, so a new SW version
+      // always precaches the freshest files from the server
+      .then(cache => cache.addAll(ASSETS.map(u => new Request(u, { cache: 'reload' }))))
       .then(() => self.skipWaiting())
   );
 });
