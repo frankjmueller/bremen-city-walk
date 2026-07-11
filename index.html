@@ -256,12 +256,7 @@ footer p{margin:.3rem 0}
     <img src="icons/icon-192.png" alt="">
     Install as an app
   </button>
-  <div class="ios-tip" id="ios-tip" hidden>
-    <b>On iPhone / iPad:</b> tap the <span class="share">⇧</span> Share button
-    at the bottom of Safari, scroll down, and choose
-    <b>“Add to Home Screen”</b>. The guide then opens full-screen like a real app —
-    no browser bars, works offline.
-  </div>
+  <div class="ios-tip" id="install-tip" hidden></div>
 </header>
 
 <div class="howto">
@@ -829,36 +824,50 @@ footer p{margin:.3rem 0}
 /* ————— Install as app ————— */
 (function () {
   const btn = document.getElementById('install-btn');
-  const iosTip = document.getElementById('ios-tip');
+  const tip = document.getElementById('install-tip');
   const standalone = matchMedia('(display-mode: standalone)').matches
     || navigator.standalone === true;
   if (standalone) return; // already installed & frameless
 
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // platform-specific fallback instructions, shown only when the
+  // browser offers no native install prompt right now
+  tip.innerHTML = isIOS
+    ? '<b>On iPhone / iPad:</b> tap the <span class="share">⇧</span> Share button ' +
+      'at the bottom of Safari, scroll down, and choose <b>“Add to Home Screen”</b>. ' +
+      'The guide then opens full-screen like a real app — no browser bars, works offline.'
+    : '<b>On Android:</b> tap the <b>⋮ menu</b> in the top-right corner of Chrome and choose ' +
+      '<b>“Add to Home screen”</b> → <b>“Install”</b>. ' +
+      '(Samsung Internet: menu → “Add page to” → “Home screen”.) ' +
+      'The guide then opens full-screen like a real app — no browser bars, works offline.';
+
+  btn.hidden = false; // always offer it; click resolves the best available path
+
   let deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
-    deferredPrompt = e;
-    btn.hidden = false;
+    deferredPrompt = e; // native prompt is available — use it on click
   });
-
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (isIOS) btn.hidden = false;
 
   btn.addEventListener('click', async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+      tip.hidden = true;
+      const promptEvent = deferredPrompt;
+      deferredPrompt = null; // a prompt event can only be used once
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
       if (outcome === 'accepted') btn.hidden = true;
-      deferredPrompt = null;
+      // dismissed: keep the button; Chrome re-fires beforeinstallprompt later
     } else {
-      iosTip.hidden = !iosTip.hidden; // iOS has no prompt API — show how-to
+      tip.hidden = !tip.hidden;
     }
   });
 
   window.addEventListener('appinstalled', () => {
     btn.hidden = true;
-    iosTip.hidden = true;
+    tip.hidden = true;
   });
 })();
 
