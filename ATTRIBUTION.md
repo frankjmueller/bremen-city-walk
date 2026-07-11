@@ -14,3 +14,6 @@ All photographs from [Wikimedia Commons](https://commons.wikimedia.org/).
 - **Swineherd sculpture** (`assets/img/pigs.webp`) — J Doll, CC BY 3.0. [Source](https://commons.wikimedia.org/w/index.php?curid=77378576)
 - **Windmill in the Wallanlagen** (`assets/img/muehle.webp`) — Charvosi, Public domain. [Source](https://commons.wikimedia.org/w/index.php?curid=5081619)
 - **Market square (Bremer Loch card)** (`assets/img/loch.webp`) — Jürgen Howaldt, CC BY-SA 2.0 de. [Source](https://commons.wikimedia.org/w/index.php?curid=2088709)
+- **Universum Bremen** (`assets/img/universum.webp`) — Matthias Süßen, CC BY-SA 3.0. [Source](https://commons.wikimedia.org/w/index.php?curid=34838040)
+- **Lloyd Passage** (`assets/img/lloyd.webp`) — Rami Tarawneh, CC BY-SA 2.5. [Source](https://commons.wikimedia.org/w/index.php?curid=1062202)
+- **Ostertorsteinweg (Viertel)** (`assets/img/viertel.webp`) — ROMWriter, CC BY-SA 3.0. [Source](https://commons.wikimedia.org/w/index.php?curid=1267475)

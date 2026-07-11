@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bremen für euch — Teenie-Guide (offline)</title>
+<meta name="description" content="Ein Tag Bremen für Teenager: Universum, City, Shopping & die besten Storys — funktioniert komplett offline.">
+<meta name="theme-color" content="#7A2E20">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+@font-face{
+  font-family:'Bricolage';
+  src:url('assets/fonts/bricolage.woff2') format('woff2');
+  font-weight:400 800;
+  font-display:swap;
+}
+:root{
+  --brick:#7A2E20; --brick-deep:#5E2318;
+  --patina:#3E7D6C; --patina-deep:#2F6153;
+  --gold:#D9A441; --gold-soft:#EFD9A8;
+  --paper:#F8F4ED; --card:#FFFFFF;
+  --ink:#2B211C; --muted:#7C6F66; --line:#E7DDD1;
+  --shadow:0 2px 12px rgba(43,33,28,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#201813; --card:#2B211B;
+    --ink:#F1E9DF; --muted:#B5A697; --line:#41342A;
+    --gold:#E0AF54; --gold-soft:#8A6A33;
+    --shadow:0 2px 14px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height:1.65; font-size:1.02rem;
+  -webkit-text-size-adjust:100%;
+}
+a{color:var(--patina)}
+h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif}
+
+.hero{
+  background:
+    linear-gradient(rgba(94,35,24,.25),rgba(94,35,24,0) 40%),
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(43,20,14,.5) 26px 28px),
+    repeating-linear-gradient(90deg, rgba(255,220,180,.05) 0 2px, transparent 2px 74px),
+    var(--brick);
+  color:#F7EDD9;
+  padding:2.6rem 1.3rem 2.2rem;
+  text-align:center;
+}
+.hero .eyebrow{
+  letter-spacing:.22em; font-size:.72rem; font-weight:600;
+  text-transform:uppercase; color:var(--gold-soft); margin:0 0 .6rem;
+}
+@media (prefers-color-scheme: dark){ .hero .eyebrow{color:#EFD9A8} }
+.hero h1{
+  font-size:clamp(2.4rem,10vw,3.6rem); font-weight:800; margin:0;
+  line-height:1.02; color:#F7EDD9;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero-sub{max-width:34rem;margin:1rem auto 0;font-size:1rem;color:#EBD9C4}
+.hero-logo{
+  display:block;margin:1.3rem auto .4rem;
+  width:96px;height:96px;border-radius:24px;
+  border:2.5px solid var(--gold);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.lang{
+  display:inline-block;margin-top:1rem;color:#EBD9C4;font-size:.85rem;
+}
+.status{
+  display:inline-flex;align-items:center;gap:.5em;
+  margin-top:1.2rem;padding:.5em 1.1em;border-radius:999px;
+  background:rgba(0,0,0,.28);color:#F3E4C8;font-size:.85rem;font-weight:600;
+  border:1px solid rgba(217,164,65,.45);
+}
+.status.ready{background:var(--patina-deep);border-color:var(--patina);color:#EAF5F0}
+.status .dot{width:.6em;height:.6em;border-radius:50%;background:var(--gold);flex:none}
+.status.ready .dot{background:#8FD8BF}
+@keyframes pulse{50%{opacity:.35}}
+.status:not(.ready) .dot{animation:pulse 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){ .status .dot{animation:none} }
+
+.install{
+  display:inline-flex;align-items:center;gap:.5em;margin:1rem auto 0;
+  background:var(--gold);color:#4A2317;border:none;cursor:pointer;
+  padding:.7em 1.4em;border-radius:999px;font-weight:700;font-size:.95rem;
+  font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.install:active{transform:scale(.97)}
+.install img{width:22px;height:22px;border-radius:6px}
+.ios-tip{
+  max-width:22rem;margin:.9rem auto 0;padding:.8rem 1rem;border-radius:12px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(217,164,65,.45);
+  color:#F3E4C8;font-size:.88rem;text-align:left;line-height:1.55;
+}
+.ios-tip .share{
+  display:inline-block;border:1.5px solid currentColor;border-radius:4px;
+  width:1.1em;height:1.1em;text-align:center;line-height:1.05;font-size:.9em;
+  vertical-align:-.15em;
+}
+
+.wrap{max-width:640px;margin:0 auto;padding:0 1.05rem}
+
+.howto{
+  background:var(--patina-deep);color:#EAF5F0;
+  padding:1.1rem 1.3rem;font-size:.92rem;
+}
+.howto .wrap{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;padding:0}
+.howto span{display:flex;align-items:center;gap:.45em}
+.howto b{color:#CFE9DE}
+
+.map-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);margin:1.6rem auto;padding:1.2rem 1rem .6rem;
+}
+.map-card h2{margin:.2rem 0 0;text-align:center;font-size:1.25rem}
+.map-card p{color:var(--muted);text-align:center;font-size:.88rem;margin:.3rem 0 .4rem}
+.map-card svg{width:100%;height:auto;display:block}
+.map-card svg text{font-family:system-ui,sans-serif}
+.map-card svg a:focus circle{stroke-width:5}
+
+.route{list-style:none;margin:2rem 0 0;padding:0;position:relative}
+.route::before{
+  content:"";position:absolute;top:10px;bottom:10px;left:21px;
+  border-left:3px dashed var(--gold);opacity:.75;
+}
+.stop{position:relative;padding:0 0 2rem 3.1rem}
+.bead{
+  position:absolute;left:0;top:0;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--patina);color:#fff;
+  border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.15rem;z-index:1;
+}
+.stop.transit .bead{background:var(--brick);font-size:1.3rem}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.card>img{width:100%;height:210px;object-fit:cover;display:block;background:var(--line)}
+.card .pad{padding:1.1rem 1.15rem 1.2rem}
+.eyebrow{
+  margin:0 0 .25rem;font-size:.72rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--patina);
+}
+.card h2{margin:0 0 .5rem;font-size:1.45rem;font-weight:700;line-height:1.15}
+.walk{
+  font-size:.88rem;color:var(--muted);margin:.1rem 0 .8rem;
+  padding-left:1.5em;position:relative;
+}
+.walk::before{content:"🚶";position:absolute;left:0}
+.card p{margin:.55rem 0}
+.tip{
+  background:color-mix(in srgb, var(--gold) 13%, var(--card));
+  border-left:4px solid var(--gold);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.tip b{font-weight:700}
+.funfact{
+  background:color-mix(in srgb, var(--patina) 10%, var(--card));
+  border-left:4px solid var(--patina);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.funfact b{font-weight:700}
+
+.player{
+  display:flex;align-items:center;gap:.75rem;
+  background:color-mix(in srgb, var(--patina) 9%, var(--card));
+  border:1px solid color-mix(in srgb, var(--patina) 35%, var(--line));
+  border-radius:12px;padding:.55rem .8rem;margin:.9rem 0;
+}
+.player button{
+  flex:none;width:44px;height:44px;border-radius:50%;border:none;
+  background:var(--patina);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.player button:active{transform:scale(.95)}
+.player button svg{width:18px;height:18px;fill:currentColor}
+.player .meta{flex:1;min-width:0}
+.player .label{font-size:.83rem;font-weight:600;margin:0 0 .3rem;color:var(--ink)}
+.player .bar{
+  height:8px;border-radius:4px;background:color-mix(in srgb, var(--patina) 22%, var(--card));
+  position:relative;cursor:pointer;touch-action:none;
+}
+.player .fill{position:absolute;inset:0 auto 0 0;width:0%;border-radius:4px;background:var(--patina)}
+.player .time{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+
+.maps{
+  display:flex;align-items:center;justify-content:center;gap:.5em;
+  background:var(--brick);color:#F7EDD9;text-decoration:none;
+  padding:.85em 1em;border-radius:12px;font-weight:700;font-size:.98rem;
+  margin-top:.9rem;
+}
+.maps:active{opacity:.85}
+.maps svg{width:1.05em;height:1.05em;fill:currentColor;flex:none}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.9rem 0}
+.info-grid div{
+  background:color-mix(in srgb, var(--patina) 7%, var(--card));
+  border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;
+  font-size:.88rem;line-height:1.45;
+}
+.info-grid b{display:block;font-size:.95rem}
+.meet{
+  border:2px dashed var(--gold);border-radius:12px;
+  padding:.8rem 1rem;margin-top:1rem;font-size:.95rem;
+}
+.meet [contenteditable]{
+  display:block;min-height:1.5em;font-weight:700;font-size:1.05rem;outline:none;
+  border-bottom:1px solid var(--line);
+}
+.meet [contenteditable]:focus{border-bottom-color:var(--gold)}
+.meet small{color:var(--muted)}
+
+footer{
+  margin:2.5rem 0 0;padding:2rem 1.3rem 3rem;
+  background:var(--brick-deep);color:#D9C3B4;font-size:.8rem;line-height:1.7;
+}
+footer a{color:var(--gold-soft)}
+@media (prefers-color-scheme: dark){ footer a{color:#EFD9A8} }
+footer .heart{color:var(--gold);font-style:normal}
+footer h3{color:#F7EDD9;font-size:.95rem;margin:1.4rem 0 .4rem}
+footer p{margin:.3rem 0}
+
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">Teenie-Edition · Offline-Guide · Bremen</p>
+  <h1>Moin<span class="gold">!</span></h1>
+  <img class="hero-logo" src="icons/icon-192.png" alt="" width="96" height="96">
+  <p class="hero-sub">Ein Tag Bremen für euch — <b>Wissenschaft zum Anfassen, Shopping
+  und die besten Storys der Stadt</b>. Alles auf diesem Guide (Bilder, Karten-Buttons,
+  Audio) ist auf eurem Handy gespeichert und läuft <b>ohne Internet</b>.</p>
+  <p class="status" id="status"><span class="dot"></span><span id="status-text">Prüfe Offline-Speicher…</span></p>
+  <br>
+  <button class="install" id="install-btn" hidden>
+    <img src="icons/icon-192.png" alt="">
+    Als App installieren
+  </button>
+  <div class="ios-tip" id="install-tip" hidden></div>
+  <br>
+  <a class="lang" href="index.html">🇬🇧 English version for the Namibia group →</a>
+</header>
+
+<div class="howto">
+  <div class="wrap">
+    <span><b>1</b> Seite einmal mit Internet öffnen</span>
+    <span><b>2</b> Auf das grüne „Offline bereit“ warten</span>
+    <span><b>3</b> Losziehen — Flugmodus ist okay</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="map-card" aria-label="Routenübersicht">
+    <h2>Euer Tag — wie Perlen auf einer Schnur</h2>
+    <p>Tippt auf eine Perle, um zur Station zu springen. Tempo? Euer Ding — ihr habt Zeit.</p>
+    <svg viewBox="0 0 360 330" role="img" aria-label="Schematische Karte der Route mit allen Stationen">
+      <path d="M30,290 H330 V200 H30 V110 H230" fill="none" stroke="#D9A441" stroke-width="5"
+            stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1 9"/>
+      <a href="#stop-u"><circle cx="30" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="30" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">U</text>
+         <text x="30" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Universum</text></a>
+      <g><rect x="78" y="278" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="90" y="295" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="90" y="266" font-size="10" fill="#7C6F66" text-anchor="middle">Tram</text></g>
+      <a href="#stop-1"><circle cx="150" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="150" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">1</text>
+         <text x="150" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Musikanten</text></a>
+      <a href="#stop-2"><circle cx="210" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="210" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">2</text>
+         <text x="210" y="266" font-size="10.5" fill="currentColor" text-anchor="middle">Roland</text></a>
+      <a href="#stop-3"><circle cx="270" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="270" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">3</text>
+         <text x="270" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Das Loch</text></a>
+      <a href="#stop-4"><circle cx="330" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="330" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">4</text>
+         <text x="330" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Böttcher-</text>
+         <text x="330" y="187" font-size="10.5" fill="currentColor" text-anchor="middle">straße</text></a>
+      <a href="#stop-5"><circle cx="255" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="255" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">5</text>
+         <text x="255" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">Schnoor</text></a>
+      <a href="#stop-6"><circle cx="180" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="180" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">6</text>
+         <text x="180" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Schlachte</text></a>
+      <a href="#stop-7"><circle cx="105" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="105" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">7</text>
+         <text x="105" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">Shopping</text></a>
+      <a href="#stop-8"><circle cx="30" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="30" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">8</text>
+         <text x="30" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Schweine</text></a>
+      <a href="#stop-9"><circle cx="120" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="120" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">9</text>
+         <text x="120" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Viertel</text></a>
+      <g><rect x="198" y="98" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="210" y="115" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="210" y="86" font-size="10" fill="#7C6F66" text-anchor="middle">Heim</text></g>
+    </svg>
+  </section>
+
+  <ol class="route">
+
+    <li class="stop" id="stop-u">
+      <div class="bead">U</div>
+      <article class="card">
+        <img src="assets/img/universum.webp" alt="Das silberne, walförmige Gebäude des Universum Bremen">
+        <div class="pad">
+          <p class="eyebrow">Vormittag · Direkt an der Uni</p>
+          <h2>Universum Bremen</h2>
+          <p class="walk">Ein paar Minuten zu Fuß — der riesige silberne Wal ist nicht zu übersehen.</p>
+          <p>Das beste Museum ist eins, in dem man <b>alles anfassen darf</b>. Über
+          <b>300 Mitmach-Stationen</b> zu Technik, Mensch und Natur: Blitze, optische
+          Täuschungen, Experimente mit eurem eigenen Körper. Plant locker 2–3 Stunden.
+          Danach: rauf auf den 27-Meter-Turm nebenan.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Wal? Muschel? UFO? Die Bremer streiten
+          seit dem Jahr 2000, was das Gebäude eigentlich darstellt. Der Architekt verrät es nicht.</div>
+          <div class="tip"><b>Praktisch:</b> Mo–Fr ab 9 Uhr, Eintritt 18 € / ermäßigt 12 €.
+          Gerade läuft die Sonderausstellung <b>„LIEBE“</b> — ihr wurdet gewarnt. 😄</div>
+          <div class="player" data-src="assets/audio/de-universum.mp3">
+            <button aria-label="Abspielen: Der silberne Wal"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Der silberne Wal</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.10667%2C8.84500" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop transit" id="start">
+      <div class="bead" aria-hidden="true">🚋</div>
+      <article class="card">
+        <img src="assets/img/tram.webp" alt="Straßenbahnen der BSAG an der Domsheide" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Mittags · Ab in die City</p>
+          <h2>Mit der Tram in die Stadt</h2>
+          <p class="walk">Haltestelle <b>Universität/Zentralbereich</b>, direkt beim Universum.</p>
+          <p>Nehmt die <b>Linie 6 Richtung Flughafen</b> und steigt nach ca. 17 Minuten an der
+          <b>Domsheide</b> aus — mitten in der Altstadt, die Domtürme zeigen euch den Weg.</p>
+          <div class="tip"><b>Tickets:</b> Am einfachsten die <b>FAIRTIQ-App</b> (vor dem
+          Einsteigen einchecken, am Ziel auschecken — Ausweis dabeihaben) oder ein
+          <b>TagesTicket</b> am Automaten (Karte geht). Gilt den ganzen Tag, auch für den Rückweg.</div>
+          <div class="player" data-src="assets/audio/de-willkommen.mp3">
+            <button aria-label="Abspielen: Moin und die Sieben Faulen"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Moin! — und die Legende der Sieben Faulen</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Domsheide — hier steigt ihr aus</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-1">
+      <div class="bead">1</div>
+      <article class="card">
+        <img src="assets/img/musicians.webp" alt="Die Bronzestatue der Bremer Stadtmusikanten" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 1 · Am Rathaus, Westseite</p>
+          <h2>Die Stadtmusikanten</h2>
+          <p class="walk">3 min von der Domsheide, um die linke Rathaus-Ecke.</p>
+          <p>Esel, Hund, Katze, Hahn — vier Tiere, die abgehauen sind, eine Räuberbande
+          mit purem Lärm vertrieben haben und <b>in Bremen nie angekommen sind</b>.
+          Der Stadt egal: Sie hat die vier adoptiert und ihnen 1951 diese Bronze spendiert.</p>
+          <div class="tip"><b>Das Ritual:</b> Beide Vorderbeine des Esels mit <b>beiden Händen</b>
+          anfassen und was wünschen. Nur eine Hand? Dann begrüßt hier bloß ein Esel den anderen. 🫏</div>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Die Beine glänzen golden, weil das
+          Millionen Hände vor euch auch schon probiert haben.</div>
+          <div class="player" data-src="assets/audio/de-musikanten.mp3">
+            <button aria-label="Abspielen: Vier Tiere, ein Wunsch"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Vier Tiere, ein Wunsch</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07620%2C8.80716" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-2">
+      <div class="bead">2</div>
+      <article class="card">
+        <img src="assets/img/rathaus.webp" alt="Das Bremer Rathaus am Marktplatz" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 2 · Marktplatz · UNESCO-Welterbe</p>
+          <h2>Roland &amp; Rathaus</h2>
+          <p class="walk">Ein paar Schritte zurück auf den Marktplatz.</p>
+          <p>Der 10-Meter-Steintyp mit Schwert ist <b>Roland</b>, seit 1404 Bremens
+          Bodyguard. Er starrt absichtlich zum Dom — die Ansage der Bürger an den Bischof:
+          Diese Stadt regieren wir selbst. Solange Roland steht, bleibt Bremen frei.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Für den Notfall lagert angeblich ein
+          <b>Ersatzkopf</b> im Keller. Und der Abstand zwischen Rolands Knien war früher
+          ein amtliches Längenmaß — die „Bremer Elle“.</div>
+          <div class="tip"><b>Gruselfaktor:</b> Im Dom nebenan liegen im <b>Bleikeller</b>
+          acht echte Mumien — keine Deko, echte. Kleiner Eintritt, großer Schauer.</div>
+          <div class="player" data-src="assets/audio/de-roland.mp3">
+            <button aria-label="Abspielen: Der Typ mit dem Ersatzkopf"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Der Typ mit dem Ersatzkopf</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07586%2C8.80730" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-3">
+      <div class="bead">3</div>
+      <article class="card">
+        <img src="assets/img/loch.webp" alt="Der Bremer Marktplatz mit Rathaus, Dom und Bürgerschaft" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 3 · Vor der gläsernen Bürgerschaft</p>
+          <h2>Das Bremer Loch</h2>
+          <p class="walk">30 Sekunden — Blick nach unten! Ein Gullydeckel im Pflaster.</p>
+          <p>Münze rein — und aus dem Boden schreit ein Esel, bellt ein Hund, miaut eine
+          Katze, kräht ein Hahn. Die Stadtmusikanten bedanken sich persönlich bei euch.
+          Das Geld geht komplett an Menschen in Bremen, die Hilfe brauchen.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Die <b>lauteste Spendendose Deutschlands</b>
+          sammelt jedes Jahr mehrere zehntausend Euro — 50 Cent reichen für ein Konzert.</div>
+          <div class="player" data-src="assets/audio/de-loch.mp3">
+            <button aria-label="Abspielen: Die lauteste Spendendose Deutschlands"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Die lauteste Spendendose Deutschlands</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07560%2C8.80785" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-4">
+      <div class="bead">4</div>
+      <article class="card">
+        <img src="assets/img/boettcher.webp" alt="Der goldene Lichtbringer über dem Eingang zur Böttcherstraße" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 4 · Gleich am Marktplatz</p>
+          <h2>Böttcherstraße</h2>
+          <p class="walk">2 min — sucht das goldene Relief über dem schmalen Backstein-Eingang.</p>
+          <p>Hundert Meter Straße, komplett bezahlt mit <b>entkoffeiniertem Kaffee</b>:
+          Kaffeehändler Ludwig Roselius hat ihn erfunden und mit den Kaffee-HAG-Millionen
+          in den 1920ern diese Fantasiestraße gebaut — Backstein, Bronze, Gold.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Das <b>Glockenspiel</b> mitten in der
+          Straße besteht aus 30 Porzellanglocken — es spielt von 12 bis 18 Uhr zu jeder
+          vollen Stunde. Bei Frost bleibt es stumm, sonst zerspringt das Porzellan.</div>
+          <div class="tip"><b>Zucker-Alarm:</b> Im Handwerkerhof bei Nr. 8 macht die
+          <b>Bremer Bonbon Manufaktur</b> Bonbons von Hand — durch die Scheibe zugucken kostet nix.</div>
+          <div class="player" data-src="assets/audio/de-boettcher.mp3">
+            <button aria-label="Abspielen: Die Straße, die Kaffee bezahlt hat"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Die Straße, die Kaffee bezahlt hat</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07508%2C8.80609" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-5">
+      <div class="bead">5</div>
+      <article class="card">
+        <img src="assets/img/schnoor.webp" alt="Bunte enge Gasse im Schnoorviertel" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 5 · Das älteste Viertel</p>
+          <h2>Der Schnoor</h2>
+          <p class="walk">6 min — die Böttcherstraße runter, links Richtung Fluss, den Schildern nach.</p>
+          <p>Bremens ältestes Viertel und der fotogenste Ort der Stadt: <b>Schnoor</b>
+          heißt „Schnur“, weil sich die Mini-Häuser wie Perlen aneinanderreihen.
+          Gassen, schmaler als eure ausgebreiteten Arme, das kleinste Haus der Stadt,
+          und an jeder Ecke ein Foto-Spot.</p>
+          <div class="tip"><b>Bonbons, Teil 2:</b> Bei <b>Marterburg 30</b> hat die Bonbon
+          Manufaktur ihre Schau-Werkstatt — zugucken, wie die Dinger entstehen.</div>
+          <div class="player" data-src="assets/audio/de-schnoor.mp3">
+            <button aria-label="Abspielen: Perlen auf der Schnur"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Perlen auf der Schnur</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07278%2C8.80972" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-6">
+      <div class="bead">6</div>
+      <article class="card">
+        <img src="assets/img/schlachte.webp" alt="Die Schlachte-Promenade an der Weser" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 6 · An der Weser</p>
+          <h2>Schlachte — Eis-Pause</h2>
+          <p class="walk">8 min — zurück zum Fluss und rechts am Wasser entlang.</p>
+          <p>Fünfhundert Jahre lang war das hier der Hafen — Schiffe aus ganz Europa,
+          Wein, Wolle, Gewürze. Heute: Bremens sonnigste Meile. <b>Eis holen, Bank
+          suchen, Füße baumeln lassen</b>, der Weser beim Fließen zusehen.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> „Schlachte“ kommt von den Holzpfählen
+          („slachte“), die man ins Ufer gerammt hat, damit der Kai nicht wegschwimmt.</div>
+          <div class="player" data-src="assets/audio/de-schlachte.mp3">
+            <button aria-label="Abspielen: Der alte Hafen"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Der alte Hafen</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07611%2C8.80222" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-7">
+      <div class="bead">7</div>
+      <article class="card">
+        <img src="assets/img/lloyd.webp" alt="Der gläserne Eingang der Lloyd Passage" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 7 · Obernstraße &amp; Lloyd Passage</p>
+          <h2>Shopping-Block</h2>
+          <p class="walk">8 min — hoch in die Obernstraße, dann treiben lassen.</p>
+          <p>Jetzt seid ihr mitten im Shopping-Dreieck: <b>Obernstraße</b> (die großen
+          Ketten), <b>Lloyd Passage</b> (überdacht — Regen egal) und <b>Sögestraße</b>
+          (Cafés + Läden). Alles liegt direkt nebeneinander, ihr könnt nichts verfehlen.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Die Lloyd Passage war die <b>erste
+          überdachte öffentliche Straße Deutschlands</b> — eine normale Straße, über die
+          man einfach ein Glasdach gebaut hat.</div>
+          <div class="tip"><b>Snack-Stopp:</b> Haltet Ausschau nach einer
+          <b>Müller &amp; Egerer</b>-Bäckerei — Kaffee + Teilchen, dann weiter.</div>
+          <div class="player" data-src="assets/audio/de-lloyd.mp3">
+            <button aria-label="Abspielen: Shopping unterm Glasdach"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Shopping unterm Glasdach</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07814%2C8.80468" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-8">
+      <div class="bead">8</div>
+      <article class="card">
+        <img src="assets/img/pigs.webp" alt="Die Bronzeschweine in der Sögestraße" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 8 · Sögestraße</p>
+          <h2>Die Schweine</h2>
+          <p class="walk">Mittendrin im Shopping-Block — am Ende der Sögestraße.</p>
+          <p>Bremens geduldigste Einwohner: ein bronzener Schweinehirt und seine Herde,
+          seit 1974. Die <b>Sögestraße</b> heißt wörtlich „Straße der Säue“ — im
+          Mittelalter wurden hier jeden Morgen die Schweine der Stadt zur Weide getrieben,
+          mitten durch die Einkaufsstraße.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Vermutlich die einzige Shoppingmeile
+          der Welt, die offiziell nach ihren Schweinen benannt ist. Draufsetzen ist erlaubt.</div>
+          <div class="player" data-src="assets/audio/de-schweine.mp3">
+            <button aria-label="Abspielen: Die Straße der Säue"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Die Straße der Säue</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07798%2C8.80800" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop" id="stop-9">
+      <div class="bead">9</div>
+      <article class="card">
+        <img src="assets/img/viertel.webp" alt="Der Ostertorsteinweg im Bremer Viertel mit Läden und Straßenbahnschienen" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 9 · Bonus-Level · Ostertor</p>
+          <h2>Das Viertel</h2>
+          <p class="walk">15 min zu Fuß (an der Kunsthalle vorbei) — oder Tram ab Domsheide, 2 Stationen.</p>
+          <p>Noch Energie? Dann ins <b>Viertel</b> — Bremens buntester Stadtteil.
+          Hier gibt's, was die Innenstadt nicht hat: <b>Second-Hand- und Vintage-Läden,
+          Plattenläden, Streetart</b> an jeder Ecke und schräge kleine Cafés.
+          Einfach den Ostertorsteinweg entlangtreiben lassen.</p>
+          <div class="funfact"><b>⚡ Fun Fact:</b> Offiziell heißt das Gebiet Ostertor
+          und Steintor — aber kein Mensch in Bremen sagt das. Es heißt einfach: das Viertel.</div>
+          <div class="player" data-src="assets/audio/de-viertel.mp3">
+            <button aria-label="Abspielen: Bonus-Level Viertel"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Bonus-Level: das Viertel</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07271%2C8.81994" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            In Google Maps öffnen</a>
+        </div>
+      </article>
+    </li>
+
+    <li class="stop transit" id="home">
+      <div class="bead" aria-hidden="true">🏠</div>
+      <article class="card">
+        <div class="pad">
+          <p class="eyebrow">Feierabend · Zurück zur Uni</p>
+          <h2>Heimweg</h2>
+          <p class="walk">Zurück zur <b>Domsheide</b> (vom Viertel 15 min zu Fuß oder 2 Tram-Stationen).</p>
+          <p>Ab Domsheide bringt euch die <b>Linie 6 Richtung Universität</b> zurück —
+          steigt an der <b>Universität/Zentralbereich</b> oder <b>Universität-Süd</b> aus,
+          je nachdem, wo ihr hinwollt. Euer Tagesticket gilt noch; mit FAIRTIQ einfach
+          wieder einchecken.</p>
+          <div class="tip"><b>Abkürzung jederzeit:</b> Egal wo ihr seid — die 6 Richtung
+          Universität bringt euch immer zurück.</div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Domsheide — Tram nach Hause</a>
+        </div>
+      </article>
+    </li>
+  </ol>
+
+  <section class="map-card" aria-label="Praktische Infos">
+    <h2>Gut zu wissen</h2>
+    <div class="info-grid">
+      <div><b>🚨 Notfall</b>112 (Rettung/Feuerwehr) · 110 (Polizei).</div>
+      <div><b>🚰 Leitungswasser</b>Könnt ihr überall bedenkenlos trinken.</div>
+      <div><b>💳 Bezahlen</b>Karte geht fast überall; etwas Kleingeld fürs Bremer Loch einstecken!</div>
+      <div><b>🌦️ Juli-Wetter</b>16–25 °C, wechselhaft — dünne Regenjacke mitnehmen.</div>
+      <div><b>🛍️ Sonntags</b>Läden zu; Cafés, Eisdielen &amp; Museen offen.</div>
+      <div><b>📵 Kein Netz?</b>Egal. Dieser Guide läuft offline — und Google Maps mit
+      heruntergeladener Bremen-Karte auch.</div>
+    </div>
+    <div class="meet">
+      Treffpunkt &amp; Uhrzeit mit euren Eltern (zum Bearbeiten antippen):
+      <span id="meet" contenteditable="true" spellcheck="false"></span>
+      <small>Wird auf diesem Handy gespeichert — bleibt auch nach dem Schließen.</small>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Mit <span class="heart">♥</span> gebaut in Bremen · Juli 2026 ·
+    <a href="index.html">English version</a></p>
+    <p>Funktioniert offline, sobald einmal vollständig geladen. Die Google-Maps-Buttons
+    öffnen eure Maps-App — mit heruntergeladener Offline-Karte von Bremen auch ohne Netz.</p>
+    <h3>Fotos (Wikimedia Commons)</h3>
+    <p>
+      Universum: Matthias Süßen, CC BY-SA 3.0 ·
+      Lloyd Passage: Rami Tarawneh, CC BY-SA 2.5 ·
+      Viertel: ROMWriter, CC BY-SA 3.0 ·
+      Tram, Rathaus, Marktplatz, Böttcherstraße, Schlachte: Jürgen Howaldt / Matthias Süßen / Roehrensee (CC) ·
+      Stadtmusikanten: Ad Meskens, CC BY-SA 4.0 ·
+      Schnoor: Matthias Süßen, CC BY-SA 4.0 ·
+      Schweine: J Doll, CC BY 3.0 — Details in
+      <a href="https://github.com/frankjmueller/bremen-city-walk/blob/main/ATTRIBUTION.md">ATTRIBUTION.md</a>.
+    </p>
+    <p>Stimme: synthetisch (edge-tts). Fakten geprüft Juli 2026 — Öffnungszeiten können sich ändern.
+    <span id="version">Guide-Version v8</span></p>
+  </div>
+</footer>
+
+<script>
+/* ————— Service worker: register + progress ————— */
+(function () {
+  const statusEl = document.getElementById('status');
+  const textEl = document.getElementById('status-text');
+
+  function setStatus(ready, text) {
+    statusEl.classList.toggle('ready', ready);
+    textEl.textContent = text;
+  }
+
+  if (!('serviceWorker' in navigator)) {
+    setStatus(false, 'Offline-Speichern wird von diesem Browser nicht unterstützt');
+    return;
+  }
+  if (location.protocol === 'file:') {
+    setStatus(false, 'Über den Web-Link öffnen, um den Offline-Modus zu aktivieren');
+    return;
+  }
+
+  const hadController = !!navigator.serviceWorker.controller;
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing || !hadController) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    reg.update();
+    setStatus(false, 'Guide wird für offline gespeichert…');
+    let tries = 0;
+    const poll = setInterval(() => {
+      tries++;
+      navigator.serviceWorker.ready.then(reg => {
+        const sw = reg.active;
+        if (!sw) return;
+        const ch = new MessageChannel();
+        ch.port1.onmessage = e => {
+          const { cached, total } = e.data;
+          if (cached >= total) {
+            clearInterval(poll);
+            setStatus(true, 'Offline bereit — Flugmodus ist okay ✓');
+          } else {
+            setStatus(false, `Wird gespeichert… ${cached}/${total}`);
+          }
+        };
+        sw.postMessage({ type: 'STATUS' }, [ch.port2]);
+      });
+      if (tries > 240) clearInterval(poll);
+    }, 800);
+  }).catch(() => {
+    setStatus(false, 'Offline-Speichern nicht verfügbar');
+  });
+})();
+
+/* ————— Audio players ————— */
+(function () {
+  const players = document.querySelectorAll('.player');
+  let current = null;
+
+  const PLAY = '<path d="M8 5v14l11-7z"/>';
+  const PAUSE = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+
+  function fmt(s) {
+    if (!isFinite(s)) return '–:–';
+    const m = Math.floor(s / 60), r = Math.floor(s % 60);
+    return m + ':' + String(r).padStart(2, '0');
+  }
+
+  players.forEach(p => {
+    const btn = p.querySelector('button');
+    const fill = p.querySelector('.fill');
+    const bar = p.querySelector('.bar');
+    const time = p.querySelector('.time');
+    let audio = null;
+
+    function ensureAudio() {
+      if (audio) return audio;
+      audio = new Audio(p.dataset.src);
+      audio.preload = 'metadata';
+      audio.addEventListener('loadedmetadata', () => { time.textContent = fmt(audio.duration); });
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+        time.textContent = fmt(audio.duration - audio.currentTime);
+      });
+      audio.addEventListener('ended', () => {
+        btn.querySelector('svg').innerHTML = PLAY;
+        fill.style.width = '0%';
+        time.textContent = fmt(audio.duration);
+      });
+      return audio;
+    }
+
+    btn.addEventListener('click', () => {
+      const a = ensureAudio();
+      if (a.paused) {
+        if (current && current !== a) {
+          current.pause();
+          document.querySelectorAll('.player svg').forEach(s => s.innerHTML = PLAY);
+        }
+        a.play();
+        current = a;
+        btn.querySelector('svg').innerHTML = PAUSE;
+      } else {
+        a.pause();
+        btn.querySelector('svg').innerHTML = PLAY;
+      }
+    });
+
+    bar.addEventListener('pointerdown', e => {
+      const a = ensureAudio();
+      if (!a.duration) return;
+      const r = bar.getBoundingClientRect();
+      a.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * a.duration;
+    });
+  });
+})();
+
+/* ————— Install as app ————— */
+(function () {
+  const btn = document.getElementById('install-btn');
+  const tip = document.getElementById('install-tip');
+  const standalone = matchMedia('(display-mode: standalone)').matches
+    || navigator.standalone === true;
+  if (standalone) return;
+
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  tip.innerHTML = isIOS
+    ? '<b>Auf dem iPhone / iPad:</b> unten in Safari den <span class="share">⇧</span> ' +
+      'Teilen-Button antippen, runterscrollen und <b>„Zum Home-Bildschirm“</b> wählen. ' +
+      'Der Guide öffnet sich dann als Vollbild-App — ohne Browserleisten, offline.'
+    : '<b>Auf Android:</b> oben rechts in Chrome das <b>⋮-Menü</b> antippen und ' +
+      '<b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b> wählen. ' +
+      '(Samsung Internet: Menü → „Seite hinzufügen zu“ → „Startbildschirm“.) ' +
+      'Der Guide öffnet sich dann als Vollbild-App — ohne Browserleisten, offline.';
+
+  btn.hidden = false;
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  btn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      tip.hidden = true;
+      const promptEvent = deferredPrompt;
+      deferredPrompt = null;
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      if (outcome === 'accepted') btn.hidden = true;
+    } else {
+      tip.hidden = !tip.hidden;
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    btn.hidden = true;
+    tip.hidden = true;
+  });
+})();
+
+/* ————— Editable meeting point, saved locally ————— */
+(function () {
+  const el = document.getElementById('meet');
+  const KEY = 'bremen-walk-meet-teens';
+  el.textContent = localStorage.getItem(KEY) || '';
+  el.addEventListener('input', () => localStorage.setItem(KEY, el.textContent));
+})();
+</script>
+</body>
+</html>

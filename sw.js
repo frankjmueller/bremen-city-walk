@@ -3,11 +3,12 @@
    and answers HTTP Range requests from cache (required for
    audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v7';
+const CACHE_NAME = 'bremen-walk-v8';
 
 const ASSETS = [
   './',
   './index.html',
+  './teens.html',
   './manifest.json',
   './assets/fonts/bricolage.woff2',
   './icons/icon-192.png',
@@ -27,6 +28,9 @@ const ASSETS = [
   './assets/img/muehle.webp',
   './assets/img/elephant.webp',
   './assets/img/rathaus.webp',
+  './assets/img/universum.webp',
+  './assets/img/lloyd.webp',
+  './assets/img/viertel.webp',
   // audio
   './assets/audio/welcome.mp3',
   './assets/audio/dom.mp3',
@@ -39,6 +43,18 @@ const ASSETS = [
   './assets/audio/pigs.mp3',
   './assets/audio/muehle.mp3',
   './assets/audio/elephant.mp3',
+  // German teen edition
+  './assets/audio/de-willkommen.mp3',
+  './assets/audio/de-universum.mp3',
+  './assets/audio/de-musikanten.mp3',
+  './assets/audio/de-roland.mp3',
+  './assets/audio/de-loch.mp3',
+  './assets/audio/de-boettcher.mp3',
+  './assets/audio/de-schnoor.mp3',
+  './assets/audio/de-schlachte.mp3',
+  './assets/audio/de-schweine.mp3',
+  './assets/audio/de-lloyd.mp3',
+  './assets/audio/de-viertel.mp3',
 ];
 
 self.addEventListener('install', event => {
