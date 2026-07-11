@@ -3,7 +3,7 @@
    and answers HTTP Range requests from cache (required for
    audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v4';
+const CACHE_NAME = 'bremen-walk-v5';
 
 const ASSETS = [
   './',
@@ -13,6 +13,7 @@ const ASSETS = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
+  './icons/icon-maskable-512.png',
   // images
   './assets/img/tram.webp',
   './assets/img/dom.webp',

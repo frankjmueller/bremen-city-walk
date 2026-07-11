@@ -81,6 +81,26 @@ h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif
 .status:not(.ready) .dot{animation:pulse 1.2s ease-in-out infinite}
 @media (prefers-reduced-motion: reduce){ .status .dot{animation:none} }
 
+/* ————— Install as app ————— */
+.install{
+  display:inline-flex;align-items:center;gap:.5em;margin:1rem auto 0;
+  background:var(--gold);color:#4A2317;border:none;cursor:pointer;
+  padding:.7em 1.4em;border-radius:999px;font-weight:700;font-size:.95rem;
+  font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.install:active{transform:scale(.97)}
+.install img{width:22px;height:22px;border-radius:6px}
+.ios-tip{
+  max-width:22rem;margin:.9rem auto 0;padding:.8rem 1rem;border-radius:12px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(217,164,65,.45);
+  color:#F3E4C8;font-size:.88rem;text-align:left;line-height:1.55;
+}
+.ios-tip .share{
+  display:inline-block;border:1.5px solid currentColor;border-radius:4px;
+  width:1.1em;height:1.1em;text-align:center;line-height:1.05;font-size:.9em;
+  vertical-align:-.15em;
+}
+
 /* ————— Shared column ————— */
 .wrap{max-width:640px;margin:0 auto;padding:0 1.05rem}
 
@@ -231,6 +251,17 @@ footer p{margin:.3rem 0}
   <p class="hero-sub">A city walk for our friends from <b>Namibia</b>. Every picture, story
   and voice in this guide is saved on your phone — it keeps working with no internet at all.</p>
   <p class="status" id="status"><span class="dot"></span><span id="status-text">Checking offline storage…</span></p>
+  <br>
+  <button class="install" id="install-btn" hidden>
+    <img src="icons/icon-192.png" alt="">
+    Install as an app
+  </button>
+  <div class="ios-tip" id="ios-tip" hidden>
+    <b>On iPhone / iPad:</b> tap the <span class="share">⇧</span> Share button
+    at the bottom of Safari, scroll down, and choose
+    <b>“Add to Home Screen”</b>. The guide then opens full-screen like a real app —
+    no browser bars, works offline.
+  </div>
 </header>
 
 <div class="howto">
@@ -630,16 +661,16 @@ footer p{margin:.3rem 0}
         <div class="pad">
           <p class="eyebrow">Finish · Back to the hotel</p>
           <h2>Getting home</h2>
-          <p class="walk">The tram stop <b>Am Stern</b> is right by the park — a short
-          stroll from the elephant.</p>
+          <p class="walk">The tram stop <b>Hauptbahnhof-Nord/Messe</b> is right next to
+          the park — 2 minutes from the elephant.</p>
           <p>Hop on <b>Tram 6 towards Universität</b> and get off at
           <b>Universität-Süd</b> — about 12 minutes, and you're back at 7things.
           A day ticket is still valid; with FAIRTIQ, just check in again.</p>
           <div class="tip"><b>Cut the walk short any time:</b> from Domsheide or Hauptbahnhof,
           Tram 6 towards Universität always brings you home.</div>
-          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.08455%2C8.82584" target="_blank" rel="noopener">
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.08442%2C8.81667" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-            Am Stern — tram home</a>
+            Hauptbahnhof-Nord/Messe — tram home</a>
         </div>
       </article>
     </li>
@@ -792,6 +823,42 @@ footer p{margin:.3rem 0}
       const r = bar.getBoundingClientRect();
       a.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * a.duration;
     });
+  });
+})();
+
+/* ————— Install as app ————— */
+(function () {
+  const btn = document.getElementById('install-btn');
+  const iosTip = document.getElementById('ios-tip');
+  const standalone = matchMedia('(display-mode: standalone)').matches
+    || navigator.standalone === true;
+  if (standalone) return; // already installed & frameless
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    btn.hidden = false;
+  });
+
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isIOS) btn.hidden = false;
+
+  btn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') btn.hidden = true;
+      deferredPrompt = null;
+    } else {
+      iosTip.hidden = !iosTip.hidden; // iOS has no prompt API — show how-to
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    btn.hidden = true;
+    iosTip.hidden = true;
   });
 })();
 
