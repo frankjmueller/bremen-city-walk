@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bremen City Walk — Offline Guide</title>
+<meta name="description" content="A pocket walking guide through Bremen's old town for our friends from Namibia — works completely offline.">
+<meta name="theme-color" content="#7A2E20">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+/* ————— Bremen material palette: Backstein, Patina, Lichtbringer-Gold ————— */
+@font-face{
+  font-family:'Bricolage';
+  src:url('assets/fonts/bricolage.woff2') format('woff2');
+  font-weight:400 800;
+  font-display:swap;
+}
+:root{
+  --brick:#7A2E20; --brick-deep:#5E2318;
+  --patina:#3E7D6C; --patina-deep:#2F6153;
+  --gold:#D9A441; --gold-soft:#EFD9A8;
+  --paper:#F8F4ED; --card:#FFFFFF;
+  --ink:#2B211C; --muted:#7C6F66; --line:#E7DDD1;
+  --shadow:0 2px 12px rgba(43,33,28,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#201813; --card:#2B211B;
+    --ink:#F1E9DF; --muted:#B5A697; --line:#41342A;
+    --gold:#E0AF54; --gold-soft:#8A6A33;
+    --shadow:0 2px 14px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height:1.65; font-size:1.02rem;
+  -webkit-text-size-adjust:100%;
+}
+a{color:var(--patina)}
+h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif}
+
+/* ————— Hero: a brick wall ————— */
+.hero{
+  background:
+    linear-gradient(rgba(94,35,24,.25),rgba(94,35,24,0) 40%),
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(43,20,14,.5) 26px 28px),
+    repeating-linear-gradient(90deg, rgba(255,220,180,.05) 0 2px, transparent 2px 74px),
+    var(--brick);
+  color:#F7EDD9;
+  padding:2.6rem 1.3rem 2.2rem;
+  text-align:center;
+}
+.hero .eyebrow{
+  letter-spacing:.22em; font-size:.72rem; font-weight:600;
+  text-transform:uppercase; color:var(--gold-soft); margin:0 0 .6rem;
+}
+@media (prefers-color-scheme: dark){ .hero .eyebrow{color:#EFD9A8} }
+.hero h1{
+  font-size:clamp(2.6rem,11vw,4rem); font-weight:800; margin:0;
+  line-height:1.02; color:#F7EDD9;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero-sub{max-width:34rem;margin:1rem auto 0;font-size:1rem;color:#EBD9C4}
+.hero-beads{margin:1.4rem auto .9rem;display:block}
+.status{
+  display:inline-flex;align-items:center;gap:.5em;
+  margin-top:1.2rem;padding:.5em 1.1em;border-radius:999px;
+  background:rgba(0,0,0,.28);color:#F3E4C8;font-size:.85rem;font-weight:600;
+  border:1px solid rgba(217,164,65,.45);
+}
+.status.ready{background:var(--patina-deep);border-color:var(--patina);color:#EAF5F0}
+.status .dot{width:.6em;height:.6em;border-radius:50%;background:var(--gold);flex:none}
+.status.ready .dot{background:#8FD8BF}
+@keyframes pulse{50%{opacity:.35}}
+.status:not(.ready) .dot{animation:pulse 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){ .status .dot{animation:none} }
+
+/* ————— Shared column ————— */
+.wrap{max-width:640px;margin:0 auto;padding:0 1.05rem}
+
+/* ————— How it works strip ————— */
+.howto{
+  background:var(--patina-deep);color:#EAF5F0;
+  padding:1.1rem 1.3rem;font-size:.92rem;
+}
+.howto .wrap{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;padding:0}
+.howto span{display:flex;align-items:center;gap:.45em}
+.howto b{color:#CFE9DE}
+
+/* ————— Route map ————— */
+.map-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);margin:1.6rem auto;padding:1.2rem 1rem .6rem;
+}
+.map-card h2{margin:.2rem 0 0;text-align:center;font-size:1.25rem}
+.map-card p{color:var(--muted);text-align:center;font-size:.88rem;margin:.3rem 0 .4rem}
+.map-card svg{width:100%;height:auto;display:block}
+.map-card svg text{font-family:system-ui,sans-serif}
+.map-card svg a:focus circle{stroke-width:5}
+
+/* ————— The string of pearls ————— */
+.route{list-style:none;margin:2rem 0 0;padding:0;position:relative}
+.route::before{
+  content:"";position:absolute;top:10px;bottom:10px;left:21px;
+  border-left:3px dashed var(--gold);opacity:.75;
+}
+.stop{position:relative;padding:0 0 2rem 3.1rem}
+.bead{
+  position:absolute;left:0;top:0;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--patina);color:#fff;
+  border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.15rem;z-index:1;
+}
+.stop.transit .bead{background:var(--brick);font-size:1.3rem}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.card>img{width:100%;height:210px;object-fit:cover;display:block;background:var(--line)}
+.card .pad{padding:1.1rem 1.15rem 1.2rem}
+.eyebrow{
+  margin:0 0 .25rem;font-size:.72rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--patina);
+}
+.card h2{margin:0 0 .5rem;font-size:1.45rem;font-weight:700;line-height:1.15}
+.walk{
+  font-size:.88rem;color:var(--muted);margin:.1rem 0 .8rem;
+  padding-left:1.5em;position:relative;
+}
+.walk::before{content:"🚶";position:absolute;left:0}
+.card p{margin:.55rem 0}
+.tip{
+  background:color-mix(in srgb, var(--gold) 13%, var(--card));
+  border-left:4px solid var(--gold);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.tip b{font-weight:700}
+
+/* memorial card — quieter, no gold play */
+.stop.memorial .bead{background:var(--ink);border-color:var(--patina)}
+.stop.memorial .card{border-color:var(--patina)}
+.stop.memorial .tip{background:color-mix(in srgb, var(--patina) 12%, var(--card));border-left-color:var(--patina)}
+
+/* ————— Audio player ————— */
+.player{
+  display:flex;align-items:center;gap:.75rem;
+  background:color-mix(in srgb, var(--patina) 9%, var(--card));
+  border:1px solid color-mix(in srgb, var(--patina) 35%, var(--line));
+  border-radius:12px;padding:.55rem .8rem;margin:.9rem 0;
+}
+.player button{
+  flex:none;width:44px;height:44px;border-radius:50%;border:none;
+  background:var(--patina);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.player button:active{transform:scale(.95)}
+.player button svg{width:18px;height:18px;fill:currentColor}
+.player .meta{flex:1;min-width:0}
+.player .label{font-size:.83rem;font-weight:600;margin:0 0 .3rem;color:var(--ink)}
+.player .bar{
+  height:8px;border-radius:4px;background:color-mix(in srgb, var(--patina) 22%, var(--card));
+  position:relative;cursor:pointer;touch-action:none;
+}
+.player .fill{position:absolute;inset:0 auto 0 0;width:0%;border-radius:4px;background:var(--patina)}
+.player .time{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+
+/* ————— Buttons ————— */
+.maps{
+  display:flex;align-items:center;justify-content:center;gap:.5em;
+  background:var(--brick);color:#F7EDD9;text-decoration:none;
+  padding:.85em 1em;border-radius:12px;font-weight:700;font-size:.98rem;
+  margin-top:.9rem;
+}
+.maps:active{opacity:.85}
+.maps svg{width:1.05em;height:1.05em;fill:currentColor;flex:none}
+
+/* ————— Good to know ————— */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.9rem 0}
+.info-grid div{
+  background:color-mix(in srgb, var(--patina) 7%, var(--card));
+  border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;
+  font-size:.88rem;line-height:1.45;
+}
+.info-grid b{display:block;font-size:.95rem}
+.meet{
+  border:2px dashed var(--gold);border-radius:12px;
+  padding:.8rem 1rem;margin-top:1rem;font-size:.95rem;
+}
+.meet [contenteditable]{
+  display:block;min-height:1.5em;font-weight:700;font-size:1.05rem;outline:none;
+  border-bottom:1px solid var(--line);
+}
+.meet [contenteditable]:focus{border-bottom-color:var(--gold)}
+.meet small{color:var(--muted)}
+
+/* ————— Footer ————— */
+footer{
+  margin:2.5rem 0 0;padding:2rem 1.3rem 3rem;
+  background:var(--brick-deep);color:#D9C3B4;font-size:.8rem;line-height:1.7;
+}
+footer a{color:var(--gold-soft)}
+@media (prefers-color-scheme: dark){ footer a{color:#EFD9A8} }
+footer .heart{color:var(--gold);font-style:normal}
+footer h3{color:#F7EDD9;font-size:.95rem;margin:1.4rem 0 .4rem}
+footer p{margin:.3rem 0}
+
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">Offline pocket guide · Bremen</p>
+  <h1>Moin<span class="gold">!</span></h1>
+  <svg class="hero-beads" width="120" height="34" viewBox="0 0 120 34" aria-hidden="true">
+    <line x1="8" y1="26" x2="112" y2="8" stroke="#D9A441" stroke-width="2" stroke-dasharray="4 4"/>
+    <circle cx="16" cy="25" r="8" fill="#D9A441"/>
+    <circle cx="48" cy="20" r="6.5" fill="#D9A441"/>
+    <circle cx="78" cy="15" r="5" fill="#D9A441"/>
+    <circle cx="104" cy="10" r="3.8" fill="#D9A441"/>
+  </svg>
+  <p class="hero-sub">A city walk for our friends from <b>Namibia</b>. Every picture, story
+  and voice in this guide is saved on your phone — it keeps working with no internet at all.</p>
+  <p class="status" id="status"><span class="dot"></span><span id="status-text">Checking offline storage…</span></p>
+</header>
+
+<div class="howto">
+  <div class="wrap">
+    <span><b>1</b> Open this page once online</span>
+    <span><b>2</b> Wait for the green “offline ready”</span>
+    <span><b>3</b> Walk — flight mode is fine</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ————— Route at a glance ————— -->
+  <section class="map-card" aria-label="Route overview">
+    <h2>The route — like pearls on a string</h2>
+    <p>Tap a pearl to jump to its stop. About 3.5 km on foot, take your time.</p>
+    <svg viewBox="0 0 360 330" role="img" aria-label="Schematic map of the walking route with 10 stops">
+      <path d="M30,290 H330 V200 H30 V110 H210" fill="none" stroke="#D9A441" stroke-width="5"
+            stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1 9"/>
+      <!-- tram start -->
+      <g><rect x="18" y="278" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="30" y="295" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="30" y="322" font-size="10" fill="#7C6F66" text-anchor="middle">Tram</text></g>
+      <!-- row 1 -->
+      <a href="#stop-1"><circle cx="90" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="90" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">1</text>
+         <text x="90" y="266" font-size="10.5" fill="currentColor" text-anchor="middle">Cathedral</text></a>
+      <a href="#stop-2"><circle cx="150" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="150" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">2</text>
+         <text x="150" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Musicians</text></a>
+      <a href="#stop-3"><circle cx="210" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="210" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">3</text>
+         <text x="210" y="266" font-size="10.5" fill="currentColor" text-anchor="middle">Roland</text></a>
+      <a href="#stop-4"><circle cx="270" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="270" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">4</text>
+         <text x="270" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">The Hole</text></a>
+      <!-- row 2 (right to left) -->
+      <a href="#stop-5"><circle cx="330" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="330" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">5</text>
+         <text x="330" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Böttcher-</text>
+         <text x="330" y="187" font-size="10.5" fill="currentColor" text-anchor="middle">straße</text></a>
+      <a href="#stop-6"><circle cx="255" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="255" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">6</text>
+         <text x="255" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">Schnoor</text></a>
+      <a href="#stop-7"><circle cx="180" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="180" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">7</text>
+         <text x="180" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Schlachte</text></a>
+      <a href="#stop-8"><circle cx="105" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="105" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">8</text>
+         <text x="105" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">The Pigs</text></a>
+      <!-- row 3 -->
+      <a href="#stop-9"><circle cx="30" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="30" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">9</text>
+         <text x="30" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Windmill</text></a>
+      <a href="#stop-10"><circle cx="120" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="120" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">10</text>
+         <text x="120" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Elephant</text></a>
+      <!-- tram home -->
+      <g><rect x="198" y="98" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="210" y="115" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="210" y="86" font-size="10" fill="#7C6F66" text-anchor="middle">Home</text></g>
+    </svg>
+  </section>
+
+  <ol class="route">
+
+    <!-- ————— Getting there ————— -->
+    <li class="stop transit" id="start">
+      <div class="bead" aria-hidden="true">🚋</div>
+      <article class="card">
+        <img src="assets/img/tram.webp" alt="Red and grey BSAG trams at Domsheide in Bremen">
+        <div class="pad">
+          <p class="eyebrow">Start · From your hotel</p>
+          <h2>Getting into town</h2>
+          <p class="walk">2 min from 7things to the tram stop <b>Universität/Zentralbereich</b>.</p>
+          <p>Take <b>Tram 6 towards Flughafen</b> (airport) and relax for about 17 minutes.
+          Get off at <b>Domsheide</b> — you'll see the cathedral towers as you step out.</p>
+          <div class="tip"><b>Tickets:</b> one <b>Day Ticket</b> covers up to 5 adults
+          (€9.50 + €3.50 per extra person) — buy it at the machine, cards accepted.
+          Solo? The <b>FAIRTIQ app</b> works on all trams: swipe to check in before boarding,
+          swipe out when you leave. It's personal, so bring photo ID.</div>
+          <div class="player" data-src="assets/audio/welcome.mp3">
+            <button aria-label="Play: Welcome to Bremen"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Welcome — and the legend of the Seven Lazy Brothers</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Domsheide — where you get off</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 1 Dom ————— -->
+    <li class="stop" id="stop-1">
+      <div class="bead">1</div>
+      <article class="card">
+        <img src="assets/img/dom.webp" alt="The twin towers of St Peter's Cathedral, Bremen" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 1 · Marktplatz</p>
+          <h2>St Peter's Cathedral</h2>
+          <p class="walk">1 min from Domsheide — walk towards the twin green spires.</p>
+          <p>Bremen's cathedral has watched over the city for more than 1,200 years.
+          Its strangest secret lies underneath: the <b>Bleikeller</b> (Lead Cellar), where eight
+          mummies rest in open coffins — craftsmen, soldiers, even a countess. Nobody embalmed
+          them; the cellar's dry air simply refused to let them decay, and no one could explain
+          it for centuries.</p>
+          <div class="tip"><b>Dare to look?</b> The Lead Cellar is open daily in summer
+          (Saturdays only until early afternoon) for a small fee. Entrance beside the cathedral.</div>
+          <div class="player" data-src="assets/audio/dom.mp3">
+            <button aria-label="Play: The mummies of the Lead Cellar"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The mummies of the Lead Cellar</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07528%2C8.80889" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 2 Musicians ————— -->
+    <li class="stop" id="stop-2">
+      <div class="bead">2</div>
+      <article class="card">
+        <img src="assets/img/musicians.webp" alt="Bronze statue of the Bremen Town Musicians: donkey, dog, cat and rooster" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 2 · Town hall, west side</p>
+          <h2>The Town Musicians</h2>
+          <p class="walk">2 min — cross the square, around the town hall's left corner.</p>
+          <p>Donkey, dog, cat, rooster: four ageing animals who ran away rather than be
+          discarded, scared off a band of robbers with the loudest concert of their lives —
+          and never actually reached Bremen. The city adopted them anyway, and this bronze
+          from 1951 became its most-loved landmark.</p>
+          <div class="tip"><b>The ritual:</b> hold <b>both</b> of the donkey's front legs with
+          <b>both hands</b> and make a wish. One hand only? Locals will smile — that's just
+          one donkey greeting another. You'll see why the legs shine like gold.</div>
+          <div class="player" data-src="assets/audio/musicians.mp3">
+            <button aria-label="Play: Four animals and one wish"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Four animals and one wish</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07620%2C8.80716" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 3 Roland & Rathaus ————— -->
+    <li class="stop" id="stop-3">
+      <div class="bead">3</div>
+      <article class="card">
+        <img src="assets/img/rathaus.webp" alt="Bremen's Renaissance town hall on the market square" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 3 · Marktplatz · UNESCO World Heritage</p>
+          <h2>Roland &amp; the Town Hall</h2>
+          <p class="walk">A few steps back onto the market square.</p>
+          <p>The stone knight is <b>Roland</b>, standing here since 1404 with his sword drawn
+          and his eyes fixed on the cathedral — the citizens' message to the bishop that this
+          city governs itself. Legend says Bremen stays free as long as Roland stands, so a
+          <b>spare head</b> is said to be kept in storage, just in case. The gap between his
+          knees was once an official unit of measure: the Bremen ell, used by cloth merchants.</p>
+          <p>Behind him rises the 600-year-old <b>town hall</b> — together they are a UNESCO
+          World Heritage Site. The wine cellar below has been pouring since 1405 and stocks
+          Germany's oldest drinkable wine, from 1653.</p>
+          <div class="player" data-src="assets/audio/roland.mp3">
+            <button aria-label="Play: The knight with the spare head"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The knight with the spare head</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07586%2C8.80730" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 4 Bremer Loch ————— -->
+    <li class="stop" id="stop-4">
+      <div class="bead">4</div>
+      <article class="card">
+        <img src="assets/img/loch.webp" alt="Bremen market square with town hall, cathedral and the glass parliament building" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 4 · In front of the glass parliament</p>
+          <h2>The Bremen Hole</h2>
+          <p class="walk">30 seconds — look down! It's a drain cover in the pavement.</p>
+          <p>Bremen's strangest sight is a hole in the ground. Drop a coin into the metal
+          cover in front of the parliament building and listen: a donkey brays, a dog barks,
+          a cat meows, a rooster crows. The Town Musicians live down there — and they say
+          thank you. It's <b>Germany's loudest charity box</b>: every cent goes to a foundation
+          helping people in need across Bremen.</p>
+          <div class="tip"><b>Keep small coins ready</b> — every guest gets a private concert.</div>
+          <div class="player" data-src="assets/audio/loch.mp3">
+            <button aria-label="Play: Germany's loudest charity box"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Germany's loudest charity box</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07560%2C8.80785" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 5 Böttcherstraße ————— -->
+    <li class="stop" id="stop-5">
+      <div class="bead">5</div>
+      <article class="card">
+        <img src="assets/img/boettcher.webp" alt="The golden Lightbringer relief above the brick entrance to Böttcherstraße" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 5 · Off the market square</p>
+          <h2>Böttcherstraße</h2>
+          <p class="walk">2 min — find the golden relief above a narrow brick entrance.</p>
+          <p>One hundred metres of pure fantasy. Coffee merchant <b>Ludwig Roselius</b> —
+          the man who invented <b>decaffeinated coffee</b> after his father drank himself to
+          death on the regular kind — poured his fortune into this street in the 1920s:
+          expressionist brick, bronze doors, gold everywhere. Enter under the glowing
+          <b>Lightbringer</b> relief.</p>
+          <p>Halfway down, thirty <b>Meissen porcelain bells</b> chime between the gables —
+          <b>every hour from 12:00 to 18:00</b>. Worth timing your visit.</p>
+          <div class="tip"><b>Sweet tooth?</b> In the little craft courtyard at No. 8, the
+          <b>Bremer Bonbon Manufaktur</b> makes candy by hand — watch them pour and cut
+          the sweets through the workshop window.</div>
+          <div class="player" data-src="assets/audio/boettcher.mp3">
+            <button aria-label="Play: The street that decaf built"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The street that decaf built</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07508%2C8.80609" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 6 Schnoor ————— -->
+    <li class="stop" id="stop-6">
+      <div class="bead">6</div>
+      <article class="card">
+        <img src="assets/img/schnoor.webp" alt="Colourful narrow lane in the Schnoor quarter with cobblestones and café tables" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 6 · The old fishermen's quarter</p>
+          <h2>The Schnoor</h2>
+          <p class="walk">6 min — down Böttcherstraße, left along the river, follow the signs.</p>
+          <p>Bremen's oldest quarter, and its most magical. <b>Schnoor</b> means “string”:
+          the doll-sized houses line the lanes <b>like pearls on a string</b> — which is exactly
+          how this guide is laid out. Six hundred years ago rope makers and fishermen lived
+          here; today it's the corner of Bremen everyone falls in love with.</p>
+          <p>Squeeze through lanes barely a metre wide, hunt for the smallest house in the
+          city, and let yourselves get lost — it's tiny, you can't really stay lost.</p>
+          <div class="tip"><b>Candy, part two:</b> at <b>Marterburg 30</b> the Bonbon
+          Manufaktur runs its show workshop — watch bonbons being made the old way.</div>
+          <div class="player" data-src="assets/audio/schnoor.mp3">
+            <button aria-label="Play: Pearls on a string"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 Pearls on a string</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07278%2C8.80972" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 7 Schlachte ————— -->
+    <li class="stop" id="stop-7">
+      <div class="bead">7</div>
+      <article class="card">
+        <img src="assets/img/schlachte.webp" alt="The Schlachte embankment with brick gabled houses and beer garden terraces" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 7 · The Weser riverside</p>
+          <h2>The Schlachte</h2>
+          <p class="walk">8 min — walk back to the river and turn right along the water.</p>
+          <p>For five hundred years this was Bremen's harbour: ships from all over Europe
+          tied up here with wine, wool and spices. When the big ships moved downstream,
+          the Schlachte reinvented itself as the city's sunniest mile — beer gardens,
+          historic ships and the best benches on the Weser.</p>
+          <div class="tip"><b>Perfect lunch break.</b> Pick any terrace, order something cold,
+          watch the river roll towards the North Sea. Toast like a local: <b>“Prost!”</b></div>
+          <div class="player" data-src="assets/audio/schlachte.mp3">
+            <button aria-label="Play: The old harbour"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The old harbour</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07611%2C8.80222" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 8 Pigs ————— -->
+    <li class="stop" id="stop-8">
+      <div class="bead">8</div>
+      <article class="card">
+        <img src="assets/img/pigs.webp" alt="Bronze swineherd and pig sculptures on the Sögestraße shopping street" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 8 · Sögestraße</p>
+          <h2>The Pigs of Sögestraße</h2>
+          <p class="walk">8 min — up through Obernstraße, then into Sögestraße.</p>
+          <p>Meet Bremen's most patient residents. <b>Sögestraße</b> literally means
+          <b>“Street of the Sows”</b>: in the Middle Ages, pigs were driven along this very
+          route every morning to the pastures outside the gates — and home again at night.
+          Since 1974 a bronze swineherd and his little herd have kept the tradition alive.
+          Children ride them, everyone pats them, and their backs shine like gold.</p>
+          <div class="tip"><b>Coffee stop:</b> keep an eye out for a <b>Müller &amp; Egerer</b>
+          bakery — a beloved local chain. Grab a coffee and a pastry the Bremen way.</div>
+          <div class="player" data-src="assets/audio/pigs.mp3">
+            <button aria-label="Play: The street of the sows"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The street of the sows</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.07798%2C8.80800" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 9 Windmill ————— -->
+    <li class="stop" id="stop-9">
+      <div class="bead">9</div>
+      <article class="card">
+        <img src="assets/img/muehle.webp" alt="The windmill in Bremen's Wallanlagen park surrounded by flower beds" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 9 · Wallanlagen park</p>
+          <h2>The Windmill on the Wall</h2>
+          <p class="walk">4 min — Sögestraße ends at the park; the mill is to your left.</p>
+          <p>A working-size windmill in the middle of the city! You're standing on Bremen's
+          old star-shaped ramparts. When the walls lost their military purpose 200 years ago,
+          the city didn't build them over — it turned them into one of Germany's first public
+          parks, a green ribbon of gardens and water. A mill has stood on this bastion since
+          the 1600s; this one kept grinding grain into the twentieth century.</p>
+          <div class="tip"><b>Breather:</b> grab a bench by the moat and enjoy the flower beds
+          — the last stretch of the walk starts here.</div>
+          <div class="player" data-src="assets/audio/muehle.mp3">
+            <button aria-label="Play: A mill on the ramparts"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 A mill on the ramparts</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.08015%2C8.80682" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— 10 Elephant ————— -->
+    <li class="stop memorial" id="stop-10">
+      <div class="bead">10</div>
+      <article class="card">
+        <img src="assets/img/elephant.webp" alt="The ten-metre brick elephant of the Anti-Colonial Monument in Nelson Mandela Park" loading="lazy">
+        <div class="pad">
+          <p class="eyebrow">Stop 10 · Nelson-Mandela-Park</p>
+          <h2>The Elephant — a Namibian story in Bremen</h2>
+          <p class="walk">12 min — through the park past the station, or hop on any tram to Hauptbahnhof.</p>
+          <p>This ten-metre brick elephant carries the heaviest story on this walk — and it
+          leads directly to Namibia. Built in 1932, it glorified Germany's colonial empire,
+          including what was then called German South West Africa. Between 1904 and 1908,
+          German troops committed genocide against the Ovaherero and Nama peoples; many of
+          the victims were driven into the Omaheke desert.</p>
+          <p>Bremen's citizens changed the monument's meaning: in <b>1990, days after Namibia's
+          independence</b>, it was rededicated as Germany's first <b>anti-colonial monument</b>.
+          Behind it lies a memorial made of <b>stones brought from the Omaheke itself</b>,
+          honouring the victims. Bremen and Windhoek are partner cities today.</p>
+          <div class="tip">The memorial of Omaheke stones is in the small hollow directly
+          behind the elephant. Take a quiet moment — this place belongs to your story too.</div>
+          <div class="player" data-src="assets/audio/elephant.mp3">
+            <button aria-label="Play: The elephant that changed its mind"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="meta"><p class="label">🎧 The elephant that changed its meaning</p>
+            <div class="bar"><div class="fill"></div></div></div>
+            <span class="time">–:–</span>
+          </div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.08408%2C8.81751" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Open in Google Maps</a>
+        </div>
+      </article>
+    </li>
+
+    <!-- ————— Getting home ————— -->
+    <li class="stop transit" id="home">
+      <div class="bead" aria-hidden="true">🏠</div>
+      <article class="card">
+        <div class="pad">
+          <p class="eyebrow">Finish · Back to the hotel</p>
+          <h2>Getting home</h2>
+          <p class="walk">8 min from the elephant to <b>Hauptbahnhof</b> (main station).</p>
+          <p>From Hauptbahnhof, take <b>Tram 6 towards Universität</b> and get off at
+          <b>Universität/Zentralbereich</b> — about 15 minutes, and you're back at 7things.
+          Your day ticket is still valid.</p>
+          <div class="tip"><b>Cut the walk short any time:</b> from Domsheide or Hauptbahnhof,
+          Tram 6 towards Universität always brings you home.</div>
+          <a class="maps" href="https://www.google.com/maps/search/?api=1&query=53.08306%2C8.81361" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            Hauptbahnhof — tram home</a>
+        </div>
+      </article>
+    </li>
+  </ol>
+
+  <!-- ————— Good to know ————— -->
+  <section class="map-card" aria-label="Practical information">
+    <h2>Good to know</h2>
+    <div class="info-grid">
+      <div><b>🚨 Emergency</b>112 (ambulance/fire) · 110 (police). English is fine.</div>
+      <div><b>🚰 Tap water</b>Perfectly safe to drink everywhere.</div>
+      <div><b>💳 Paying</b>Cards widely accepted; keep ~€20 cash for small stalls &amp; the Bremen Hole.</div>
+      <div><b>🌦️ July weather</b>16–25 °C, changeable — bring a light rain layer.</div>
+      <div><b>🛍️ Sundays</b>Shops are closed; cafés, restaurants &amp; museums are open.</div>
+      <div><b>👋 “Moin”</b>Means hello — at any time of day. Try it, it works wonders.</div>
+    </div>
+    <div class="meet">
+      Meeting point &amp; time (tap to edit):
+      <span id="meet" contenteditable="true" spellcheck="false"></span>
+      <small>Saved on this phone — survives closing the app.</small>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Made with <span class="heart">♥</span> in Bremen for our friends from Namibia · July 2026</p>
+    <p>Works offline once fully loaded. Google Maps buttons open your Maps app —
+    with offline maps of Bremen downloaded, they work without internet too.</p>
+    <h3>Photo credits (Wikimedia Commons)</h3>
+    <p id="credits">
+      Tram: Roehrensee, CC BY 4.0 ·
+      Cathedral: Ulamm, CC BY-SA 3.0 ·
+      Town hall &amp; square: Matthias Süßen, CC BY-SA 4.0 ·
+      Town Musicians: Ad Meskens, CC BY-SA 4.0 ·
+      Roland, Böttcherstraße, Schlachte, Marktplatz: Jürgen Howaldt, CC BY-SA 2.0 de ·
+      Schnoor, Elephant: Matthias Süßen, CC BY-SA 4.0 ·
+      Pigs: J Doll, CC BY 3.0 ·
+      Windmill: Charvosi, public domain.
+    </p>
+    <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.</p>
+  </div>
+</footer>
+
+<script>
+/* ————— Service worker: register + progress ————— */
+(function () {
+  const statusEl = document.getElementById('status');
+  const textEl = document.getElementById('status-text');
+
+  function setStatus(ready, text) {
+    statusEl.classList.toggle('ready', ready);
+    textEl.textContent = text;
+  }
+
+  if (!('serviceWorker' in navigator)) {
+    setStatus(false, 'Offline saving not supported in this browser');
+    return;
+  }
+  if (location.protocol === 'file:') {
+    setStatus(false, 'Open via the web link to enable offline mode');
+    return;
+  }
+
+  navigator.serviceWorker.register('sw.js').then(() => {
+    setStatus(false, 'Saving guide for offline use…');
+    let tries = 0;
+    const poll = setInterval(() => {
+      tries++;
+      navigator.serviceWorker.ready.then(reg => {
+        const sw = reg.active;
+        if (!sw) return;
+        const ch = new MessageChannel();
+        ch.port1.onmessage = e => {
+          const { cached, total } = e.data;
+          if (cached >= total) {
+            clearInterval(poll);
+            setStatus(true, 'Offline ready — flight mode is fine ✓');
+          } else {
+            setStatus(false, `Saving for offline… ${cached}/${total}`);
+          }
+        };
+        sw.postMessage({ type: 'STATUS' }, [ch.port2]);
+      });
+      if (tries > 240) clearInterval(poll); // give up quietly after ~3 min
+    }, 800);
+  }).catch(() => {
+    setStatus(false, 'Offline saving unavailable');
+  });
+})();
+
+/* ————— Audio players ————— */
+(function () {
+  const players = document.querySelectorAll('.player');
+  let current = null;
+
+  const PLAY = '<path d="M8 5v14l11-7z"/>';
+  const PAUSE = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+
+  function fmt(s) {
+    if (!isFinite(s)) return '–:–';
+    const m = Math.floor(s / 60), r = Math.floor(s % 60);
+    return m + ':' + String(r).padStart(2, '0');
+  }
+
+  players.forEach(p => {
+    const btn = p.querySelector('button');
+    const fill = p.querySelector('.fill');
+    const bar = p.querySelector('.bar');
+    const time = p.querySelector('.time');
+    let audio = null;
+
+    function ensureAudio() {
+      if (audio) return audio;
+      audio = new Audio(p.dataset.src);
+      audio.preload = 'metadata';
+      audio.addEventListener('loadedmetadata', () => { time.textContent = fmt(audio.duration); });
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+        time.textContent = fmt(audio.duration - audio.currentTime);
+      });
+      audio.addEventListener('ended', () => {
+        btn.querySelector('svg').innerHTML = PLAY;
+        fill.style.width = '0%';
+        time.textContent = fmt(audio.duration);
+      });
+      return audio;
+    }
+
+    btn.addEventListener('click', () => {
+      const a = ensureAudio();
+      if (a.paused) {
+        if (current && current !== a) {
+          current.pause();
+          document.querySelectorAll('.player svg').forEach(s => s.innerHTML = PLAY);
+        }
+        a.play();
+        current = a;
+        btn.querySelector('svg').innerHTML = PAUSE;
+      } else {
+        a.pause();
+        btn.querySelector('svg').innerHTML = PLAY;
+      }
+    });
+
+    bar.addEventListener('pointerdown', e => {
+      const a = ensureAudio();
+      if (!a.duration) return;
+      const r = bar.getBoundingClientRect();
+      a.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * a.duration;
+    });
+  });
+})();
+
+/* ————— Editable meeting point, saved locally ————— */
+(function () {
+  const el = document.getElementById('meet');
+  const KEY = 'bremen-walk-meet';
+  el.textContent = localStorage.getItem(KEY) || '';
+  el.addEventListener('input', () => localStorage.setItem(KEY, el.textContent));
+})();
+</script>
+</body>
+</html>
