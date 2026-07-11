@@ -67,7 +67,12 @@ h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif
 }
 .hero h1 .gold{color:var(--gold)}
 .hero-sub{max-width:34rem;margin:1rem auto 0;font-size:1rem;color:#EBD9C4}
-.hero-beads{margin:1.4rem auto .9rem;display:block}
+.hero-logo{
+  display:block;margin:1.3rem auto .4rem;
+  width:96px;height:96px;border-radius:24px;
+  border:2.5px solid var(--gold);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
 .status{
   display:inline-flex;align-items:center;gap:.5em;
   margin-top:1.2rem;padding:.5em 1.1em;border-radius:999px;
@@ -241,13 +246,7 @@ footer p{margin:.3rem 0}
 <header class="hero">
   <p class="eyebrow">Offline pocket guide · Bremen</p>
   <h1>Moin<span class="gold">!</span></h1>
-  <svg class="hero-beads" width="120" height="34" viewBox="0 0 120 34" aria-hidden="true">
-    <line x1="8" y1="26" x2="112" y2="8" stroke="#D9A441" stroke-width="2" stroke-dasharray="4 4"/>
-    <circle cx="16" cy="25" r="8" fill="#D9A441"/>
-    <circle cx="48" cy="20" r="6.5" fill="#D9A441"/>
-    <circle cx="78" cy="15" r="5" fill="#D9A441"/>
-    <circle cx="104" cy="10" r="3.8" fill="#D9A441"/>
-  </svg>
+  <img class="hero-logo" src="icons/icon-192.png" alt="" width="96" height="96">
   <p class="hero-sub">A city walk for our friends from <b>Namibia</b>. Every picture, story
   and voice in this guide is saved on your phone — it keeps working with no internet at all.</p>
   <p class="status" id="status"><span class="dot"></span><span id="status-text">Checking offline storage…</span></p>
@@ -707,7 +706,8 @@ footer p{margin:.3rem 0}
       Pigs: J Doll, CC BY 3.0 ·
       Windmill: Charvosi, public domain.
     </p>
-    <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.</p>
+    <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.
+    <span id="version">Guide version v7</span></p>
   </div>
 </footer>
 
@@ -731,7 +731,20 @@ footer p{margin:.3rem 0}
     return;
   }
 
-  navigator.serviceWorker.register('sw.js').then(() => {
+  // when a new guide version takes over, reload once so everyone
+  // always sees the latest content without manual cache-fiddling
+  // (skipped on first visit, where the SW claims the page mid-precache)
+  const hadController = !!navigator.serviceWorker.controller;
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing || !hadController) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    // check for a newer version on every visit
+    reg.update();
     setStatus(false, 'Saving guide for offline use…');
     let tries = 0;
     const poll = setInterval(() => {
