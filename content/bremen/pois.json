@@ -1,0 +1,226 @@
+[
+  {
+    "id": "boettcher",
+    "name": {
+      "en": "Böttcherstraße",
+      "de": "Böttcherstraße"
+    },
+    "img": "assets/img/boettcher.webp",
+    "alt": {
+      "en": "The golden Lightbringer relief above the brick entrance to Böttcherstraße",
+      "de": "Der goldene Lichtbringer über dem Eingang zur Böttcherstraße"
+    },
+    "coord": [
+      53.07508,
+      8.80609
+    ]
+  },
+  {
+    "id": "dom",
+    "name": {
+      "en": "St Peter's Cathedral"
+    },
+    "img": "assets/img/dom.webp",
+    "alt": {
+      "en": "The twin towers of St Peter's Cathedral, Bremen"
+    },
+    "coord": [
+      53.07528,
+      8.80889
+    ]
+  },
+  {
+    "id": "elephant",
+    "name": {
+      "en": "The Elephant — a Namibian story in Bremen"
+    },
+    "img": "assets/img/elephant.webp",
+    "alt": {
+      "en": "The ten-metre brick elephant of the Anti-Colonial Monument in Nelson Mandela Park"
+    },
+    "coord": [
+      53.08408,
+      8.81751
+    ]
+  },
+  {
+    "id": "hbf-nord",
+    "name": {
+      "en": "Getting home"
+    },
+    "img": null,
+    "alt": {},
+    "coord": [
+      53.08442,
+      8.81667
+    ]
+  },
+  {
+    "id": "lloyd",
+    "name": {
+      "de": "Shopping-Block"
+    },
+    "img": "assets/img/lloyd.webp",
+    "alt": {
+      "de": "Der gläserne Eingang der Lloyd Passage"
+    },
+    "coord": [
+      53.07814,
+      8.80468
+    ]
+  },
+  {
+    "id": "loch",
+    "name": {
+      "en": "The Bremen Hole",
+      "de": "Das Bremer Loch"
+    },
+    "img": "assets/img/loch.webp",
+    "alt": {
+      "en": "Bremen market square with town hall, cathedral and the glass parliament building",
+      "de": "Der Bremer Marktplatz mit Rathaus, Dom und Bürgerschaft"
+    },
+    "coord": [
+      53.0756,
+      8.80785
+    ]
+  },
+  {
+    "id": "muehle",
+    "name": {
+      "en": "The Windmill on the Wall"
+    },
+    "img": "assets/img/muehle.webp",
+    "alt": {
+      "en": "The windmill in Bremen's Wallanlagen park surrounded by flower beds"
+    },
+    "coord": [
+      53.08015,
+      8.80682
+    ]
+  },
+  {
+    "id": "musicians",
+    "name": {
+      "en": "The Town Musicians",
+      "de": "Die Stadtmusikanten"
+    },
+    "img": "assets/img/musicians.webp",
+    "alt": {
+      "en": "Bronze statue of the Bremen Town Musicians: donkey, dog, cat and rooster",
+      "de": "Die Bronzestatue der Bremer Stadtmusikanten"
+    },
+    "coord": [
+      53.0762,
+      8.80716
+    ]
+  },
+  {
+    "id": "pigs",
+    "name": {
+      "en": "The Pigs of Sögestraße",
+      "de": "Die Schweine"
+    },
+    "img": "assets/img/pigs.webp",
+    "alt": {
+      "en": "Bronze swineherd and pig sculptures on the Sögestraße shopping street",
+      "de": "Die Bronzeschweine in der Sögestraße"
+    },
+    "coord": [
+      53.07798,
+      8.808
+    ]
+  },
+  {
+    "id": "roland",
+    "name": {
+      "en": "Roland & the Town Hall",
+      "de": "Roland & Rathaus"
+    },
+    "img": "assets/img/rathaus.webp",
+    "alt": {
+      "en": "Bremen's Renaissance town hall on the market square",
+      "de": "Das Bremer Rathaus am Marktplatz"
+    },
+    "coord": [
+      53.07586,
+      8.8073
+    ]
+  },
+  {
+    "id": "schlachte",
+    "name": {
+      "en": "The Schlachte",
+      "de": "Schlachte — Eis-Pause"
+    },
+    "img": "assets/img/schlachte.webp",
+    "alt": {
+      "en": "The Schlachte embankment with brick gabled houses and beer garden terraces",
+      "de": "Die Schlachte-Promenade an der Weser"
+    },
+    "coord": [
+      53.07611,
+      8.80222
+    ]
+  },
+  {
+    "id": "schnoor",
+    "name": {
+      "en": "The Schnoor",
+      "de": "Der Schnoor"
+    },
+    "img": "assets/img/schnoor.webp",
+    "alt": {
+      "en": "Colourful narrow lane in the Schnoor quarter with cobblestones and café tables",
+      "de": "Bunte enge Gasse im Schnoorviertel"
+    },
+    "coord": [
+      53.07278,
+      8.80972
+    ]
+  },
+  {
+    "id": "tram-domsheide",
+    "name": {
+      "en": "Getting into town",
+      "de": "Mit der Tram in die Stadt"
+    },
+    "img": "assets/img/tram.webp",
+    "alt": {
+      "en": "Red and grey BSAG trams at Domsheide in Bremen",
+      "de": "Straßenbahnen der BSAG an der Domsheide"
+    },
+    "coord": [
+      53.0752,
+      8.8086
+    ]
+  },
+  {
+    "id": "universum",
+    "name": {
+      "de": "Universum Bremen"
+    },
+    "img": "assets/img/universum.webp",
+    "alt": {
+      "de": "Das silberne, walförmige Gebäude des Universum Bremen"
+    },
+    "coord": [
+      53.10667,
+      8.845
+    ]
+  },
+  {
+    "id": "viertel",
+    "name": {
+      "de": "Das Viertel"
+    },
+    "img": "assets/img/viertel.webp",
+    "alt": {
+      "de": "Der Ostertorsteinweg im Bremer Viertel mit Läden und Straßenbahnschienen"
+    },
+    "coord": [
+      53.07271,
+      8.81994
+    ]
+  }
+]

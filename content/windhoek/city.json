@@ -1,0 +1,24 @@
+{
+  "id": "windhoek",
+  "country": "NA",
+  "center": [-22.5694, 17.0841],
+  "languages": ["en", "de"],
+  "currency": "NAD",
+  "theme": {
+    "brick": "#7A2E20",
+    "patina": "#3E7D6C",
+    "gold": "#D9A441"
+  },
+  "brand": null,
+  "practical": {
+    "emergency": { "de": "TODO vor Ort prüfen: Notrufnummern (Polizei/Ambulanz), funktioniert 112 vom Handy?" },
+    "water": { "de": "TODO vor Ort prüfen: Leitungswasser trinkbar? (Windhoek gilt als Ausnahme im südlichen Afrika — verifizieren, nicht behaupten.)" },
+    "paying": { "de": "TODO vor Ort prüfen: Kartenzahlung wie verbreitet, wo nur Bargeld, ATM-Verfügbarkeit, N$-Bargeld-Empfehlung." },
+    "sim": { "de": "TODO vor Ort prüfen: eSIM/SIM-Optionen (MTC?), Preis, wo kaufen, Netzabdeckung im Zentrum." },
+    "taxi": { "de": "TODO vor Ort prüfen: Wie funktionieren Sammeltaxis wirklich — woher, wohin, Preis, wie zahlt man, wie erkennt man seriöse? Gibt es Apps (LEFA?)." },
+    "sunday": { "de": "TODO vor Ort prüfen: Was hat sonntags offen?" },
+    "sun": { "de": "TODO vor Ort prüfen: Sonne/Hitze-Basics — beste Laufzeiten, Wasser mitnehmen, Schattenrealität im Zentrum." }
+  },
+  "curator": { "name": "Frank J. Müller" },
+  "version": "draft"
+}

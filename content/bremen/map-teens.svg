@@ -1,0 +1,41 @@
+<svg viewBox="0 0 360 330" role="img" aria-label="Schematische Karte der Route mit allen Stationen">
+      <path d="M30,290 H330 V200 H30 V110 H230" fill="none" stroke="#D9A441" stroke-width="5"
+            stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1 9"/>
+      <a href="#stop-u"><circle cx="30" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="30" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">U</text>
+         <text x="30" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Universum</text></a>
+      <g><rect x="78" y="278" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="90" y="295" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="90" y="266" font-size="10" fill="#7C6F66" text-anchor="middle">Tram</text></g>
+      <a href="#stop-1"><circle cx="150" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="150" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">1</text>
+         <text x="150" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Musikanten</text></a>
+      <a href="#stop-2"><circle cx="210" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="210" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">2</text>
+         <text x="210" y="266" font-size="10.5" fill="currentColor" text-anchor="middle">Roland</text></a>
+      <a href="#stop-3"><circle cx="270" cy="290" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="270" y="294.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">3</text>
+         <text x="270" y="322" font-size="10.5" fill="currentColor" text-anchor="middle">Das Loch</text></a>
+      <a href="#stop-4"><circle cx="330" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="330" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">4</text>
+         <text x="330" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Böttcher-</text>
+         <text x="330" y="187" font-size="10.5" fill="currentColor" text-anchor="middle">straße</text></a>
+      <a href="#stop-5"><circle cx="255" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="255" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">5</text>
+         <text x="255" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">Schnoor</text></a>
+      <a href="#stop-6"><circle cx="180" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="180" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">6</text>
+         <text x="180" y="176" font-size="10.5" fill="currentColor" text-anchor="middle">Schlachte</text></a>
+      <a href="#stop-7"><circle cx="105" cy="200" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="105" y="204.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">7</text>
+         <text x="105" y="228" font-size="10.5" fill="currentColor" text-anchor="middle">Shopping</text></a>
+      <a href="#stop-8"><circle cx="30" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="30" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">8</text>
+         <text x="30" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Schweine</text></a>
+      <a href="#stop-9"><circle cx="120" cy="110" r="13" fill="#3E7D6C" stroke="#D9A441" stroke-width="2.5"/>
+         <text x="120" y="114.5" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">9</text>
+         <text x="120" y="86" font-size="10.5" fill="currentColor" text-anchor="middle">Viertel</text></a>
+      <g><rect x="198" y="98" width="24" height="24" rx="6" fill="#7A2E20"/>
+         <text x="210" y="115" font-size="13" fill="#F7EDD9" text-anchor="middle" font-weight="bold">6</text>
+         <text x="210" y="86" font-size="10" fill="#7C6F66" text-anchor="middle">Heim</text></g>
+    </svg>

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frankjmueller.github.io/bremen-city-walk/content/schema/poi.schema.json",
+  "title": "Ort (POI)",
+  "description": "Ein verifizierter Ort im Stadtbestand. Orte sind unabhängig von Touren; Touren referenzieren Orte nur. Alle Filterattribute sind aufzählbare Enums — Freitext ist in Filterfeldern verboten, sonst ist Offline-Filtern Glückssache. Ein Ort ohne 'verification.status: verified' darf im Build erscheinen, wird aber in der App als ungeprüft gekennzeichnet.",
+  "type": "object",
+  "required": ["id", "kind", "name", "sources", "verification"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stabil und URL-tauglich. Nie ändern — Touren und related-Verweise hängen daran."
+    },
+    "coord": {
+      "$ref": "#/$defs/coord",
+      "description": "Darf bei status draft fehlen (ehrliches TODO statt geratener Koordinate); Pflicht ab status verified."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["sight", "memorial", "food", "icecream", "wc", "water", "park", "cooldown", "playground", "art", "viewpoint", "shop", "market", "luggage", "transit"],
+      "description": "Genau eine Hauptkategorie. Feineres über tags.interests."
+    },
+    "name": { "$ref": "#/$defs/i18n" },
+    "localName": {
+      "type": "string",
+      "description": "Name in der Ortssprache / wie er auf Schildern steht, falls abweichend."
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "interests": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["history", "architecture", "art", "street-art", "memory-culture", "nature", "wildlife", "science", "music", "craft", "food", "sweets", "action", "games", "geocache", "photo"]
+          }
+        },
+        "indoor": { "type": "boolean" },
+        "shade": {
+          "type": "boolean",
+          "description": "Nennenswerter Schatten vor Ort (Bäume, Arkaden). Für Hitze-Filter."
+        },
+        "kids": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "integer", "minimum": 0 },
+            "max": { "type": "integer", "minimum": 0 },
+            "note": { "$ref": "#/$defs/i18n" }
+          }
+        },
+        "wheelchair": { "type": "string", "enum": ["yes", "partial", "no", "unknown"] },
+        "stroller": { "type": "boolean" },
+        "dogs": { "type": "string", "enum": ["yes", "leash", "no", "unknown"] },
+        "diet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["vegetarian", "vegan", "halal", "kosher", "gluten-free"] },
+          "description": "Nur bei kind food/icecream/market sinnvoll. 'vegetarian' heißt: es gibt vollwertige vegetarische Hauptgerichte, nicht nur Beilagen."
+        },
+        "religion": {
+          "type": "string",
+          "enum": ["church", "mosque", "synagogue", "temple", "other"],
+          "description": "Für den Filter 'Kirchen: ja/nein/begrenzt'."
+        },
+        "values": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["lgbtq-friendly", "memory-culture", "climate", "diverse-owned", "community"] }
+        },
+        "crowd": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Statische Heuristik, offline auswertbar. Keine Live-Daten.",
+          "properties": {
+            "peakDays": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 6 }, "description": "0 = Sonntag" },
+            "peakHours": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 23 }, "minItems": 2, "maxItems": 2, "description": "[von, bis]" }
+          }
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amount": { "type": "number", "minimum": 0, "description": "0 = frei. In Stadtwährung (city.currency). Darf im Draft fehlen, wenn nur eine note existiert." },
+        "perPerson": { "type": "boolean", "default": true },
+        "cashOnly": { "type": "boolean", "description": "Wichtig überall, wo Kartenzahlung nicht selbstverständlich ist." },
+        "note": { "$ref": "#/$defs/i18n" }
+      }
+    },
+    "hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "osm": { "type": "string", "description": "opening_hours-Syntax (OSM-Subset), offline auswertbar. Beispiel: 'Mo-Sa 09:00-17:00'." },
+        "note": { "$ref": "#/$defs/i18n" },
+        "ticketAhead": { "type": "boolean", "description": "Ticket vorher online kaufen empfohlen." },
+        "queueLikely": { "type": "boolean" },
+        "reserveAhead": { "type": "boolean", "description": "Bei food: vorher reservieren empfohlen." }
+      }
+    },
+    "visit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minutes": { "type": "integer", "minimum": 0, "description": "Typische Aufenthaltsdauer, fürs Zeitbudget." }
+      }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "img": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["src", "alt", "credit"],
+          "properties": {
+            "src": { "type": "string" },
+            "alt": { "$ref": "#/$defs/i18n" },
+            "credit": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["author", "license"],
+              "properties": {
+                "author": { "type": "string" },
+                "license": { "type": "string", "description": "z. B. 'CC BY-SA 4.0' oder 'own' für eigene Fotos." },
+                "source": { "type": "string" }
+              }
+            }
+          }
+        },
+        "audio": {
+          "type": "object",
+          "description": "Key = Sprachcode.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["src", "voice"],
+            "properties": {
+              "src": { "type": "string" },
+              "title": { "type": "string" },
+              "voice": { "type": "string", "description": "z. B. 'synthetic/azure-neural' oder 'human/<Name mit Einverständnis>'. Transparenzpflicht." }
+            }
+          }
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "description": "Key = Sprachcode. Tiefe/Snapshots als Felder, nicht als eigene Seiten.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "snapshot": { "type": "string", "description": "Ein bis zwei Sätze." },
+          "full": { "type": "string" },
+          "deep": { "type": "string" }
+        }
+      }
+    },
+    "perspectives": {
+      "type": "object",
+      "description": "Haltung gehört an den Ort, nicht an die Tour. Key = Perspektiven-Slug (z. B. 'from-namibia', 'kids', 'run'); das Profil wählt. Wert = kurzer Rahmungstext pro Sprache, wird dem body vorangestellt.",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "additionalProperties": { "$ref": "#/$defs/i18n" }
+    },
+    "funFact": { "$ref": "#/$defs/i18n" },
+    "dadJoke": { "$ref": "#/$defs/i18n", "description": "Optional. Die Edition entscheidet, ob er ausgespielt wird." },
+    "related": {
+      "type": "array",
+      "description": "Verweise auf Orte in anderen Städten — z. B. Bremen-Elefant ↔ Windhoek. Zwei Guides, die aufeinander zeigen, kann kein Städtekatalog.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["city", "poi", "relation"],
+        "properties": {
+          "city": { "type": "string" },
+          "poi": { "type": "string" },
+          "relation": { "type": "string", "enum": ["counterpart", "same-story", "same-artist", "twin"] }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "Belege für jede Behauptung im body. Eigene Beleg-Fotos zählen: 'photo:2026-10-05-preistafel.jpg'."
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["draft", "verified", "stale"],
+          "description": "draft = nie vor Ort geprüft. verified = von einer benannten Person geprüft. stale = war verifiziert, Prüfdatum zu alt (Build setzt das automatisch nach 18 Monaten)."
+        },
+        "by": { "type": "string" },
+        "on": { "type": "string", "format": "date" },
+        "method": { "type": "string", "enum": ["on-site", "resident", "phone", "web"] }
+      },
+      "if": { "properties": { "status": { "const": "verified" } } },
+      "then": { "required": ["status", "by", "on", "method"] }
+    }
+  },
+  "if": { "properties": { "verification": { "properties": { "status": { "const": "verified" } } } } },
+  "then": { "required": ["id", "kind", "name", "sources", "verification", "coord"] },
+  "$defs": {
+    "coord": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "number", "minimum": -90, "maximum": 90 },
+        { "type": "number", "minimum": -180, "maximum": 180 }
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "[lat, lng] in WGS84, mindestens 5 Nachkommastellen, am Objekt gesetzt (nicht am Straßenrand davor)."
+    },
+    "i18n": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+      "additionalProperties": { "type": "string" },
+      "description": "Key = Sprachcode (de, en, …). Mindestens eine Sprache."
+    }
+  }
+}

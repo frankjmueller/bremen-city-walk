@@ -1,0 +1,250 @@
+
+/* ————— Bremen material palette: Backstein, Patina, Lichtbringer-Gold ————— */
+@font-face{
+  font-family:'Bricolage';
+  src:url('assets/fonts/bricolage.woff2') format('woff2');
+  font-weight:400 800;
+  font-display:swap;
+}
+:root{
+  --brick:#7A2E20; --brick-deep:#5E2318;
+  --patina:#3E7D6C; --patina-deep:#2F6153;
+  --gold:#D9A441; --gold-soft:#EFD9A8;
+  --paper:#F8F4ED; --card:#FFFFFF;
+  --ink:#2B211C; --muted:#7C6F66; --line:#E7DDD1;
+  --shadow:0 2px 12px rgba(43,33,28,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#201813; --card:#2B211B;
+    --ink:#F1E9DF; --muted:#B5A697; --line:#41342A;
+    --gold:#E0AF54; --gold-soft:#8A6A33;
+    --shadow:0 2px 14px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height:1.65; font-size:1.02rem;
+  -webkit-text-size-adjust:100%;
+}
+a{color:var(--patina)}
+h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif}
+
+/* ————— Hero: a brick wall ————— */
+.hero{
+  background:
+    linear-gradient(rgba(94,35,24,.25),rgba(94,35,24,0) 40%),
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(43,20,14,.5) 26px 28px),
+    repeating-linear-gradient(90deg, rgba(255,220,180,.05) 0 2px, transparent 2px 74px),
+    var(--brick);
+  color:#F7EDD9;
+  padding:2.6rem 1.3rem 2.2rem;
+  text-align:center;
+}
+.hero .eyebrow{
+  letter-spacing:.22em; font-size:.72rem; font-weight:600;
+  text-transform:uppercase; color:var(--gold-soft); margin:0 0 .6rem;
+}
+@media (prefers-color-scheme: dark){ .hero .eyebrow{color:#EFD9A8} }
+.hero h1{
+  font-size:clamp(2.6rem,11vw,4rem); font-weight:800; margin:0;
+  line-height:1.02; color:#F7EDD9;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero-sub{max-width:34rem;margin:1rem auto 0;font-size:1rem;color:#EBD9C4}
+.hero-logo{
+  display:block;margin:1.3rem auto .4rem;
+  width:96px;height:96px;border-radius:24px;
+  border:2.5px solid var(--gold);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.lang{
+  display:inline-block;margin-top:1rem;color:#EBD9C4;font-size:.85rem;
+}
+.status{
+  display:inline-flex;align-items:center;gap:.5em;
+  margin-top:1.2rem;padding:.5em 1.1em;border-radius:999px;
+  background:rgba(0,0,0,.28);color:#F3E4C8;font-size:.85rem;font-weight:600;
+  border:1px solid rgba(217,164,65,.45);
+}
+.status.ready{background:var(--patina-deep);border-color:var(--patina);color:#EAF5F0}
+.status .dot{width:.6em;height:.6em;border-radius:50%;background:var(--gold);flex:none}
+.status.ready .dot{background:#8FD8BF}
+@keyframes pulse{50%{opacity:.35}}
+.status:not(.ready) .dot{animation:pulse 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){ .status .dot{animation:none} }
+
+/* ————— Install as app ————— */
+.install{
+  display:inline-flex;align-items:center;gap:.5em;margin:1rem auto 0;
+  background:var(--gold);color:#4A2317;border:none;cursor:pointer;
+  padding:.7em 1.4em;border-radius:999px;font-weight:700;font-size:.95rem;
+  font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.install:active{transform:scale(.97)}
+.install img{width:22px;height:22px;border-radius:6px}
+.ios-tip{
+  max-width:22rem;margin:.9rem auto 0;padding:.8rem 1rem;border-radius:12px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(217,164,65,.45);
+  color:#F3E4C8;font-size:.88rem;text-align:left;line-height:1.55;
+}
+.ios-tip .share{
+  display:inline-block;border:1.5px solid currentColor;border-radius:4px;
+  width:1.1em;height:1.1em;text-align:center;line-height:1.05;font-size:.9em;
+  vertical-align:-.15em;
+}
+
+/* ————— Shared column ————— */
+.wrap{max-width:640px;margin:0 auto;padding:0 1.05rem}
+
+/* ————— How it works strip ————— */
+.howto{
+  background:var(--patina-deep);color:#EAF5F0;
+  padding:1.1rem 1.3rem;font-size:.92rem;
+}
+.howto .wrap{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;padding:0}
+.howto span{display:flex;align-items:center;gap:.45em}
+.howto b{color:#CFE9DE}
+
+/* ————— Route map ————— */
+.map-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);margin:1.6rem auto;padding:1.2rem 1rem .6rem;
+}
+.map-card h2{margin:.2rem 0 0;text-align:center;font-size:1.25rem}
+.map-card p{color:var(--muted);text-align:center;font-size:.88rem;margin:.3rem 0 .4rem}
+.map-card svg{width:100%;height:auto;display:block}
+.map-card svg text{font-family:system-ui,sans-serif}
+.map-card svg a:focus circle{stroke-width:5}
+
+/* ————— The string of pearls ————— */
+.route{list-style:none;margin:2rem 0 0;padding:0;position:relative}
+.route::before{
+  content:"";position:absolute;top:10px;bottom:10px;left:21px;
+  border-left:3px dashed var(--gold);opacity:.75;
+}
+.stop{position:relative;padding:0 0 2rem 3.1rem}
+.bead{
+  position:absolute;left:0;top:0;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--patina);color:#fff;
+  border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.15rem;z-index:1;
+}
+.stop.transit .bead{background:var(--brick);font-size:1.3rem}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.card>img{width:100%;height:210px;object-fit:cover;display:block;background:var(--line)}
+.card .pad{padding:1.1rem 1.15rem 1.2rem}
+.eyebrow{
+  margin:0 0 .25rem;font-size:.72rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--patina);
+}
+.card h2{margin:0 0 .5rem;font-size:1.45rem;font-weight:700;line-height:1.15}
+.walk{
+  font-size:.88rem;color:var(--muted);margin:.1rem 0 .8rem;
+  padding-left:1.5em;position:relative;
+}
+.walk::before{content:"🚶";position:absolute;left:0}
+.card p{margin:.55rem 0}
+.tip{
+  background:color-mix(in srgb, var(--gold) 13%, var(--card));
+  border-left:4px solid var(--gold);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.tip b{font-weight:700}
+.funfact{
+  background:color-mix(in srgb, var(--patina) 10%, var(--card));
+  border-left:4px solid var(--patina);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.funfact b{font-weight:700}
+
+/* memorial card — quieter, no gold play */
+.stop.memorial .bead{background:var(--ink);border-color:var(--patina)}
+.stop.memorial .card{border-color:var(--patina)}
+.stop.memorial .tip{background:color-mix(in srgb, var(--patina) 12%, var(--card));border-left-color:var(--patina)}
+
+/* ————— Audio player ————— */
+.player{
+  display:flex;align-items:center;gap:.75rem;
+  background:color-mix(in srgb, var(--patina) 9%, var(--card));
+  border:1px solid color-mix(in srgb, var(--patina) 35%, var(--line));
+  border-radius:12px;padding:.55rem .8rem;margin:.9rem 0;
+}
+.player button{
+  flex:none;width:44px;height:44px;border-radius:50%;border:none;
+  background:var(--patina);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.player button:active{transform:scale(.95)}
+.player button svg{width:18px;height:18px;fill:currentColor}
+.player .meta{flex:1;min-width:0}
+.player .label{font-size:.83rem;font-weight:600;margin:0 0 .3rem;color:var(--ink)}
+.player .bar{
+  height:8px;border-radius:4px;background:color-mix(in srgb, var(--patina) 22%, var(--card));
+  position:relative;cursor:pointer;touch-action:none;
+}
+.player .fill{position:absolute;inset:0 auto 0 0;width:0%;border-radius:4px;background:var(--patina)}
+.player .time{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+
+/* ————— Buttons ————— */
+.maps{
+  display:flex;align-items:center;justify-content:center;gap:.5em;
+  background:var(--brick);color:#F7EDD9;text-decoration:none;
+  padding:.85em 1em;border-radius:12px;font-weight:700;font-size:.98rem;
+  margin-top:.9rem;
+}
+.maps:active{opacity:.85}
+.maps svg{width:1.05em;height:1.05em;fill:currentColor;flex:none}
+
+/* ————— Good to know ————— */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.9rem 0}
+.info-grid div{
+  background:color-mix(in srgb, var(--patina) 7%, var(--card));
+  border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;
+  font-size:.88rem;line-height:1.45;
+}
+.info-grid b{display:block;font-size:.95rem}
+.meet{
+  border:2px dashed var(--gold);border-radius:12px;
+  padding:.8rem 1rem;margin-top:1rem;font-size:.95rem;
+}
+.meet input{
+  display:block;width:100%;min-height:1.5em;font-weight:700;font-size:1.05rem;
+  outline:none;border:none;border-bottom:1px solid var(--line);
+  background:transparent;color:inherit;font-family:inherit;padding:0;border-radius:0;
+}
+.meet input:focus{border-bottom-color:var(--gold)}
+.meet .meet-row{display:flex;align-items:baseline;gap:.6em;margin-top:.55rem}
+.meet .meet-row label{font-size:.85rem;color:var(--muted)}
+.meet .meet-row input{display:inline-block;width:auto;min-width:6.5em;flex:0 1 auto}
+.meet-actions{display:flex;gap:.6rem;margin-top:.85rem}
+.meet-actions button{
+  flex:1;background:var(--patina);color:#fff;border:none;border-radius:10px;
+  padding:.6em .5em;font-weight:700;font-size:.88rem;font-family:inherit;cursor:pointer;
+}
+.meet-actions button:active{transform:scale(.97)}
+.meet small{color:var(--muted);display:block;margin-top:.55rem}
+
+/* ————— Footer ————— */
+footer{
+  margin:2.5rem 0 0;padding:2rem 1.3rem 3rem;
+  background:var(--brick-deep);color:#D9C3B4;font-size:.8rem;line-height:1.7;
+}
+footer a{color:var(--gold-soft)}
+@media (prefers-color-scheme: dark){ footer a{color:#EFD9A8} }
+footer .heart{color:var(--gold);font-style:normal}
+footer h3{color:#F7EDD9;font-size:.95rem;margin:1.4rem 0 .4rem}
+footer p{margin:.3rem 0}
+
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}

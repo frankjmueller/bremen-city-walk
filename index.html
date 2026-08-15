@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- GENERATED from content/bremen/ + templates/ — edit those, then run: node build.mjs -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,6 +11,7 @@
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
+
 /* ————— Bremen material palette: Backstein, Patina, Lichtbringer-Gold ————— */
 @font-face{
   font-family:'Bricolage';
@@ -72,6 +74,9 @@ h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif
   width:96px;height:96px;border-radius:24px;
   border:2.5px solid var(--gold);
   box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.lang{
+  display:inline-block;margin-top:1rem;color:#EBD9C4;font-size:.85rem;
 }
 .status{
   display:inline-flex;align-items:center;gap:.5em;
@@ -169,6 +174,13 @@ h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif
   font-size:.93rem;
 }
 .tip b{font-weight:700}
+.funfact{
+  background:color-mix(in srgb, var(--patina) 10%, var(--card));
+  border-left:4px solid var(--patina);
+  padding:.65rem .9rem;margin:.9rem 0;border-radius:0 10px 10px 0;
+  font-size:.93rem;
+}
+.funfact b{font-weight:700}
 
 /* memorial card — quieter, no gold play */
 .stop.memorial .bead{background:var(--ink);border-color:var(--patina)}
@@ -220,12 +232,22 @@ h1,h2,h3,.eyebrow,.bead,.hero-sub b{font-family:'Bricolage',system-ui,sans-serif
   border:2px dashed var(--gold);border-radius:12px;
   padding:.8rem 1rem;margin-top:1rem;font-size:.95rem;
 }
-.meet [contenteditable]{
-  display:block;min-height:1.5em;font-weight:700;font-size:1.05rem;outline:none;
-  border-bottom:1px solid var(--line);
+.meet input{
+  display:block;width:100%;min-height:1.5em;font-weight:700;font-size:1.05rem;
+  outline:none;border:none;border-bottom:1px solid var(--line);
+  background:transparent;color:inherit;font-family:inherit;padding:0;border-radius:0;
 }
-.meet [contenteditable]:focus{border-bottom-color:var(--gold)}
-.meet small{color:var(--muted)}
+.meet input:focus{border-bottom-color:var(--gold)}
+.meet .meet-row{display:flex;align-items:baseline;gap:.6em;margin-top:.55rem}
+.meet .meet-row label{font-size:.85rem;color:var(--muted)}
+.meet .meet-row input{display:inline-block;width:auto;min-width:6.5em;flex:0 1 auto}
+.meet-actions{display:flex;gap:.6rem;margin-top:.85rem}
+.meet-actions button{
+  flex:1;background:var(--patina);color:#fff;border:none;border-radius:10px;
+  padding:.6em .5em;font-weight:700;font-size:.88rem;font-family:inherit;cursor:pointer;
+}
+.meet-actions button:active{transform:scale(.97)}
+.meet small{color:var(--muted);display:block;margin-top:.55rem}
 
 /* ————— Footer ————— */
 footer{
@@ -684,9 +706,17 @@ footer p{margin:.3rem 0}
       <div><b>👋 “Moin”</b>Means hello — at any time of day. Try it, it works wonders.</div>
     </div>
     <div class="meet">
-      Meeting point &amp; time (tap to edit):
-      <span id="meet" contenteditable="true" spellcheck="false"></span>
-      <small>Saved on this phone — survives closing the app.</small>
+      <label for="meet-place">Meeting point:</label>
+      <input id="meet-place" type="text" maxlength="120" autocomplete="off" spellcheck="false">
+      <div class="meet-row">
+        <label for="meet-time">Time</label>
+        <input id="meet-time" type="time">
+      </div>
+      <div class="meet-actions">
+        <button type="button" id="meet-share">📤 Share with the group</button>
+        <button type="button" id="meet-cal">⏰ Add to calendar</button>
+      </div>
+      <small id="meet-note">Saved on this phone — survives closing the app.</small>
     </div>
   </section>
 
@@ -708,13 +738,39 @@ footer p{margin:.3rem 0}
       Pigs: J Doll, CC BY 3.0 ·
       Windmill: Charvosi, public domain.
     </p>
+    <p>Next city in the making: <a href="windhoek.html">Windhoek — place inventory (field test)</a>.</p>
     <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.
-    <span id="version">Guide version v8</span></p>
+    <span id="version">Guide version v10 · 11ad53</span></p>
   </div>
 </footer>
 
 <script>
-/* ————— Service worker: register + progress ————— */
+/* Shared page script — rendered per edition by build.mjs.
+   CFG is injected at build time (strings, localStorage key). */
+const CFG = {
+  "meetKey": "bremen-walk-meet",
+  "statusUnsupported": "Offline saving not supported in this browser",
+  "statusFileProto": "Open via the web link to enable offline mode",
+  "statusSaving": "Saving guide for offline use…",
+  "statusProgress": "Saving for offline… {c}/{t}",
+  "statusReady": "Offline ready — flight mode is fine ✓",
+  "statusUnavailable": "Offline saving unavailable",
+  "statusIncomplete": "Offline incomplete — {n} files missing. Tap to retry.",
+  "statusRetrying": "Retrying…",
+  "audioMissing": "Audio not saved yet — open the guide once with internet.",
+  "iosTip": "<b>On iPhone / iPad:</b> tap the <span class=\"share\">⇧</span> Share button at the bottom of Safari, scroll down, and choose <b>“Add to Home Screen”</b>. The guide then opens full-screen like a real app — no browser bars, works offline.",
+  "androidTip": "<b>On Android:</b> tap the <b>⋮ menu</b> in the top-right corner of Chrome and choose <b>“Add to Home screen”</b> → <b>“Install”</b>. (Samsung Internet: menu → “Add page to” → “Home screen”.) The guide then opens full-screen like a real app — no browser bars, works offline.",
+  "meetHint": "Saved on this phone — survives closing the app.",
+  "meetAdopted": "Shared meeting point saved ✓",
+  "meetCopied": "Link copied — send it to your group.",
+  "meetNeedTime": "Pick a time first.",
+  "shareTitle": "Bremen City Walk — meeting point",
+  "icsSummaryPrefix": "Meeting point: ",
+  "icsFallback": "Bremen City Walk meeting point",
+  "icsAlarm": "Meeting point in 15 minutes"
+};
+
+/* ————— Service worker: register + progress + visible failures ————— */
 (function () {
   const statusEl = document.getElementById('status');
   const textEl = document.getElementById('status-text');
@@ -725,11 +781,11 @@ footer p{margin:.3rem 0}
   }
 
   if (!('serviceWorker' in navigator)) {
-    setStatus(false, 'Offline saving not supported in this browser');
+    setStatus(false, CFG.statusUnsupported);
     return;
   }
   if (location.protocol === 'file:') {
-    setStatus(false, 'Open via the web link to enable offline mode');
+    setStatus(false, CFG.statusFileProto);
     return;
   }
 
@@ -744,32 +800,59 @@ footer p{margin:.3rem 0}
     location.reload();
   });
 
-  navigator.serviceWorker.register('sw.js').then(reg => {
-    // check for a newer version on every visit
-    reg.update();
-    setStatus(false, 'Saving guide for offline use…');
+  // ask the browser not to evict our cache after 7 idle days (iOS!)
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
+  }
+
+  let retryArmed = false;
+  statusEl.addEventListener('click', () => {
+    if (!retryArmed) return;
+    retryArmed = false;
+    setStatus(false, CFG.statusRetrying);
+    navigator.serviceWorker.ready.then(reg => {
+      if (reg.active) reg.active.postMessage({ type: 'RETRY' });
+      poll();
+    });
+  });
+
+  let pollTimer = null;
+  function poll() {
+    clearInterval(pollTimer);
     let tries = 0;
-    const poll = setInterval(() => {
+    pollTimer = setInterval(() => {
       tries++;
       navigator.serviceWorker.ready.then(reg => {
         const sw = reg.active;
         if (!sw) return;
         const ch = new MessageChannel();
         ch.port1.onmessage = e => {
-          const { cached, total } = e.data;
+          const { cached, total, missing, settled } = e.data;
           if (cached >= total) {
-            clearInterval(poll);
-            setStatus(true, 'Offline ready — flight mode is fine ✓');
+            clearInterval(pollTimer);
+            setStatus(true, CFG.statusReady);
+          } else if (settled && missing > 0) {
+            // precache finished but some files failed — say so, offer retry
+            clearInterval(pollTimer);
+            retryArmed = true;
+            setStatus(false, CFG.statusIncomplete.replace('{n}', missing));
           } else {
-            setStatus(false, `Saving for offline… ${cached}/${total}`);
+            setStatus(false, CFG.statusProgress.replace('{c}', cached).replace('{t}', total));
           }
         };
         sw.postMessage({ type: 'STATUS' }, [ch.port2]);
       });
-      if (tries > 240) clearInterval(poll); // give up quietly after ~3 min
+      if (tries > 240) clearInterval(pollTimer); // give up quietly after ~3 min
     }, 800);
+  }
+
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    // check for a newer version on every visit
+    reg.update();
+    setStatus(false, CFG.statusSaving);
+    poll();
   }).catch(() => {
-    setStatus(false, 'Offline saving unavailable');
+    setStatus(false, CFG.statusUnavailable);
   });
 })();
 
@@ -808,6 +891,12 @@ footer p{margin:.3rem 0}
         fill.style.width = '0%';
         time.textContent = fmt(audio.duration);
       });
+      // file missing from the cache (e.g. interrupted first save): say so
+      audio.addEventListener('error', () => {
+        btn.querySelector('svg').innerHTML = PLAY;
+        time.textContent = '⚠';
+        p.title = CFG.audioMissing;
+      });
       return audio;
     }
 
@@ -818,7 +907,7 @@ footer p{margin:.3rem 0}
           current.pause();
           document.querySelectorAll('.player svg').forEach(s => s.innerHTML = PLAY);
         }
-        a.play();
+        a.play().catch(() => {});
         current = a;
         btn.querySelector('svg').innerHTML = PAUSE;
       } else {
@@ -844,19 +933,13 @@ footer p{margin:.3rem 0}
     || navigator.standalone === true;
   if (standalone) return; // already installed & frameless
 
+  // iPadOS reports a desktop-class Mac user agent — the touch-point check catches it
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
 
   // platform-specific fallback instructions, shown only when the
   // browser offers no native install prompt right now
-  tip.innerHTML = isIOS
-    ? '<b>On iPhone / iPad:</b> tap the <span class="share">⇧</span> Share button ' +
-      'at the bottom of Safari, scroll down, and choose <b>“Add to Home Screen”</b>. ' +
-      'The guide then opens full-screen like a real app — no browser bars, works offline.'
-    : '<b>On Android:</b> tap the <b>⋮ menu</b> in the top-right corner of Chrome and choose ' +
-      '<b>“Add to Home screen”</b> → <b>“Install”</b>. ' +
-      '(Samsung Internet: menu → “Add page to” → “Home screen”.) ' +
-      'The guide then opens full-screen like a real app — no browser bars, works offline.';
+  tip.innerHTML = isIOS ? CFG.iosTip : CFG.androidTip;
 
   btn.hidden = false; // always offer it; click resolves the best available path
 
@@ -886,12 +969,95 @@ footer p{margin:.3rem 0}
   });
 })();
 
-/* ————— Editable meeting point, saved locally ————— */
+/* ————— Meeting point: place + time, shareable via URL, calendar reminder.
+   Still no backend: the "sync" is a link the group passes around. ————— */
 (function () {
-  const el = document.getElementById('meet');
-  const KEY = 'bremen-walk-meet';
-  el.textContent = localStorage.getItem(KEY) || '';
-  el.addEventListener('input', () => localStorage.setItem(KEY, el.textContent));
+  const place = document.getElementById('meet-place');
+  const time = document.getElementById('meet-time');
+  const note = document.getElementById('meet-note');
+  const KEY = CFG.meetKey + '-v2';
+
+  let noteTimer = null;
+  function flash(text) {
+    note.textContent = text;
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(() => { note.textContent = CFG.meetHint; }, 6000);
+  }
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function persist() {
+    localStorage.setItem(KEY, JSON.stringify({ place: place.value, time: time.value }));
+  }
+
+  let data = load();
+  // migrate the old free-text value ("15:00 am Roland") into the place field
+  if (!data.place && localStorage.getItem(CFG.meetKey)) {
+    data.place = localStorage.getItem(CFG.meetKey);
+  }
+
+  // adopt a shared meeting point from the URL: ?meet=Roland&at=15:00
+  const params = new URLSearchParams(location.search);
+  if (params.has('meet') || params.has('at')) {
+    data = { place: params.get('meet') || '', time: params.get('at') || '' };
+    place.value = data.place; time.value = data.time || '';
+    persist();
+    flash(CFG.meetAdopted);
+    // clean the URL so a later reload doesn't overwrite manual edits
+    history.replaceState(null, '', location.pathname + location.hash);
+  } else {
+    place.value = data.place || '';
+    time.value = data.time || '';
+  }
+
+  place.addEventListener('input', persist);
+  time.addEventListener('input', persist);
+
+  document.getElementById('meet-share').addEventListener('click', () => {
+    const url = location.origin + location.pathname
+      + '?meet=' + encodeURIComponent(place.value)
+      + '&at=' + encodeURIComponent(time.value);
+    if (navigator.share) {
+      navigator.share({ title: CFG.shareTitle, url }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => flash(CFG.meetCopied)).catch(() => {});
+    }
+  });
+
+  document.getElementById('meet-cal').addEventListener('click', () => {
+    if (!time.value) { flash(CFG.meetNeedTime); time.focus(); return; }
+    const [h, m] = time.value.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    if (d < new Date()) d.setDate(d.getDate() + 1); // time already past → tomorrow
+    const pad = n => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(h)}${pad(m)}00`;
+    const esc = s => s.replace(/([,;\\])/g, '\\$1');
+    const summary = place.value ? CFG.icsSummaryPrefix + place.value : CFG.icsFallback;
+    const ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Bremen City Walk//DE',
+      'BEGIN:VEVENT',
+      'UID:' + Date.now() + '@bremen-walk',
+      'DTSTAMP:' + stamp,
+      'DTSTART:' + stamp, // floating local time — right for a same-day meetup
+      'SUMMARY:' + esc(summary),
+      'BEGIN:VALARM', 'TRIGGER:-PT15M', 'ACTION:DISPLAY',
+      'DESCRIPTION:' + esc(CFG.icsAlarm),
+      'END:VALARM', 'END:VEVENT', 'END:VCALENDAR', '',
+    ].join('\r\n');
+    const file = new File([ics], 'treffpunkt.ics', { type: 'text/calendar' });
+    // iOS: the share sheet is the only reliable road into the Calendar app
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: summary }).catch(() => {});
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = 'treffpunkt.ics';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+    }
+  });
 })();
 </script>
 </body>

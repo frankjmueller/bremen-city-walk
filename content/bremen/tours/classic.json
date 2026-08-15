@@ -1,0 +1,441 @@
+{
+  "id": "classic",
+  "lang": "en",
+  "head": {
+    "title": "Bremen City Walk — Offline Guide",
+    "description": "A pocket walking guide through Bremen's old town for our friends from Namibia — works completely offline."
+  },
+  "hero": {
+    "eyebrow": "Offline pocket guide · Bremen",
+    "h1": "Moin<span class=\"gold\">!</span>",
+    "sub": "A city walk for our friends from <b>Namibia</b>. Every picture, story\n  and voice in this guide is saved on your phone — it keeps working with no internet at all.",
+    "statusInitial": "Checking offline storage…",
+    "installLabel": "Install as an app",
+    "langLink": "<a class=\"lang\" href=\"teens.html\" style=\"display:inline-block;margin-top:1rem;color:#EBD9C4;font-size:.85rem\">🇩🇪 Teenie-Tour auf Deutsch →</a>"
+  },
+  "howto": [
+    "<span><b>1</b> Open this page once online</span>",
+    "<span><b>2</b> Wait for the green “offline ready”</span>",
+    "<span><b>3</b> Walk — flight mode is fine</span>"
+  ],
+  "routeCard": {
+    "aria": "Route overview",
+    "h2": "The route — like pearls on a string",
+    "intro": "Tap a pearl to jump to its stop. About 3.5 km on foot, take your time.",
+    "svg": "map-classic.svg"
+  },
+  "stops": [
+    {
+      "beadHtml": "<div class=\"bead\" aria-hidden=\"true\">🚋</div>",
+      "imgHtml": "<img src=\"assets/img/tram.webp\" alt=\"Red and grey BSAG trams at Domsheide in Bremen\">",
+      "eyebrow": "Start · From your hotel",
+      "titleHtml": "Getting into town",
+      "walkHtml": "A short walk from 7things to the tram stop <b>Universität-Süd</b>.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Take <b>Tram 6 towards Flughafen</b> (airport) and relax for about 17 minutes.\n          Get off at <b>Domsheide</b> — you'll see the cathedral towers as you step out."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Tickets:</b> for a simple there-and-back, the <b>FAIRTIQ app</b>\n          is usually the cheapest — swipe to check in before boarding, swipe out when you leave\n          (personal, bring photo ID). Planning more rides as a group? One <b>Day Ticket</b>\n          covers up to 5 adults (€9.50 + €3.50 per extra person) — buy it at the machine,\n          cards accepted."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/welcome.mp3",
+        "aria": "Play: Welcome to Bremen",
+        "label": "🎧 Welcome — and the legend of the Seven Lazy Brothers"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086",
+        "label": "Domsheide — where you get off"
+      },
+      "liId": "start",
+      "liClass": "transit",
+      "comment": "<!-- ————— Getting there ————— -->",
+      "poi": "tram-domsheide"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">1</div>",
+      "imgHtml": "<img src=\"assets/img/dom.webp\" alt=\"The twin towers of St Peter's Cathedral, Bremen\" loading=\"lazy\">",
+      "eyebrow": "Stop 1 · Marktplatz",
+      "titleHtml": "St Peter's Cathedral",
+      "walkHtml": "1 min from Domsheide — walk towards the twin green spires.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Bremen's cathedral has watched over the city for more than 1,200 years.\n          Its strangest secret lies underneath: the <b>Bleikeller</b> (Lead Cellar), where eight\n          mummies rest in open coffins — craftsmen, soldiers, even a countess. Nobody embalmed\n          them; the cellar's dry air simply refused to let them decay, and no one could explain\n          it for centuries."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Dare to look?</b> The Lead Cellar is open daily in summer\n          (Saturdays only until early afternoon) for a small fee. Entrance beside the cathedral."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/dom.mp3",
+        "aria": "Play: The mummies of the Lead Cellar",
+        "label": "🎧 The mummies of the Lead Cellar"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07528%2C8.80889",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-1",
+      "liClass": "",
+      "comment": "<!-- ————— 1 Dom ————— -->",
+      "poi": "dom"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">2</div>",
+      "imgHtml": "<img src=\"assets/img/musicians.webp\" alt=\"Bronze statue of the Bremen Town Musicians: donkey, dog, cat and rooster\" loading=\"lazy\">",
+      "eyebrow": "Stop 2 · Town hall, west side",
+      "titleHtml": "The Town Musicians",
+      "walkHtml": "2 min — cross the square, around the town hall's left corner.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Donkey, dog, cat, rooster: four ageing animals who ran away rather than be\n          discarded, scared off a band of robbers with the loudest concert of their lives —\n          and never actually reached Bremen. The city adopted them anyway, and this bronze\n          from 1951 became its most-loved landmark."
+        },
+        {
+          "type": "tip",
+          "html": "<b>The ritual:</b> hold <b>both</b> of the donkey's front legs with\n          <b>both hands</b> and make a wish. One hand only? Locals will smile — that's just\n          one donkey greeting another. You'll see why the legs shine like gold."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/musicians.mp3",
+        "aria": "Play: Four animals and one wish",
+        "label": "🎧 Four animals and one wish"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07620%2C8.80716",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-2",
+      "liClass": "",
+      "comment": "<!-- ————— 2 Musicians ————— -->",
+      "poi": "musicians"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">3</div>",
+      "imgHtml": "<img src=\"assets/img/rathaus.webp\" alt=\"Bremen's Renaissance town hall on the market square\" loading=\"lazy\">",
+      "eyebrow": "Stop 3 · Marktplatz · UNESCO World Heritage",
+      "titleHtml": "Roland &amp; the Town Hall",
+      "walkHtml": "A few steps back onto the market square.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "The stone knight is <b>Roland</b>, standing here since 1404 with his sword drawn\n          and his eyes fixed on the cathedral — the citizens' message to the bishop that this\n          city governs itself. Legend says Bremen stays free as long as Roland stands, so a\n          <b>spare head</b> is said to be kept in storage, just in case. The gap between his\n          knees was once an official unit of measure: the Bremen ell, used by cloth merchants."
+        },
+        {
+          "type": "p",
+          "html": "Behind him rises the 600-year-old <b>town hall</b> — together they are a UNESCO\n          World Heritage Site. The wine cellar below has been pouring since 1405 and stocks\n          Germany's oldest drinkable wine, from 1653."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/roland.mp3",
+        "aria": "Play: The knight with the spare head",
+        "label": "🎧 The knight with the spare head"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07586%2C8.80730",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-3",
+      "liClass": "",
+      "comment": "<!-- ————— 3 Roland & Rathaus ————— -->",
+      "poi": "roland"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">4</div>",
+      "imgHtml": "<img src=\"assets/img/loch.webp\" alt=\"Bremen market square with town hall, cathedral and the glass parliament building\" loading=\"lazy\">",
+      "eyebrow": "Stop 4 · In front of the glass parliament",
+      "titleHtml": "The Bremen Hole",
+      "walkHtml": "30 seconds — look down! It's a drain cover in the pavement.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Bremen's strangest sight is a hole in the ground. Drop a coin into the metal\n          cover in front of the parliament building and listen: a donkey brays, a dog barks,\n          a cat meows, a rooster crows. The Town Musicians live down there — and they say\n          thank you. It's <b>Germany's loudest charity box</b>: every cent goes to a foundation\n          helping people in need across Bremen."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Keep small coins ready</b> — every guest gets a private concert."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/loch.mp3",
+        "aria": "Play: Germany's loudest charity box",
+        "label": "🎧 Germany's loudest charity box"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07560%2C8.80785",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-4",
+      "liClass": "",
+      "comment": "<!-- ————— 4 Bremer Loch ————— -->",
+      "poi": "loch"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">5</div>",
+      "imgHtml": "<img src=\"assets/img/boettcher.webp\" alt=\"The golden Lightbringer relief above the brick entrance to Böttcherstraße\" loading=\"lazy\">",
+      "eyebrow": "Stop 5 · Off the market square",
+      "titleHtml": "Böttcherstraße",
+      "walkHtml": "2 min — find the golden relief above a narrow brick entrance.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "One hundred metres of pure fantasy. Coffee merchant <b>Ludwig Roselius</b> —\n          the man who invented <b>decaffeinated coffee</b> after his father drank himself to\n          death on the regular kind — poured his fortune into this street in the 1920s:\n          expressionist brick, bronze doors, gold everywhere. Enter under the glowing\n          <b>Lightbringer</b> relief."
+        },
+        {
+          "type": "p",
+          "html": "Halfway down, thirty <b>Meissen porcelain bells</b> chime between the gables —\n          <b>every hour from 12:00 to 18:00</b>. Worth timing your visit."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Sweet tooth?</b> In the little craft courtyard at No. 8, the\n          <b>Bremer Bonbon Manufaktur</b> makes candy by hand — watch them pour and cut\n          the sweets through the workshop window."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/boettcher.mp3",
+        "aria": "Play: The street that decaf built",
+        "label": "🎧 The street that decaf built"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07508%2C8.80609",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-5",
+      "liClass": "",
+      "comment": "<!-- ————— 5 Böttcherstraße ————— -->",
+      "poi": "boettcher"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">6</div>",
+      "imgHtml": "<img src=\"assets/img/schnoor.webp\" alt=\"Colourful narrow lane in the Schnoor quarter with cobblestones and café tables\" loading=\"lazy\">",
+      "eyebrow": "Stop 6 · The old fishermen's quarter",
+      "titleHtml": "The Schnoor",
+      "walkHtml": "6 min — down Böttcherstraße, left along the river, follow the signs.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Bremen's oldest quarter, and its most magical. <b>Schnoor</b> means “string”:\n          the doll-sized houses line the lanes <b>like pearls on a string</b> — which is exactly\n          how this guide is laid out. Six hundred years ago rope makers and fishermen lived\n          here; today it's the corner of Bremen everyone falls in love with."
+        },
+        {
+          "type": "p",
+          "html": "Squeeze through lanes barely a metre wide, hunt for the smallest house in the\n          city, and let yourselves get lost — it's tiny, you can't really stay lost."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Candy, part two:</b> at <b>Marterburg 30</b> the Bonbon\n          Manufaktur runs its show workshop — watch bonbons being made the old way."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/schnoor.mp3",
+        "aria": "Play: Pearls on a string",
+        "label": "🎧 Pearls on a string"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07278%2C8.80972",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-6",
+      "liClass": "",
+      "comment": "<!-- ————— 6 Schnoor ————— -->",
+      "poi": "schnoor"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">7</div>",
+      "imgHtml": "<img src=\"assets/img/schlachte.webp\" alt=\"The Schlachte embankment with brick gabled houses and beer garden terraces\" loading=\"lazy\">",
+      "eyebrow": "Stop 7 · The Weser riverside",
+      "titleHtml": "The Schlachte",
+      "walkHtml": "8 min — walk back to the river and turn right along the water.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "For five hundred years this was Bremen's harbour: ships from all over Europe\n          tied up here with wine, wool and spices. When the big ships moved downstream,\n          the Schlachte reinvented itself as the city's sunniest mile — beer gardens,\n          historic ships and the best benches on the Weser."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Perfect lunch break.</b> Pick any terrace, order something cold,\n          watch the river roll towards the North Sea. Toast like a local: <b>“Prost!”</b>"
+        }
+      ],
+      "player": {
+        "src": "assets/audio/schlachte.mp3",
+        "aria": "Play: The old harbour",
+        "label": "🎧 The old harbour"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07611%2C8.80222",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-7",
+      "liClass": "",
+      "comment": "<!-- ————— 7 Schlachte ————— -->",
+      "poi": "schlachte"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">8</div>",
+      "imgHtml": "<img src=\"assets/img/pigs.webp\" alt=\"Bronze swineherd and pig sculptures on the Sögestraße shopping street\" loading=\"lazy\">",
+      "eyebrow": "Stop 8 · Sögestraße",
+      "titleHtml": "The Pigs of Sögestraße",
+      "walkHtml": "8 min — up through Obernstraße, then into Sögestraße.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Meet Bremen's most patient residents. <b>Sögestraße</b> literally means\n          <b>“Street of the Sows”</b>: in the Middle Ages, pigs were driven along this very\n          route every morning to the pastures outside the gates — and home again at night.\n          Since 1974 a bronze swineherd and his little herd have kept the tradition alive.\n          Children ride them, everyone pats them, and their backs shine like gold."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Coffee stop:</b> keep an eye out for a <b>Müller &amp; Egerer</b>\n          bakery — a beloved local chain. Grab a coffee and a pastry the Bremen way."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/pigs.mp3",
+        "aria": "Play: The street of the sows",
+        "label": "🎧 The street of the sows"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07798%2C8.80800",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-8",
+      "liClass": "",
+      "comment": "<!-- ————— 8 Pigs ————— -->",
+      "poi": "pigs"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">9</div>",
+      "imgHtml": "<img src=\"assets/img/muehle.webp\" alt=\"The windmill in Bremen's Wallanlagen park surrounded by flower beds\" loading=\"lazy\">",
+      "eyebrow": "Stop 9 · Wallanlagen park",
+      "titleHtml": "The Windmill on the Wall",
+      "walkHtml": "4 min — Sögestraße ends at the park; the mill is to your left.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "A working-size windmill in the middle of the city! You're standing on Bremen's\n          old star-shaped ramparts. When the walls lost their military purpose 200 years ago,\n          the city didn't build them over — it turned them into one of Germany's first public\n          parks, a green ribbon of gardens and water. A mill has stood on this bastion since\n          the 1600s; this one kept grinding grain into the twentieth century."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Breather:</b> grab a bench by the moat and enjoy the flower beds\n          — the last stretch of the walk starts here."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/muehle.mp3",
+        "aria": "Play: A mill on the ramparts",
+        "label": "🎧 A mill on the ramparts"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.08015%2C8.80682",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-9",
+      "liClass": "",
+      "comment": "<!-- ————— 9 Windmill ————— -->",
+      "poi": "muehle"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">10</div>",
+      "imgHtml": "<img src=\"assets/img/elephant.webp\" alt=\"The ten-metre brick elephant of the Anti-Colonial Monument in Nelson Mandela Park\" loading=\"lazy\">",
+      "eyebrow": "Stop 10 · Nelson-Mandela-Park",
+      "titleHtml": "The Elephant — a Namibian story in Bremen",
+      "walkHtml": "12 min — through the park, past the station, into Nelson-Mandela-Park.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "This ten-metre brick elephant carries the heaviest story on this walk — and it\n          leads directly to Namibia. Built in 1932, it glorified Germany's colonial empire,\n          including what was then called German South West Africa. Between 1904 and 1908,\n          German troops committed genocide against the Ovaherero and Nama peoples; many of\n          the victims were driven into the Omaheke desert."
+        },
+        {
+          "type": "p",
+          "html": "Bremen's citizens changed the monument's meaning: in <b>1990, days after Namibia's\n          independence</b>, it was rededicated as Germany's first <b>anti-colonial monument</b>.\n          Behind it lies a memorial made of <b>stones brought from the Omaheke itself</b>,\n          honouring the victims. Bremen and Windhoek are partner cities today."
+        },
+        {
+          "type": "tip",
+          "html": "The memorial of Omaheke stones is in the small hollow directly\n          behind the elephant. Take a quiet moment — this place belongs to your story too."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/elephant.mp3",
+        "aria": "Play: The elephant that changed its mind",
+        "label": "🎧 The elephant that changed its meaning"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.08408%2C8.81751",
+        "label": "Open in Google Maps"
+      },
+      "liId": "stop-10",
+      "liClass": "memorial",
+      "comment": "<!-- ————— 10 Elephant ————— -->",
+      "poi": "elephant"
+    },
+    {
+      "beadHtml": "<div class=\"bead\" aria-hidden=\"true\">🏠</div>",
+      "imgHtml": null,
+      "eyebrow": "Finish · Back to the hotel",
+      "titleHtml": "Getting home",
+      "walkHtml": "The tram stop <b>Hauptbahnhof-Nord/Messe</b> is right next to\n          the park — 2 minutes from the elephant.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Hop on <b>Tram 6 towards Universität</b> and get off at\n          <b>Universität-Süd</b> — about 12 minutes, and you're back at 7things.\n          A day ticket is still valid; with FAIRTIQ, just check in again."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Cut the walk short any time:</b> from Domsheide or Hauptbahnhof,\n          Tram 6 towards Universität always brings you home."
+        }
+      ],
+      "player": null,
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.08442%2C8.81667",
+        "label": "Hauptbahnhof-Nord/Messe — tram home"
+      },
+      "liId": "home",
+      "liClass": "transit",
+      "comment": "<!-- ————— Getting home ————— -->",
+      "poi": "hbf-nord"
+    }
+  ],
+  "practicalComment": "<!-- ————— Good to know ————— -->",
+  "routeComment": "<!-- ————— Route at a glance ————— -->",
+  "practical": {
+    "aria": "Practical information",
+    "h2": "Good to know",
+    "grid": [
+      "<div><b>🚨 Emergency</b>112 (ambulance/fire) · 110 (police). English is fine.</div>",
+      "<div><b>🚰 Tap water</b>Perfectly safe to drink everywhere.</div>",
+      "<div><b>💳 Paying</b>Cards widely accepted; keep ~€20 cash for small stalls &amp; the Bremen Hole.</div>",
+      "<div><b>🌦️ July weather</b>16–25 °C, changeable — bring a light rain layer.</div>",
+      "<div><b>🛍️ Sundays</b>Shops are closed; cafés, restaurants &amp; museums are open.</div>",
+      "<div><b>👋 “Moin”</b>Means hello — at any time of day. Try it, it works wonders.</div>"
+    ],
+    "meetLabel": "Meeting point:",
+    "meetHint": "Saved on this phone — survives closing the app.",
+    "meetTimeLabel": "Time",
+    "meetShareLabel": "📤 Share with the group",
+    "meetCalLabel": "⏰ Add to calendar"
+  },
+  "versionPrefix": "Guide version",
+  "footerHtml": "    <p>Made with <span class=\"heart\">♥</span> in Bremen for our friends from Namibia · July 2026</p>\n    <p>Works offline once fully loaded. Google Maps buttons open your Maps app —\n    with offline maps of Bremen downloaded, they work without internet too.</p>\n    <h3>Photo credits (Wikimedia Commons)</h3>\n    <p id=\"credits\">\n      Tram: Roehrensee, CC BY 4.0 ·\n      Cathedral: Ulamm, CC BY-SA 3.0 ·\n      Town hall &amp; square: Matthias Süßen, CC BY-SA 4.0 ·\n      Town Musicians: Ad Meskens, CC BY-SA 4.0 ·\n      Roland, Böttcherstraße, Schlachte, Marktplatz: Jürgen Howaldt, CC BY-SA 2.0 de ·\n      Schnoor, Elephant: Matthias Süßen, CC BY-SA 4.0 ·\n      Pigs: J Doll, CC BY 3.0 ·\n      Windmill: Charvosi, public domain.\n    </p>\n    <p>Next city in the making: <a href=\"windhoek.html\">Windhoek — place inventory (field test)</a>.</p>\n    <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.\n    <span id=\"version\">__VERSION__</span></p>",
+  "ui": {
+    "meetKey": "bremen-walk-meet",
+    "statusUnsupported": "Offline saving not supported in this browser",
+    "statusFileProto": "Open via the web link to enable offline mode",
+    "statusSaving": "Saving guide for offline use…",
+    "statusProgress": "Saving for offline… {c}/{t}",
+    "statusReady": "Offline ready — flight mode is fine ✓",
+    "statusUnavailable": "Offline saving unavailable",
+    "iosTip": "<b>On iPhone / iPad:</b> tap the <span class=\"share\">⇧</span> Share button at the bottom of Safari, scroll down, and choose <b>“Add to Home Screen”</b>. The guide then opens full-screen like a real app — no browser bars, works offline.",
+    "androidTip": "<b>On Android:</b> tap the <b>⋮ menu</b> in the top-right corner of Chrome and choose <b>“Add to Home screen”</b> → <b>“Install”</b>. (Samsung Internet: menu → “Add page to” → “Home screen”.) The guide then opens full-screen like a real app — no browser bars, works offline.",
+    "statusIncomplete": "Offline incomplete — {n} files missing. Tap to retry.",
+    "statusRetrying": "Retrying…",
+    "audioMissing": "Audio not saved yet — open the guide once with internet.",
+    "meetAdopted": "Shared meeting point saved ✓",
+    "meetCopied": "Link copied — send it to your group.",
+    "meetNeedTime": "Pick a time first.",
+    "shareTitle": "Bremen City Walk — meeting point",
+    "icsSummaryPrefix": "Meeting point: ",
+    "icsFallback": "Bremen City Walk meeting point",
+    "icsAlarm": "Meeting point in 15 minutes"
+  },
+  "output": "index.html",
+  "extraCss": ""
+}

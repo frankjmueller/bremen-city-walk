@@ -1,0 +1,19 @@
+{
+  "id": "bremen",
+  "country": "DE",
+  "center": [
+    53.0758,
+    8.8072
+  ],
+  "languages": [
+    "en",
+    "de"
+  ],
+  "currency": "EUR",
+  "release": "v10",
+  "curator": {
+    "name": "Frank J. Müller",
+    "checkedOn": "2026-07-01"
+  },
+  "version": "2026.08"
+}
