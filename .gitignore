@@ -1,0 +1,5 @@
+# Personal overlays (Google-derived data, private notes) — NEVER commit.
+# The app imports these locally via the "Privates Overlay laden" button;
+# they must not end up in the public repo or on the public site.
+personal/
+node_modules/

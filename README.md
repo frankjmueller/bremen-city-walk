@@ -34,6 +34,23 @@ no manual version bumping, no hand-maintained asset list. CI runs
 `node build.mjs --check` and fails if the committed output doesn't match
 the sources.
 
+## Private overlay (only for you)
+
+The inventory pages can display a **private layer** — ratings you pulled for
+yourself, your own stars, notes. The data never enters the repo or the
+public site: it lives in `personal/` (gitignored) and, after importing via
+the footer button "🔒 Privates Overlay laden", only in your browser's
+localStorage.
+
+```
+GOOGLE_MAPS_API_KEY=... node tools/fetch-overlay.mjs bremen
+```
+
+writes `personal/overlay-bremen.json` (your own `note`/`myStars` fields are
+preserved on re-runs; hand-editing is fine). **Never commit these files or
+copy their contents into `content/`** — Google's terms allow personal use,
+not republication, and the public dataset must stay licence-clean.
+
 ## Regenerating audio
 
 Audio was generated with [edge-tts](https://pypi.org/project/edge-tts/)

@@ -401,3 +401,66 @@ const CFG = __CFG__;
   updatePlanUI();
   apply();
 })();
+
+/* ————— private overlay: personal ratings/notes, device-only.
+   Imported from a JSON file, stored in localStorage, never uploaded —
+   the legal home for data you may use but must not republish. ————— */
+(function () {
+  const KEY = 'walk-overlay-' + CFG.cityId;
+  const btn = document.getElementById('ovl-btn');
+  const removeBtn = document.getElementById('ovl-remove');
+  const file = document.getElementById('ovl-file');
+  const status = document.getElementById('ovl-status');
+
+  function render() {
+    let ovl = null;
+    try { ovl = JSON.parse(localStorage.getItem(KEY)); } catch (e) { /* none */ }
+    document.querySelectorAll('.place').forEach(li => {
+      const el = li.querySelector('.povl');
+      const d = ovl && ovl.places && ovl.places[li.id.replace(/^poi-/, '')];
+      if (!d) { el.hidden = true; return; }
+      const parts = [];
+      if (typeof d.rating === 'number') {
+        parts.push('★ ' + d.rating.toLocaleString('de-DE')
+          + (d.ratings ? ` (${d.ratings.toLocaleString('de-DE')})` : ''));
+      }
+      if (typeof d.myStars === 'number') {
+        parts.push('meine: ' + '★'.repeat(d.myStars) + '☆'.repeat(Math.max(0, 5 - d.myStars)));
+      }
+      if (d.status) parts.push(d.status);
+      if (d.note) parts.push(d.note);
+      el.textContent = parts.length ? '🔒 ' + parts.join(' · ') : '';
+      el.hidden = parts.length === 0;
+    });
+    const has = !!(ovl && ovl.places && Object.keys(ovl.places).length);
+    removeBtn.hidden = !has;
+    status.textContent = has
+      ? `Overlay aktiv: ${Object.keys(ovl.places).length} Orte`
+        + (ovl.updated ? `, Stand ${ovl.updated}` : '') + ' — nur auf diesem Gerät.'
+      : '';
+  }
+
+  btn.addEventListener('click', () => file.click());
+  file.addEventListener('change', () => {
+    const f = file.files[0];
+    if (!f) return;
+    f.text().then(t => {
+      const ovl = JSON.parse(t);
+      if (ovl.city && ovl.city !== CFG.cityId) {
+        status.textContent = `Diese Datei ist für „${ovl.city}", nicht für diese Seite.`;
+        return;
+      }
+      if (!ovl.places || typeof ovl.places !== 'object') throw new Error('places fehlt');
+      localStorage.setItem(KEY, JSON.stringify(ovl));
+      render();
+    }).catch(() => {
+      status.textContent = 'Datei nicht lesbar — erwartet JSON mit { "places": { "<orts-id>": { … } } }.';
+    }).finally(() => { file.value = ''; });
+  });
+  removeBtn.addEventListener('click', () => {
+    localStorage.removeItem(KEY);
+    render();
+  });
+
+  render();
+})();

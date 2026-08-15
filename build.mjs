@@ -324,6 +324,7 @@ function renderPlace(p, currency) {
   out.push('        <p class="pdist" hidden></p>');
   if (meta.length) out.push(`        <p class="pmeta">${meta.join(' · ')}</p>`);
   out.push('        <p class="popen" hidden></p>');
+  out.push('        <p class="povl" hidden></p>');
   if (p.body?.de?.snapshot) out.push(`        <p class="psnap">${p.body.de.snapshot}</p>`);
   if (p.funFact?.de) out.push(`        <p class="pfun">⚡ ${p.funFact.de}</p>`);
   if (notes.length) out.push(`        <p class="pnote">${notes.join(' · ')}</p>`);
@@ -412,6 +413,17 @@ const INVENTORY_CSS = `
 .popen{font-size:.85rem;font-weight:700;margin:.15rem 0 .3rem}
 .popen.open{color:var(--patina)}
 .popen.closed{color:var(--brick)}
+.povl{
+  font-size:.85rem;margin:.4rem 0;padding:.4rem .6rem;border-radius:8px;
+  border:1.5px dashed var(--gold);color:var(--ink);
+  background:color-mix(in srgb, var(--gold) 8%, var(--card));
+}
+.ovl{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.ovl button{
+  background:none;border:1px solid rgba(255,255,255,.35);color:inherit;
+  border-radius:999px;padding:.35em .8em;font-family:inherit;font-size:.8rem;cursor:pointer;
+}
+.ovl span{font-size:.78rem}
 .psnap{margin:.3rem 0}
 .pfun{font-size:.9rem;margin:.4rem 0;color:var(--patina)}
 .pnote{font-size:.82rem;color:var(--muted);margin:.35rem 0}
@@ -490,6 +502,7 @@ function renderInventory(cityId) {
 
   const chip = (g, v, label) => `      <button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${label}</button>`;
   const cfg = {
+    cityId,
     storageKey: `walk-profile-${cityId}`,
     planKey: `walk-plan-${cityId}`,
     currency: { NAD: 'N$', EUR: '€' }[c.currency] || c.currency,
@@ -581,6 +594,12 @@ ${list.map(p => renderPlace(p, c.currency)).join('\n')}
   <div class="wrap">
     <p>${page.footerLead(c)}</p>
     <p>${page.footerNote}</p>
+    <p class="ovl">
+      <button type="button" id="ovl-btn">🔒 Privates Overlay laden</button>
+      <button type="button" id="ovl-remove" hidden>Overlay entfernen</button>
+      <input type="file" id="ovl-file" accept=".json,application/json" hidden>
+      <span id="ovl-status"></span>
+    </p>
     <p>${page.footerTail} <span id="version">__VERSION__</span></p>
   </div>
 </footer>
