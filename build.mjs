@@ -307,7 +307,12 @@ function renderPlace(p, currency) {
   out.push('      <button type="button" class="crow" aria-expanded="false">');
   out.push(`        <span aria-hidden="true">${emoji}</span><span class="crow-name">${name}</span>${crowIssue}<span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>`);
   out.push('      </button>');
-  out.push('      <article class="card"><div class="pad">');
+  out.push('      <article class="card">');
+  if (p.media?.img) {
+    const img = p.media.img;
+    out.push(`        <img src="${img.src}" alt="${img.alt?.de || img.alt?.en || ''}" loading="lazy">`);
+  }
+  out.push('        <div class="pad">');
   out.push('        <div class="badges">');
   out.push(`          <span class="badge kind">${emoji} ${kindLabel}</span>`);
   if (draft) out.push('          <span class="badge draft">⚠︎ ungeprüft</span>');
@@ -347,10 +352,39 @@ function renderPlace(p, currency) {
   } else {
     out.push('        <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>');
   }
-  out.push('      </div></article>');
+  out.push('        </div>');
+  out.push('      </article>');
   out.push('    </li>');
   return out.join('\n');
 }
+
+/* Per-city text for the inventory pages — same engine, different framing. */
+const INVENTORY_PAGES = {
+  windhoek: {
+    output: 'windhoek.html',
+    title: 'Windhoek — Orte-Bestand (Feldtest)',
+    description: 'Recherchierter, noch unverifizierter Orte-Bestand für Windhoek — Pilot für Profil-Filter: Orte statt Touren.',
+    eyebrow: 'Feldtest · Bestand statt Tour · Namibia',
+    h1: 'Windhoek',
+    sub: 'Das ist keine fertige Tour — es ist der <b>Orte-Bestand</b>, aus dem\n  eure Tour entsteht: Ihr filtert, was heute zu euch passt. Profil wird auf diesem\n  Handy gespeichert, kein Konto nötig.',
+    links: '<a class="lang" href="index.html">🇬🇧 Bremen guide</a> · <a class="lang" href="teens.html">🇩🇪 Bremen Teenie-Tour</a> · <a class="lang" href="bremen-orte.html">🗂 Bremen-Bestand</a>',
+    footerLead: c => `Feldtest-Bestand Windhoek · Kuration &amp; Verifikation vor Ort: ${c.curator.name}`,
+    footerNote: 'Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure\n    Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.',
+    footerTail: 'Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind\n    Partnerstädte.',
+  },
+  bremen: {
+    output: 'bremen-orte.html',
+    title: 'Bremen — Orte-Bestand',
+    description: 'Alle Orte des Bremen City Walk als filterbarer Bestand — Profil, Tagesplan, offline, vor Ort geprüft.',
+    eyebrow: 'Orte-Bestand · offline · Bremen',
+    h1: 'Bremen',
+    sub: 'Alle Orte aus dem Guide als <b>Bestand</b>: Ihr filtert, was heute zu euch\n  passt, sammelt euren Tagesplan und teilt ihn als Link. Fakten vor Ort geprüft\n  im Juli 2026 — Profil bleibt auf diesem Handy, kein Konto nötig.',
+    links: '<a class="lang" href="index.html">🇬🇧 Zur Tour (English)</a> · <a class="lang" href="teens.html">🇩🇪 Teenie-Tour</a> · <a class="lang" href="windhoek.html">🇳🇦 Windhoek-Feldtest</a>',
+    footerLead: c => `Orte-Bestand Bremen · Kuration: ${c.curator.name} · Fakten geprüft Juli 2026`,
+    footerNote: 'Fotos: Wikimedia Commons — Details in\n    <a href="https://github.com/frankjmueller/bremen-city-walk/blob/main/ATTRIBUTION.md">ATTRIBUTION.md</a>.\n    Google-Maps-Buttons öffnen eure Maps-App — mit Offline-Karte von Bremen auch ohne Netz.',
+    footerTail: 'Teil des <a href="index.html">Bremen City Walk</a>.',
+  },
+};
 
 const INVENTORY_CSS = `
 /* ————— inventory page (filter pilot) ————— */
@@ -444,6 +478,7 @@ body.has-plan main{padding-bottom:4.5rem}
 `;
 
 function renderInventory(cityId) {
+  const page = INVENTORY_PAGES[cityId];
   const c = readJson(`content/${cityId}/city.json`);
   const list = readJson(`content/${cityId}/pois.json`);
   validatePois(list, cityId);
@@ -457,7 +492,7 @@ function renderInventory(cityId) {
   const cfg = {
     storageKey: `walk-profile-${cityId}`,
     planKey: `walk-plan-${cityId}`,
-    currency: c.currency === 'NAD' ? 'N$' : c.currency,
+    currency: { NAD: 'N$', EUR: '€' }[c.currency] || c.currency,
     groups: CAT_GROUPS,
     contentKinds: CONTENT_KINDS,
     needScope: NEED_SCOPE,
@@ -473,8 +508,8 @@ function renderInventory(cityId) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Windhoek — Orte-Bestand (Feldtest)</title>
-<meta name="description" content="Recherchierter, noch unverifizierter Orte-Bestand für Windhoek — Pilot für Profil-Filter: Orte statt Touren.">
+<title>${page.title}</title>
+<meta name="description" content="${page.description}">
 <meta name="theme-color" content="#7A2E20">
 <link rel="icon" href="icons/icon-192.png">
 <style>
@@ -483,17 +518,15 @@ ${styles}${INVENTORY_CSS}</style>
 <body>
 
 <header class="hero">
-  <p class="eyebrow">Feldtest · Bestand statt Tour · Namibia</p>
-  <h1>Windhoek<span class="gold">.</span></h1>
-  <p class="hero-sub">Das ist keine fertige Tour — es ist der <b>Orte-Bestand</b>, aus dem
-  eure Tour entsteht: Ihr filtert, was heute zu euch passt. Profil wird auf diesem
-  Handy gespeichert, kein Konto nötig.</p>
-  <div class="draftnote"><b>⚠︎ Rohdaten:</b> Alle ${drafts} Orte sind recherchiert, aber noch
+  <p class="eyebrow">${page.eyebrow}</p>
+  <h1>${page.h1}<span class="gold">.</span></h1>
+  <p class="hero-sub">${page.sub}</p>
+${drafts > 0 ? `  <div class="draftnote"><b>⚠︎ Rohdaten:</b> ${drafts} von ${list.length} Orten sind recherchiert, aber noch
   <b>nicht vor Ort geprüft</b> — Preise, Zeiten und Koordinaten werden bei der Reise
   verifiziert (siehe Erfassungs-Checkliste). Nichts hiervon ist eine Zusage.</div>
-  <p class="status" id="status"><span class="dot"></span><span id="status-text">Prüfe Offline-Speicher…</span></p>
+` : ''}  <p class="status" id="status"><span class="dot"></span><span id="status-text">Prüfe Offline-Speicher…</span></p>
   <br>
-  <a class="lang" href="index.html">🇬🇧 Bremen guide</a> · <a class="lang" href="teens.html">🇩🇪 Bremen Teenie-Tour</a>
+  ${page.links}
 </header>
 
 <main class="wrap">
@@ -546,11 +579,9 @@ ${list.map(p => renderPlace(p, c.currency)).join('\n')}
 
 <footer>
   <div class="wrap">
-    <p>Feldtest-Bestand Windhoek · Kuration &amp; Verifikation vor Ort: ${c.curator.name}</p>
-    <p>Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure
-    Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.</p>
-    <p>Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind
-    Partnerstädte. <span id="version">__VERSION__</span></p>
+    <p>${page.footerLead(c)}</p>
+    <p>${page.footerNote}</p>
+    <p>${page.footerTail} <span id="version">__VERSION__</span></p>
   </div>
 </footer>
 
@@ -563,17 +594,20 @@ ${js}</script>
 
 /* ————— render, collect assets, hash, stamp ————— */
 const pages = tours.map(t => ({ tour: t, html: renderPage(t) }));
-const windhoekHtml = renderInventory('windhoek');
+const inventories = Object.keys(INVENTORY_PAGES).map(id => ({
+  output: INVENTORY_PAGES[id].output,
+  html: renderInventory(id),
+}));
 
 const assetSet = new Set();
-for (const html of [...pages.map(p => p.html), windhoekHtml]) {
+for (const html of [...pages.map(p => p.html), ...inventories.map(i => i.html)]) {
   for (const m of html.matchAll(/(?:assets|icons)\/[A-Za-z0-9._/-]+/g)) assetSet.add('./' + m[0]);
 }
 // icons referenced only from the manifest (install icon, splash) must be offline too
 for (const icon of readJson('manifest.json').icons) assetSet.add('./' + icon.src);
-const assets = ['./', './index.html', './teens.html', './windhoek.html', './manifest.json', ...[...assetSet].sort()];
-
-const GENERATED = new Set(['./', './index.html', './teens.html', './windhoek.html']);
+const GENERATED = new Set(['./', './index.html', './teens.html',
+  ...inventories.map(i => './' + i.output)]);
+const assets = [...GENERATED, './manifest.json', ...[...assetSet].sort()];
 const missing = assets.filter(a => {
   if (GENERATED.has(a)) return false; // outputs of this very build
   try { statSync(join(ROOT, a)); return false; } catch { return true; }
@@ -582,10 +616,10 @@ if (missing.length) throw new Error('referenced assets missing on disk:\n  ' + m
 
 const h = createHash('sha256');
 for (const { html } of pages) h.update(html);
-h.update(windhoekHtml);
+for (const { html } of inventories) h.update(html);
 h.update(swTmpl);
 for (const a of assets) {
-  if (a === './' || a === './index.html' || a === './teens.html' || a === './windhoek.html') continue;
+  if (GENERATED.has(a)) continue;
   h.update(readFileSync(join(ROOT, a)));
 }
 const hash = h.digest('hex').slice(0, 8);
@@ -594,7 +628,9 @@ const outputs = {};
 for (const { tour, html } of pages) {
   outputs[tour.output] = html.replace('__VERSION__', `${tour.versionPrefix} ${city.release} · ${hash.slice(0, 6)}`);
 }
-outputs['windhoek.html'] = windhoekHtml.replace('__VERSION__', `Stand ${city.release} · ${hash.slice(0, 6)}`);
+for (const inv of inventories) {
+  outputs[inv.output] = inv.html.replace('__VERSION__', `Stand ${city.release} · ${hash.slice(0, 6)}`);
+}
 outputs['sw.js'] = swTmpl
   .replace('__CACHE_NAME__', `bremen-walk-${city.release}-${hash}`)
   .replace('__ASSETS__', JSON.stringify(assets, null, 2).replace(/"/g, "'"));

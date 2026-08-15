@@ -9,8 +9,8 @@ made for guests from Namibia staying at 7things (Universität).
 
 ## How it's built
 
-`index.html`, `teens.html` and `sw.js` are **generated** — don't edit them
-directly. The sources are:
+`index.html`, `teens.html`, `bremen-orte.html`, `windhoek.html` and `sw.js`
+are **generated** — don't edit them directly. The sources are:
 
 ```
 content/bremen/          content: city meta, POIs, the two tour editions,
