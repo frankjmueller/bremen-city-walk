@@ -220,7 +220,8 @@ const NEEDS = [
 /* Companions travel with you all day — they never empty the list over
    missing data; they hide only known conflicts and surface known info. */
 const COMPANIONS = [
-  ['k0', '👶 0–3'], ['k4', '🧒 4–7'], ['k8', '🧑 8–12'], ['k13', '🎧 13+'], ['dog', '🐕 Hund'],
+  ['k0', '👶 0–3'], ['k4', '🧒 4–7'], ['k8', '🧑 8–12'], ['k13', '🎧 13+'],
+  ['dog', '🐕 Hund'], ['wheel', '♿ Rollstuhl'],
 ];
 const KID_BANDS = { k0: [0, 3], k4: [4, 7], k8: [8, 12], k13: [13, 17] };
 
@@ -290,6 +291,7 @@ function renderPlace(p, currency) {
     `data-flags="${poiFlags(p).join(' ')}"`,
     `data-interests="${interests.join(' ')}"`,
     `data-dogs="${p.tags?.dogs ?? 'unknown'}"`,
+    `data-wheelchair="${p.tags?.wheelchair ?? 'unknown'}"`,
   ];
   if (p.tags?.kids?.min !== undefined) attrs.push(`data-kidsmin="${p.tags.kids.min}"`);
   if (p.tags?.kids?.max !== undefined) attrs.push(`data-kidsmax="${p.tags.kids.max}"`);
@@ -299,14 +301,16 @@ function renderPlace(p, currency) {
   out.push(`    <li class="place" ${attrs.join(' ')}>`);
   // collapsed row: shown instead of the card when the place doesn't match —
   // nothing ever disappears, the reason is named, a tap expands it anyway
+  const crowIssue = p.issue?.de ? `<span class="crow-issue" title="${p.issue.de}">⛔</span>` : '';
   out.push('      <button type="button" class="crow" aria-expanded="false">');
-  out.push(`        <span aria-hidden="true">${emoji}</span><span class="crow-name">${name}</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>`);
+  out.push(`        <span aria-hidden="true">${emoji}</span><span class="crow-name">${name}</span>${crowIssue}<span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>`);
   out.push('      </button>');
   out.push('      <article class="card"><div class="pad">');
   out.push('        <div class="badges">');
   out.push(`          <span class="badge kind">${emoji} ${kindLabel}</span>`);
   if (draft) out.push('          <span class="badge draft">⚠︎ ungeprüft</span>');
   else out.push(`          <span class="badge ok">✓ geprüft ${p.verification.on}</span>`);
+  if (p.issue?.de) out.push(`          <span class="badge issue">⛔ ${p.issue.de}</span>`);
   out.push('          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>');
   out.push('        </div>');
   out.push(`        <h3>${name}</h3>`);
@@ -327,6 +331,11 @@ function renderPlace(p, currency) {
   } else {
     out.push('        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>');
   }
+  const WHEEL_LINE = {
+    yes: '♿ Rollstuhlgerecht', partial: '♿ Teilweise rollstuhlgerecht',
+    no: '♿ Nicht rollstuhlgerecht', unknown: '♿ Zugänglichkeit unbekannt — wird vor Ort erfasst',
+  };
+  out.push(`        <p class="pacc">${WHEEL_LINE[p.tags?.wheelchair ?? 'unknown']}</p>`);
   if (interests.length) out.push(`        <p class="ptags">${interests.map(i => INTEREST_LABEL[i]).join(' · ')}</p>`);
   if (p.coord) {
     out.push(`        <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=${p.coord[0]}%2C${p.coord[1]}" target="_blank" rel="noopener">`);
@@ -375,9 +384,16 @@ const INVENTORY_CSS = `
   padding:.22em .7em;cursor:pointer;font-family:inherit;flex:none;
 }
 .padd[aria-pressed="true"]{background:var(--patina);color:#fff}
-.pdog,.pkids{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
+.pdog,.pkids,.pacc{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
 body.has-dog .pdog{display:block}
 body.has-kids .pkids{display:block}
+body.has-wheel .pacc{display:block}
+.badge.issue{background:color-mix(in srgb, var(--brick) 16%, var(--card));color:var(--brick)}
+.crow-issue{flex:none}
+.csep{
+  list-style:none;text-align:center;font-size:.78rem;letter-spacing:.08em;
+  color:var(--muted);margin:1.4rem 0 .9rem;
+}
 .pdist{font-size:.85rem;color:var(--patina);font-weight:700;margin:.15rem 0 .1rem}
 .fsort{
   display:block;margin:.7rem auto 0;border:1.5px solid var(--line);border-radius:999px;
@@ -496,10 +512,11 @@ ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
     nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
-    Kinder und Hund sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was über Hunde
-    und Kinder-Eignung bekannt ist. Was nicht passt, verschwindet nie — es wird nur
-    <b>zusammengeklappt</b>, mit dem Grund dran; antippen zeigt es trotzdem. Mit ➕ sammelt ihr
-    Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
+    Kinder, Hund und Rollstuhl sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was
+    darüber bekannt ist. Was nicht passt, verschwindet nie — es rückt <b>zusammengeklappt ans
+    Listenende</b>, mit dem Grund dran; antippen zeigt es trotzdem. ⛔ markiert bekannte
+    Probleme (z.&nbsp;B. geschlossen). Mit ➕ sammelt ihr Orte in euren Tagesplan — teilbar
+    als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
@@ -507,6 +524,7 @@ ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
 
   <ol class="places" id="places">
 ${list.map(p => renderPlace(p, c.currency)).join('\n')}
+    <li class="csep" id="csep" hidden>— passt gerade nicht, trotzdem da —</li>
   </ol>
   <p id="empty" hidden>Nichts übrig — Filter etwas lockern.</p>
 

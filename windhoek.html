@@ -294,9 +294,16 @@ footer p{margin:.3rem 0}
   padding:.22em .7em;cursor:pointer;font-family:inherit;flex:none;
 }
 .padd[aria-pressed="true"]{background:var(--patina);color:#fff}
-.pdog,.pkids{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
+.pdog,.pkids,.pacc{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
 body.has-dog .pdog{display:block}
 body.has-kids .pkids{display:block}
+body.has-wheel .pacc{display:block}
+.badge.issue{background:color-mix(in srgb, var(--brick) 16%, var(--card));color:var(--brick)}
+.crow-issue{flex:none}
+.csep{
+  list-style:none;text-align:center;font-size:.78rem;letter-spacing:.08em;
+  color:var(--muted);margin:1.4rem 0 .9rem;
+}
 .pdist{font-size:.85rem;color:var(--patina);font-weight:700;margin:.15rem 0 .1rem}
 .fsort{
   display:block;margin:.7rem auto 0;border:1.5px solid var(--line);border-radius:999px;
@@ -382,6 +389,7 @@ body.has-plan main{padding-bottom:4.5rem}
       <button type="button" class="chip" data-g="comp" data-v="k8" aria-pressed="false">🧑 8–12</button>
       <button type="button" class="chip" data-g="comp" data-v="k13" aria-pressed="false">🎧 13+</button>
       <button type="button" class="chip" data-g="comp" data-v="dog" aria-pressed="false">🐕 Hund</button>
+      <button type="button" class="chip" data-g="comp" data-v="wheel" aria-pressed="false">♿ Rollstuhl</button>
     </div>
     <p class="fgroup-label">Interessen</p>
     <div class="fgroup">
@@ -399,17 +407,18 @@ body.has-plan main{padding-bottom:4.5rem}
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
     nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
-    Kinder und Hund sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was über Hunde
-    und Kinder-Eignung bekannt ist. Was nicht passt, verschwindet nie — es wird nur
-    <b>zusammengeklappt</b>, mit dem Grund dran; antippen zeigt es trotzdem. Mit ➕ sammelt ihr
-    Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
+    Kinder, Hund und Rollstuhl sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was
+    darüber bekannt ist. Was nicht passt, verschwindet nie — es rückt <b>zusammengeklappt ans
+    Listenende</b>, mit dem Grund dran; antippen zeigt es trotzdem. ⛔ markiert bekannte
+    Probleme (z.&nbsp;B. geschlossen). Mit ➕ sammelt ihr Orte in euren Tagesplan — teilbar
+    als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
 
   <ol class="places" id="places">
-    <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture" data-dogs="unknown" data-visit="20" data-lat="-22.56778" data-lng="17.08722">
+    <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture" data-dogs="unknown" data-wheelchair="unknown" data-visit="20" data-lat="-22.56778" data-lng="17.08722">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🏛</span><span class="crow-name">Christuskirche</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -427,20 +436,22 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Angaben widersprüchlich: Mo–Sa 09:00–17:00 laut audiala.com, Besucher-Reviews (2023) melden dagegen sehr eingeschränkte Öffnung. TODO vor Ort: Zeiten von der Tür fotografieren.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56778%2C17.08722" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.56933" data-lng="17.08837">
+    <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture" data-dogs="unknown" data-wheelchair="unknown" data-visit="10" data-lat="-22.56933" data-lng="17.08837">
       <button type="button" class="crow" aria-expanded="false">
-        <span aria-hidden="true">🏛</span><span class="crow-name">Alte Feste</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+        <span aria-hidden="true">🏛</span><span class="crow-name">Alte Feste</span><span class="crow-issue" title="Derzeit geschlossen (Renovierung)">⛔</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <span class="badge issue">⛔ Derzeit geschlossen (Renovierung)</span>
           <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Alte Feste</h3>
@@ -450,13 +461,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Gebäude seit ca. 2015 geschlossen und renovierungsbedürftig; Deutschland unterstützt die Renovierung 2025/26 mit 4,2 Mio. NAD (Auswärtiges Amt). Nur von außen zu besichtigen. TODO vor Ort: aktuellen Baustand prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56933%2C17.08837" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture" data-dogs="unknown" data-visit="60" data-lat="-22.5688" data-lng="17.0881">
+    <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture" data-dogs="unknown" data-wheelchair="unknown" data-visit="60" data-lat="-22.5688" data-lng="17.0881">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🕯</span><span class="crow-name">Independence Memorial Museum</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -474,13 +486,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Eintritt frei, Spende erwartet (laut dark-tourism.com, abgerufen Aug 2026). TODO vor Ort: von der Tafel bestätigen. · So geschlossen; Stand laut dark-tourism.com/kupi.com, abgerufen Aug 2026. TODO vor Ort prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5688%2C17.0881" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.5688" data-lng="17.0881">
+    <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture" data-dogs="unknown" data-wheelchair="unknown" data-visit="10" data-lat="-22.5688" data-lng="17.0881">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🕯</span><span class="crow-name">Genozid-Denkmal</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -496,13 +509,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">Denkmal für die Opfer des Genozids an Ovaherero und Nama (1904–1908) durch die deutsche 'Schutztruppe', errichtet von Mansudae und 2014 zusammen mit dem Independence Memorial Museum enthüllt, das es flankiert; es steht vor der Alten Feste nahe der Christuskirche. TODO vor Ort: exakte Koordinate am Denkmal setzen (hier Museums-Koordinate als Näherung).</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5688%2C17.0881" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="15" data-lat="-22.56667" data-lng="17.08917">
+    <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-wheelchair="unknown" data-visit="15" data-lat="-22.56667" data-lng="17.08917">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🏛</span><span class="crow-name">Tintenpalast (Parlament)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -519,13 +533,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Sitz des namibischen Parlaments; Innenbesichtigung ungeklärt. TODO vor Ort: ob Führungen möglich sind.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56667%2C17.08917" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history" data-dogs="unknown" data-visit="30" data-lat="-22.56694" data-lng="17.08806">
+    <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history" data-dogs="unknown" data-wheelchair="unknown" data-visit="30" data-lat="-22.56694" data-lng="17.08806">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🌳</span><span class="crow-name">Parlamentsgärten</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -542,13 +557,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pfun">⚡ Hier steht Namibias erstes nach der Unabhängigkeit errichtetes Denkmal: die Bronzestatue des Herero-Chiefs Hosea Kutako.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Natur · Geschichte</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56694%2C17.08806" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="10" data-lat="-22.56056" data-lng="17.08639">
+    <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-wheelchair="unknown" data-visit="10" data-lat="-22.56056" data-lng="17.08639">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🏛</span><span class="crow-name">Turnhalle</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -564,13 +580,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">1909 eingeweihtes Gebäude (Entwurf Otto W. C. Busch) in der Bahnhof Street, ursprünglich Turnhalle eines deutschen Turnvereins; 1975–77 Schauplatz der Turnhallen-Konferenz, die der namibischen Verfassungsgeschichte den Namen gab. Besichtigung von innen ungeklärt — TODO vor Ort.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56056%2C17.08639" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo" data-dogs="unknown" data-visit="30" data-lat="-22.5594" data-lng="17.081">
+    <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo" data-dogs="unknown" data-wheelchair="unknown" data-visit="30" data-lat="-22.5594" data-lng="17.081">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🏛</span><span class="crow-name">Bahnhof Windhoek & TransNamib-Museum</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -588,13 +605,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Öffnungszeiten des Eisenbahnmuseums nicht belegbar — TODO vor Ort. Personenzüge (StarLine) sind seit 2021 ausgesetzt (Stand laut seat61.com, abgerufen Aug 2026).</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur · Foto</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5594%2C17.081" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo" data-dogs="unknown" data-visit="45" data-lat="-22.57444" data-lng="17.0925">
+    <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo" data-dogs="unknown" data-wheelchair="unknown" data-visit="45" data-lat="-22.57444" data-lng="17.0925">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🌄</span><span class="crow-name">Heinitzburg</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -612,13 +630,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Zugang als Hotel-/Restaurantgast; Konsumkosten. TODO vor Ort: ob Aussicht auch ohne Verzehr zugänglich ist.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Architektur · Geschichte · Foto</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.57444%2C17.0925" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo" data-dogs="unknown" data-visit="15">
+    <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo" data-dogs="unknown" data-wheelchair="unknown" data-visit="15">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🏛</span><span class="crow-name">Gibeon-Meteoriten (Post Street Mall)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -636,11 +655,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Frei zugänglich im Fußgängerbereich.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Wissenschaft · Foto</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo" data-dogs="unknown" data-visit="30">
+    <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo" data-dogs="unknown" data-wheelchair="unknown" data-visit="30">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🧺</span><span class="crow-name">Post Street Mall</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -656,18 +676,20 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">Fußgängerzone im Stadtzentrum mit Geschäften und Ständen, an denen u. a. Kunsthandwerk, Kleidung und Accessoires verkauft werden; hier steht auch der Meteoriten-Brunnen. TODO vor Ort: Koordinate erfassen, Eindruck/Sicherheit und Standzeiten der Händler prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Handwerk · Foto</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science" data-dogs="unknown" data-visit="5">
+    <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science" data-dogs="unknown" data-wheelchair="unknown" data-visit="5">
       <button type="button" class="crow" aria-expanded="false">
-        <span aria-hidden="true">🏛</span><span class="crow-name">Owela-Museum (Nationalmuseum Namibias)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+        <span aria-hidden="true">🏛</span><span class="crow-name">Owela-Museum (Nationalmuseum Namibias)</span><span class="crow-issue" title="Derzeit geschlossen">⛔</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <span class="badge issue">⛔ Derzeit geschlossen</span>
           <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Owela-Museum (Nationalmuseum Namibias)</h3>
@@ -677,11 +699,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Laut Wikipedia (Stand 2023) und Museumsverband Namibia geschlossen bzw. 'temporarily closed'. TODO vor Ort: Status prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Wissenschaft</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art" data-dogs="unknown" data-visit="45">
+    <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art" data-dogs="unknown" data-wheelchair="unknown" data-visit="45">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🎨</span><span class="crow-name">Nationale Kunstgalerie Namibias (NAGN)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -698,11 +721,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Quellen nennen ca. Di–Fr 08:00–17:00 und Sa 09:00–14:00, Mo teils nur nachmittags, So geschlossen — Angaben uneinheitlich. TODO vor Ort prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Kunst</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history" data-dogs="unknown" data-kidsmin="0" data-visit="30" data-lat="-22.56748" data-lng="17.08487">
+    <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history" data-dogs="unknown" data-wheelchair="unknown" data-kidsmin="0" data-visit="30" data-lat="-22.56748" data-lng="17.08487">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🌳</span><span class="crow-name">Zoo Park</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -719,13 +743,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pfun">⚡ Die 1961 im Park gefundenen Elefantenreste sind 5.000–20.000 Jahre alt — einer der ältesten bekannten Elefanten-Jagdplätze der Menschheitsgeschichte.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Ab 0 Jahren</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Natur · Geschichte</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56748%2C17.08487" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture" data-dogs="unknown" data-visit="5" data-lat="-22.56748" data-lng="17.08487">
+    <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture" data-dogs="unknown" data-wheelchair="unknown" data-visit="5" data-lat="-22.56748" data-lng="17.08487">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🕯</span><span class="crow-name">Kriegerdenkmal im Zoo Park</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -741,13 +766,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">Am 6. April 1897 errichtetes Schutztruppen-Denkmal für deutsche Soldaten des Kriegs gegen die Witbooi (1893–94): ein rund zwei Meter hoher, in Deutschland vorgefertigter Eisen-Obelisk mit Reichsadler; seit 1969 Nationaldenkmal. Beispiel unkommentierter kolonialer Erinnerungskultur im Stadtzentrum.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56748%2C17.08487" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science" data-dogs="unknown" data-visit="60" data-lat="-22.57167" data-lng="17.09472">
+    <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science" data-dogs="unknown" data-wheelchair="unknown" data-visit="60" data-lat="-22.57167" data-lng="17.09472">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🌳</span><span class="crow-name">Nationaler Botanischer Garten Namibias</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -764,13 +790,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Eintritt frei laut NBRI/wheretostay (abgerufen Aug 2026); eine Quelle nennt Ausnahmen am Wochenende — TODO vor Ort. · Zusätzlich jeden 2. Samstag im Monat 08:00–11:00; Zugang über das NBRI-Haupttor (Hügel Street). Stand laut NBRI-Website, abgerufen Aug 2026.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Natur · Wissenschaft</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.57167%2C17.09472" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
+    <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food" data-dogs="unknown" data-wheelchair="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🧺</span><span class="crow-name">Namibia Craft Centre</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -787,13 +814,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Stand laut Verzeichniseinträgen (findglocal/cityseeker), abgerufen Aug 2026 — TODO vor Ort bestätigen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Handwerk · Kunst · Essen</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.574%2C17.083" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft" data-dogs="unknown" data-visit="45">
+    <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft" data-dogs="unknown" data-wheelchair="unknown" data-visit="45">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🧺</span><span class="crow-name">Green Market / Bio-Markt</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -810,11 +838,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Nur samstags vormittags, auf dem Gelände der Stephanuskirche, 3 Dr Kenneth David Kaunda Street, Klein Windhoek. Stand laut Recycle Namibia Forum/windhoek-info, abgerufen Aug 2026.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen · Handwerk</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
+    <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-wheelchair="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🍽</span><span class="crow-name">Craft Café</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -831,13 +860,14 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Angaben widersprüchlich/veraltet; firmiert in manchen Quellen als 'Craft Bistro'. TODO vor Ort: Zeiten und aktuellen Namen prüfen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.574%2C17.083" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food" data-dogs="unknown" data-visit="30">
+    <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food" data-dogs="unknown" data-wheelchair="unknown" data-visit="30">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🍽</span><span class="crow-name">Slowtown Coffee Roasters (Innenstadt)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -854,11 +884,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Stand laut Slowtown-Website/The Namibian, abgerufen Aug 2026.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="60">
+    <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-wheelchair="unknown" data-visit="60">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🍽</span><span class="crow-name">INDUS Indian Restaurant (früher Garnish)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -874,11 +905,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">Indisches Restaurant am 1 City Plaza, Sam Nujoma Drive; laut Rezensionen mit klar gekennzeichneten vegetarischen und veganen Hauptgerichten (eigene Vegan-Seite in der Karte, z. B. Paneer Tikka Masala, Veg Kolhapuri). Firmierte früher als 'Garnish Indian Restaurant'. TODO vor Ort: Namen/Standort bestätigen, Koordinate erfassen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food" data-dogs="unknown" data-visit="60">
+    <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food" data-dogs="unknown" data-wheelchair="unknown" data-visit="60">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🍽</span><span class="crow-name">Fresh 'n Wild at Utopia</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -894,11 +926,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="psnap">Café/Bistro/Deli in einem Garten mit altem Baumbestand und Teich, 64 Nelson Mandela Avenue (Klein Windhoek); Menü mit vegetarisch/vegan-freundlichen Hauptgerichten aus lokalen Zutaten (z. B. gebratener Halloumi auf mariniertem Quinoa), Baukasten-Prinzip aus Proteinen, Beilagen und Saucen. TODO vor Ort: Koordinate und Öffnungszeiten erfassen.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets" data-dogs="unknown" data-visit="20">
+    <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets" data-dogs="unknown" data-wheelchair="unknown" data-visit="20">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🍦</span><span class="crow-name">Cramer's Eiscafé</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -915,11 +948,12 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pfun">⚡ Rezensionen loben ungewöhnliche Sorten wie Ziegenkäse-Kirsche oder Koriander-Himbeere sowie Frozen Yoghurt aus der Monkey Orange.</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Süßes</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="" data-dogs="unknown" data-visit="5" data-lat="-22.5594" data-lng="17.081">
+    <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="" data-dogs="unknown" data-wheelchair="unknown" data-visit="5" data-lat="-22.5594" data-lng="17.081">
       <button type="button" class="crow" aria-expanded="false">
         <span aria-hidden="true">🚌</span><span class="crow-name">Intercape-Fernbushalt (am Bahnhof)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
       </button>
@@ -936,11 +970,13 @@ body.has-plan main{padding-bottom:4.5rem}
         <p class="pnote">Abfahrten fahrplanabhängig; Intercape Namibia Tel. +264 82 410 1000 (laut Busbud, abgerufen Aug 2026).</p>
         <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
         <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
+        <p class="pacc">♿ Zugänglichkeit unbekannt — wird vor Ort erfasst</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5594%2C17.081" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
+    <li class="csep" id="csep" hidden>— passt gerade nicht, trotzdem da —</li>
   </ol>
   <p id="empty" hidden>Nichts übrig — Filter etwas lockern.</p>
 
@@ -959,7 +995,7 @@ body.has-plan main{padding-bottom:4.5rem}
     <p>Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure
     Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.</p>
     <p>Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind
-    Partnerstädte. <span id="version">Stand v10 · 0be025</span></p>
+    Partnerstädte. <span id="version">Stand v10 · eaa95b</span></p>
   </div>
 </footer>
 
@@ -1188,7 +1224,8 @@ const CFG = {
     if (state.int.length && CFG.contentKinds.indexOf(kind) >= 0
         && !ints.some(i => state.int.includes(i))) return 'anderes Interesse';
     if (state.comp.includes('dog') && p.dataset.dogs === 'no') return 'Hunde verboten';
-    const bands = state.comp.filter(c => c !== 'dog').map(c => CFG.bands[c]);
+    if (state.comp.includes('wheel') && p.dataset.wheelchair === 'no') return 'nicht rollstuhlgerecht';
+    const bands = state.comp.filter(c => c !== 'dog' && c !== 'wheel').map(c => CFG.bands[c]);
     if (bands.length) {
       const oldest = Math.max(...bands.map(b => b[1]));
       const youngest = Math.min(...bands.map(b => b[0]));
@@ -1202,18 +1239,24 @@ const CFG = {
     return null;
   }
 
+  const csep = document.getElementById('csep');
+  let order = origOrder.slice(); // current display order (nearby sort swaps it)
+
   function apply() {
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
     document.body.classList.toggle('has-dog', state.comp.includes('dog'));
-    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog'));
+    document.body.classList.toggle('has-wheel', state.comp.includes('wheel'));
+    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog' && c !== 'wheel'));
     let shown = 0;
-    places.forEach(p => {
+    const matching = [], folded = [];
+    order.forEach(p => {
       if (planOnly) {
         // the plan is an explicit selection — here hiding is the honest cut
         const inPlan = plan.includes(p.id.replace(/^poi-/, ''));
         p.hidden = !inPlan;
         p.classList.remove('collapsed', 'expanded');
         if (inPlan) shown++;
+        matching.push(p);
         return;
       }
       p.hidden = false;
@@ -1223,14 +1266,21 @@ const CFG = {
         p.classList.remove('expanded');
         p.querySelector('.crow').setAttribute('aria-expanded', 'false');
         shown++;
+        matching.push(p);
+      } else {
+        folded.push(p);
       }
       p.querySelector('.crow-why').textContent = why || '';
     });
-    const collapsed = planOnly ? 0 : places.length - shown;
+    // matching places first (in current order), collapsed ones behind a separator
+    matching.forEach(p => list.appendChild(p));
+    csep.hidden = planOnly || folded.length === 0;
+    list.appendChild(csep);
+    folded.forEach(p => list.appendChild(p));
     const base = planOnly
       ? `${shown} ${shown === 1 ? 'Ort' : 'Orte'} im Plan`
       : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length)
-        + (collapsed ? ' passen — Rest zusammengeklappt' : '');
+        + (folded.length ? ' passen — Rest unten zusammengeklappt' : '');
     count.textContent = base;
     count.dataset.base = base;
     empty.hidden = true; // the list can never be empty anymore
@@ -1320,10 +1370,11 @@ const CFG = {
   }
   sortBtn.addEventListener('click', () => {
     if (sorted) {
-      origOrder.forEach(el => list.appendChild(el));
+      order = origOrder.slice();
       places.forEach(p => { p.querySelector('.pdist').hidden = true; });
       sorted = false;
       sortBtn.setAttribute('aria-pressed', 'false');
+      apply();
       return;
     }
     if (!navigator.geolocation) { flash('Standort hier nicht verfügbar.'); return; }
@@ -1337,13 +1388,14 @@ const CFG = {
       }));
       withDist.sort((a, b) => a.d - b.d);
       withDist.forEach(({ el, d }) => {
-        list.appendChild(el);
         const dEl = el.querySelector('.pdist');
         dEl.textContent = isFinite(d) ? '📍 ' + fmtDist(d) : '';
         dEl.hidden = !isFinite(d);
       });
+      order = withDist.map(x => x.el);
       sorted = true;
       sortBtn.setAttribute('aria-pressed', 'true');
+      apply(); // regroups: matching by distance first, collapsed behind the separator
     }, () => flash('Standort nicht freigegeben — Sortierung bleibt wie sie ist.'),
     { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
   });

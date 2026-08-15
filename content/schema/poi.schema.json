@@ -168,6 +168,10 @@
       "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]*$" },
       "additionalProperties": { "$ref": "#/$defs/i18n" }
     },
+    "issue": {
+      "$ref": "#/$defs/i18n",
+      "description": "Bekanntes Problem, kurz (z. B. 'derzeit geschlossen'). Wird als Warn-Badge auf der Karte und der zusammengeklappten Zeile angezeigt. Details gehören in hours.note."
+    },
     "funFact": { "$ref": "#/$defs/i18n" },
     "dadJoke": { "$ref": "#/$defs/i18n", "description": "Optional. Die Edition entscheidet, ob er ausgespielt wird." },
     "related": {
