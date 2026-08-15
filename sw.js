@@ -5,12 +5,13 @@
    serves cache-first, and answers HTTP Range requests from cache (required
    for audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v10-3a166c8c';
+const CACHE_NAME = 'bremen-walk-v10-be903423';
 
 const ASSETS = [
   './',
   './index.html',
   './teens.html',
+  './windhoek.html',
   './manifest.json',
   './assets/audio/boettcher.mp3',
   './assets/audio/de-boettcher.mp3',
