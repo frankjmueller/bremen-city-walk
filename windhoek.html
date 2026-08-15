@@ -319,6 +319,20 @@ body.has-kids .pkids{display:block}
 }
 .planbar button[aria-pressed="true"]{background:var(--gold);color:#4A2317;border-color:var(--gold);font-weight:700}
 body.has-plan main{padding-bottom:4.5rem}
+.crow{
+  display:none;width:100%;align-items:center;gap:.55rem;text-align:left;
+  background:var(--card);border:1px dashed var(--line);border-radius:12px;
+  padding:.55rem .8rem;font-family:inherit;font-size:.9rem;color:var(--muted);cursor:pointer;
+}
+.place.collapsed{margin:0 0 .5rem}
+.place.collapsed .crow{display:flex}
+.place.collapsed article{display:none}
+.place.collapsed.expanded article{display:block;margin-top:.5rem}
+.place.collapsed.expanded .crow-chev{transform:rotate(180deg)}
+.crow-name{color:var(--ink);font-weight:600;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+.crow-why{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
+.crow-chev{flex:none;transition:transform .15s}
+@media (prefers-reduced-motion: reduce){.crow-chev{transition:none}}
 .draftnote{
   max-width:34rem;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
   background:rgba(0,0,0,.28);border:1px solid rgba(217,164,65,.45);
@@ -385,8 +399,9 @@ body.has-plan main{padding-bottom:4.5rem}
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
     nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
-    Kinder und Hund sind Begleitung, kein Filter: Sie blenden nur bekannte Konflikte aus und
-    zeigen auf jeder Karte, was über Hunde und Kinder-Eignung bekannt ist. Mit ➕ sammelt ihr
+    Kinder und Hund sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was über Hunde
+    und Kinder-Eignung bekannt ist. Was nicht passt, verschwindet nie — es wird nur
+    <b>zusammengeklappt</b>, mit dem Grund dran; antippen zeigt es trotzdem. Mit ➕ sammelt ihr
     Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
@@ -395,6 +410,9 @@ body.has-plan main{padding-bottom:4.5rem}
 
   <ol class="places" id="places">
     <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture" data-dogs="unknown" data-visit="20" data-lat="-22.56778" data-lng="17.08722">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Christuskirche</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -416,6 +434,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.56933" data-lng="17.08837">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Alte Feste</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -436,6 +457,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture" data-dogs="unknown" data-visit="60" data-lat="-22.5688" data-lng="17.0881">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🕯</span><span class="crow-name">Independence Memorial Museum</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -457,6 +481,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.5688" data-lng="17.0881">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🕯</span><span class="crow-name">Genozid-Denkmal</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -476,6 +503,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="15" data-lat="-22.56667" data-lng="17.08917">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Tintenpalast (Parlament)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -496,6 +526,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history" data-dogs="unknown" data-visit="30" data-lat="-22.56694" data-lng="17.08806">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🌳</span><span class="crow-name">Parlamentsgärten</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -516,6 +549,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="10" data-lat="-22.56056" data-lng="17.08639">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Turnhalle</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -535,6 +571,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo" data-dogs="unknown" data-visit="30" data-lat="-22.5594" data-lng="17.081">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Bahnhof Windhoek & TransNamib-Museum</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -556,6 +595,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo" data-dogs="unknown" data-visit="45" data-lat="-22.57444" data-lng="17.0925">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🌄</span><span class="crow-name">Heinitzburg</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌄 Aussicht</span>
@@ -577,6 +619,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo" data-dogs="unknown" data-visit="15">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Gibeon-Meteoriten (Post Street Mall)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -596,6 +641,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo" data-dogs="unknown" data-visit="30">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🧺</span><span class="crow-name">Post Street Mall</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -613,6 +661,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science" data-dogs="unknown" data-visit="5">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🏛</span><span class="crow-name">Owela-Museum (Nationalmuseum Namibias)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -631,6 +682,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art" data-dogs="unknown" data-visit="45">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🎨</span><span class="crow-name">Nationale Kunstgalerie Namibias (NAGN)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🎨 Kunst</span>
@@ -649,6 +703,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history" data-dogs="unknown" data-kidsmin="0" data-visit="30" data-lat="-22.56748" data-lng="17.08487">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🌳</span><span class="crow-name">Zoo Park</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -669,6 +726,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture" data-dogs="unknown" data-visit="5" data-lat="-22.56748" data-lng="17.08487">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🕯</span><span class="crow-name">Kriegerdenkmal im Zoo Park</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -688,6 +748,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science" data-dogs="unknown" data-visit="60" data-lat="-22.57167" data-lng="17.09472">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🌳</span><span class="crow-name">Nationaler Botanischer Garten Namibias</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -708,6 +771,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🧺</span><span class="crow-name">Namibia Craft Centre</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -728,6 +794,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft" data-dogs="unknown" data-visit="45">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🧺</span><span class="crow-name">Green Market / Bio-Markt</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -746,6 +815,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🍽</span><span class="crow-name">Craft Café</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -766,6 +838,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food" data-dogs="unknown" data-visit="30">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🍽</span><span class="crow-name">Slowtown Coffee Roasters (Innenstadt)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -784,6 +859,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="60">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🍽</span><span class="crow-name">INDUS Indian Restaurant (früher Garnish)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -801,6 +879,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food" data-dogs="unknown" data-visit="60">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🍽</span><span class="crow-name">Fresh 'n Wild at Utopia</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -818,6 +899,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets" data-dogs="unknown" data-visit="20">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🍦</span><span class="crow-name">Cramer's Eiscafé</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍦 Eis</span>
@@ -836,6 +920,9 @@ body.has-plan main{padding-bottom:4.5rem}
       </div></article>
     </li>
     <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="" data-dogs="unknown" data-visit="5" data-lat="-22.5594" data-lng="17.081">
+      <button type="button" class="crow" aria-expanded="false">
+        <span aria-hidden="true">🚌</span><span class="crow-name">Intercape-Fernbushalt (am Bahnhof)</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>
+      </button>
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🚌 Transport</span>
@@ -872,7 +959,7 @@ body.has-plan main{padding-bottom:4.5rem}
     <p>Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure
     Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.</p>
     <p>Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind
-    Partnerstädte. <span id="version">Stand v10 · 14379b</span></p>
+    Partnerstädte. <span id="version">Stand v10 · 0be025</span></p>
   </div>
 </footer>
 
@@ -1081,54 +1168,83 @@ const CFG = {
   }
 
   /* Companions (kids by age, dog) travel with you all day — they must
-     never empty the list over missing data. Only known conflicts hide a
-     place; known info is surfaced on the cards instead. */
-  function compPass(el) {
-    if (!state.comp.length) return true;
-    if (state.comp.includes('dog') && el.dataset.dogs === 'no') return false;
+     never empty the list over missing data. Only known conflicts count
+     against a place; known info is surfaced on the cards instead. */
+  const NEED_FAIL = {
+    shade: 'kein Schatten bekannt', indoor: 'nicht drinnen',
+    veg: 'kein vegetarisches Angebot bekannt', free: 'kostenpflichtig',
+  };
+
+  /* Returns null when the place matches the profile, else the reason —
+     shown on the collapsed row. Nothing ever disappears from the list. */
+  function judge(p, kinds) {
+    const kind = p.dataset.kind;
+    const flags = p.dataset.flags.split(' ').filter(Boolean);
+    const ints = p.dataset.interests.split(' ').filter(Boolean);
+    if (state.cat.length && !kinds.has(kind)) return 'andere Kategorie';
+    for (const n of state.need) {
+      if (!needPass(n, kind, flags)) return NEED_FAIL[n] || n;
+    }
+    if (state.int.length && CFG.contentKinds.indexOf(kind) >= 0
+        && !ints.some(i => state.int.includes(i))) return 'anderes Interesse';
+    if (state.comp.includes('dog') && p.dataset.dogs === 'no') return 'Hunde verboten';
     const bands = state.comp.filter(c => c !== 'dog').map(c => CFG.bands[c]);
     if (bands.length) {
       const oldest = Math.max(...bands.map(b => b[1]));
       const youngest = Math.min(...bands.map(b => b[0]));
-      if (el.dataset.kidsmin !== undefined && Number(el.dataset.kidsmin) > oldest) return false;
-      if (el.dataset.kidsmax !== undefined && Number(el.dataset.kidsmax) < youngest) return false;
+      if (p.dataset.kidsmin !== undefined && Number(p.dataset.kidsmin) > oldest) {
+        return `erst ab ${p.dataset.kidsmin} Jahren`;
+      }
+      if (p.dataset.kidsmax !== undefined && Number(p.dataset.kidsmax) < youngest) {
+        return `nur bis ${p.dataset.kidsmax} Jahre`;
+      }
     }
-    return true;
+    return null;
   }
 
   function apply() {
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
-    const hasKids = state.comp.some(c => c !== 'dog');
     document.body.classList.toggle('has-dog', state.comp.includes('dog'));
-    document.body.classList.toggle('has-kids', hasKids);
+    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog'));
     let shown = 0;
     places.forEach(p => {
-      let ok;
       if (planOnly) {
-        ok = plan.includes(p.id.replace(/^poi-/, ''));
-      } else {
-        const kind = p.dataset.kind;
-        const flags = p.dataset.flags.split(' ').filter(Boolean);
-        const ints = p.dataset.interests.split(' ').filter(Boolean);
-        ok = true;
-        if (state.cat.length) ok = kinds.has(kind);
-        if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
-        if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
-          ok = ints.some(i => state.int.includes(i));
-        }
-        if (ok) ok = compPass(p);
+        // the plan is an explicit selection — here hiding is the honest cut
+        const inPlan = plan.includes(p.id.replace(/^poi-/, ''));
+        p.hidden = !inPlan;
+        p.classList.remove('collapsed', 'expanded');
+        if (inPlan) shown++;
+        return;
       }
-      p.hidden = !ok;
-      if (ok) shown++;
+      p.hidden = false;
+      const why = judge(p, kinds);
+      p.classList.toggle('collapsed', why !== null);
+      if (why === null) {
+        p.classList.remove('expanded');
+        p.querySelector('.crow').setAttribute('aria-expanded', 'false');
+        shown++;
+      }
+      p.querySelector('.crow-why').textContent = why || '';
     });
+    const collapsed = planOnly ? 0 : places.length - shown;
     const base = planOnly
       ? `${shown} ${shown === 1 ? 'Ort' : 'Orte'} im Plan`
-      : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length);
+      : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length)
+        + (collapsed ? ' passen — Rest zusammengeklappt' : '');
     count.textContent = base;
     count.dataset.base = base;
-    empty.hidden = shown > 0;
+    empty.hidden = true; // the list can never be empty anymore
     reset.hidden = !(state.cat.length || state.need.length || state.int.length || state.comp.length);
   }
+
+  // a collapsed row expands on tap — the filter suggests, it never dictates
+  places.forEach(p => {
+    const crow = p.querySelector('.crow');
+    crow.addEventListener('click', () => {
+      const ex = p.classList.toggle('expanded');
+      crow.setAttribute('aria-expanded', String(ex));
+    });
+  });
 
   /* ————— day plan: tap places together, see the time, share the link ————— */
   function fmtMin(m) {

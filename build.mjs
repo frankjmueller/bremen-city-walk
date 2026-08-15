@@ -297,6 +297,11 @@ function renderPlace(p, currency) {
   if (p.coord) attrs.push(`data-lat="${p.coord[0]}"`, `data-lng="${p.coord[1]}"`);
   const out = [];
   out.push(`    <li class="place" ${attrs.join(' ')}>`);
+  // collapsed row: shown instead of the card when the place doesn't match —
+  // nothing ever disappears, the reason is named, a tap expands it anyway
+  out.push('      <button type="button" class="crow" aria-expanded="false">');
+  out.push(`        <span aria-hidden="true">${emoji}</span><span class="crow-name">${name}</span><span class="crow-why"></span><span class="crow-chev" aria-hidden="true">▾</span>`);
+  out.push('      </button>');
   out.push('      <article class="card"><div class="pad">');
   out.push('        <div class="badges">');
   out.push(`          <span class="badge kind">${emoji} ${kindLabel}</span>`);
@@ -395,6 +400,20 @@ body.has-kids .pkids{display:block}
 }
 .planbar button[aria-pressed="true"]{background:var(--gold);color:#4A2317;border-color:var(--gold);font-weight:700}
 body.has-plan main{padding-bottom:4.5rem}
+.crow{
+  display:none;width:100%;align-items:center;gap:.55rem;text-align:left;
+  background:var(--card);border:1px dashed var(--line);border-radius:12px;
+  padding:.55rem .8rem;font-family:inherit;font-size:.9rem;color:var(--muted);cursor:pointer;
+}
+.place.collapsed{margin:0 0 .5rem}
+.place.collapsed .crow{display:flex}
+.place.collapsed article{display:none}
+.place.collapsed.expanded article{display:block;margin-top:.5rem}
+.place.collapsed.expanded .crow-chev{transform:rotate(180deg)}
+.crow-name{color:var(--ink);font-weight:600;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+.crow-why{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
+.crow-chev{flex:none;transition:transform .15s}
+@media (prefers-reduced-motion: reduce){.crow-chev{transition:none}}
 .draftnote{
   max-width:34rem;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
   background:rgba(0,0,0,.28);border:1px solid rgba(217,164,65,.45);
@@ -477,8 +496,9 @@ ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
     nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
-    Kinder und Hund sind Begleitung, kein Filter: Sie blenden nur bekannte Konflikte aus und
-    zeigen auf jeder Karte, was über Hunde und Kinder-Eignung bekannt ist. Mit ➕ sammelt ihr
+    Kinder und Hund sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was über Hunde
+    und Kinder-Eignung bekannt ist. Was nicht passt, verschwindet nie — es wird nur
+    <b>zusammengeklappt</b>, mit dem Grund dran; antippen zeigt es trotzdem. Mit ➕ sammelt ihr
     Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>

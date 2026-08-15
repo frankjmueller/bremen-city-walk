@@ -124,54 +124,83 @@ const CFG = __CFG__;
   }
 
   /* Companions (kids by age, dog) travel with you all day — they must
-     never empty the list over missing data. Only known conflicts hide a
-     place; known info is surfaced on the cards instead. */
-  function compPass(el) {
-    if (!state.comp.length) return true;
-    if (state.comp.includes('dog') && el.dataset.dogs === 'no') return false;
+     never empty the list over missing data. Only known conflicts count
+     against a place; known info is surfaced on the cards instead. */
+  const NEED_FAIL = {
+    shade: 'kein Schatten bekannt', indoor: 'nicht drinnen',
+    veg: 'kein vegetarisches Angebot bekannt', free: 'kostenpflichtig',
+  };
+
+  /* Returns null when the place matches the profile, else the reason —
+     shown on the collapsed row. Nothing ever disappears from the list. */
+  function judge(p, kinds) {
+    const kind = p.dataset.kind;
+    const flags = p.dataset.flags.split(' ').filter(Boolean);
+    const ints = p.dataset.interests.split(' ').filter(Boolean);
+    if (state.cat.length && !kinds.has(kind)) return 'andere Kategorie';
+    for (const n of state.need) {
+      if (!needPass(n, kind, flags)) return NEED_FAIL[n] || n;
+    }
+    if (state.int.length && CFG.contentKinds.indexOf(kind) >= 0
+        && !ints.some(i => state.int.includes(i))) return 'anderes Interesse';
+    if (state.comp.includes('dog') && p.dataset.dogs === 'no') return 'Hunde verboten';
     const bands = state.comp.filter(c => c !== 'dog').map(c => CFG.bands[c]);
     if (bands.length) {
       const oldest = Math.max(...bands.map(b => b[1]));
       const youngest = Math.min(...bands.map(b => b[0]));
-      if (el.dataset.kidsmin !== undefined && Number(el.dataset.kidsmin) > oldest) return false;
-      if (el.dataset.kidsmax !== undefined && Number(el.dataset.kidsmax) < youngest) return false;
+      if (p.dataset.kidsmin !== undefined && Number(p.dataset.kidsmin) > oldest) {
+        return `erst ab ${p.dataset.kidsmin} Jahren`;
+      }
+      if (p.dataset.kidsmax !== undefined && Number(p.dataset.kidsmax) < youngest) {
+        return `nur bis ${p.dataset.kidsmax} Jahre`;
+      }
     }
-    return true;
+    return null;
   }
 
   function apply() {
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
-    const hasKids = state.comp.some(c => c !== 'dog');
     document.body.classList.toggle('has-dog', state.comp.includes('dog'));
-    document.body.classList.toggle('has-kids', hasKids);
+    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog'));
     let shown = 0;
     places.forEach(p => {
-      let ok;
       if (planOnly) {
-        ok = plan.includes(p.id.replace(/^poi-/, ''));
-      } else {
-        const kind = p.dataset.kind;
-        const flags = p.dataset.flags.split(' ').filter(Boolean);
-        const ints = p.dataset.interests.split(' ').filter(Boolean);
-        ok = true;
-        if (state.cat.length) ok = kinds.has(kind);
-        if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
-        if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
-          ok = ints.some(i => state.int.includes(i));
-        }
-        if (ok) ok = compPass(p);
+        // the plan is an explicit selection — here hiding is the honest cut
+        const inPlan = plan.includes(p.id.replace(/^poi-/, ''));
+        p.hidden = !inPlan;
+        p.classList.remove('collapsed', 'expanded');
+        if (inPlan) shown++;
+        return;
       }
-      p.hidden = !ok;
-      if (ok) shown++;
+      p.hidden = false;
+      const why = judge(p, kinds);
+      p.classList.toggle('collapsed', why !== null);
+      if (why === null) {
+        p.classList.remove('expanded');
+        p.querySelector('.crow').setAttribute('aria-expanded', 'false');
+        shown++;
+      }
+      p.querySelector('.crow-why').textContent = why || '';
     });
+    const collapsed = planOnly ? 0 : places.length - shown;
     const base = planOnly
       ? `${shown} ${shown === 1 ? 'Ort' : 'Orte'} im Plan`
-      : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length);
+      : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length)
+        + (collapsed ? ' passen — Rest zusammengeklappt' : '');
     count.textContent = base;
     count.dataset.base = base;
-    empty.hidden = shown > 0;
+    empty.hidden = true; // the list can never be empty anymore
     reset.hidden = !(state.cat.length || state.need.length || state.int.length || state.comp.length);
   }
+
+  // a collapsed row expands on tap — the filter suggests, it never dictates
+  places.forEach(p => {
+    const crow = p.querySelector('.crow');
+    crow.addEventListener('click', () => {
+      const ex = p.classList.toggle('expanded');
+      crow.setAttribute('aria-expanded', String(ex));
+    });
+  });
 
   /* ————— day plan: tap places together, see the time, share the link ————— */
   function fmtMin(m) {
