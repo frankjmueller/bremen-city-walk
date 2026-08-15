@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frankjmueller.github.io/bremen-city-walk/content/schema/tour.schema.json",
+  "title": "Tour",
+  "description": "Eine kuratierte Stopp-Reihenfolge über den Ortsbestand. Optional: Der Normalfall im Zielbild ist die pro Person auf dem Gerät generierte Tour aus Profil + Bestand; kuratierte Touren sind Editionen mit Haltung (die Bremen-Editionen) oder Startpunkte für White-Label-Kunden.",
+  "type": "object",
+  "required": ["id", "edition", "title", "stops"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "edition": {
+      "type": "string",
+      "enum": ["adult", "teens", "kids", "run"],
+      "description": "Bestimmt Tonalität und ob z. B. dadJoke ausgespielt wird."
+    },
+    "title": { "$ref": "./poi.schema.json#/$defs/i18n" },
+    "intro": { "$ref": "./poi.schema.json#/$defs/i18n" },
+    "perspective": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Default-Perspektive dieser Tour (Slug aus poi.perspectives), z. B. 'from-namibia'. Das Profil kann sie überschreiben."
+    },
+    "distanceKm": { "type": "number", "minimum": 0 },
+    "route": { "type": "string", "description": "Pfad zu einer GPX-Datei, optional." },
+    "stops": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["poi"],
+        "properties": {
+          "poi": { "type": "string", "description": "id eines Orts aus pois.json derselben Stadt. Der Build bricht bei toten Verweisen ab." },
+          "role": { "type": "string", "enum": ["anchor", "transit", "memorial", "optional"] }
+        }
+      }
+    }
+  }
+}

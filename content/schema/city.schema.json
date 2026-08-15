@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frankjmueller.github.io/bremen-city-walk/content/schema/city.schema.json",
+  "title": "Stadt",
+  "description": "Metadaten eines Stadtbestands. Eine Stadt ohne benannte Kurator:in wird nicht freigegeben — das ist eine Prozessregel, keine Absichtserklärung.",
+  "type": "object",
+  "required": ["id", "country", "center", "languages", "currency", "curator", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "country": { "type": "string", "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2, z. B. 'DE', 'NA'." },
+    "center": { "$ref": "./poi.schema.json#/$defs/coord" },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+      "description": "Sprachen, in denen dieser Bestand ausgeliefert wird. Erste = Fallback."
+    },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217, z. B. 'EUR', 'NAD'. Gilt für alle cost.amount der Stadt." },
+    "theme": {
+      "type": "object",
+      "description": "Farb-Tokens fürs Branding. Key = Token-Name, Wert = CSS-Farbe.",
+      "additionalProperties": { "type": "string" }
+    },
+    "brand": {
+      "type": ["object", "null"],
+      "description": "White-Label. null = eigene Marke. Offboarding-Regel: DNS beim Kunden zuerst löschen, dann hier.",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "logo": { "type": "string" },
+        "domain": { "type": "string" },
+        "dnsVerified": { "type": "string", "description": "TXT-Record der Domain-Verifikation." }
+      }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pmtiles": { "type": "string" },
+        "bounds": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "type": "number" },
+          "description": "[minLng, minLat, maxLng, maxLat]"
+        }
+      }
+    },
+    "practical": {
+      "type": "object",
+      "description": "Das 'Gut zu wissen'-Grid. Key = Slug (emergency, water, paying, …), Wert = Text pro Sprache.",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "additionalProperties": { "$ref": "./poi.schema.json#/$defs/i18n" }
+    },
+    "curator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "description": "Steht mit Namen im Footer und verantwortet die Fakten." },
+        "checkedOn": { "type": "string", "format": "date" }
+      }
+    },
+    "version": { "type": "string", "description": "Redaktionsstand, z. B. '2026.10' oder 'draft'. Der Build hasht zusätzlich selbst." }
+  }
+}

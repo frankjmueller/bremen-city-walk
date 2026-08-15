@@ -22,21 +22,53 @@ Monetarisierung, Architektur) zusammengeführt. Preise, Provisionssätze und Fö
 5. Zwei Ideen streichen: „sketchy areas" (rechtlich/ethisch vermint) und „Things Trump would
    hate" als Produktname (Inhalte behalten, Framing nicht).
 
-## 2. Der zentrale Widerspruch
+## 2. Was skaliert — und was wirklich nicht
 
-> Was den Guide gut macht, skaliert nicht. Was skaliert, macht ihn nicht gut.
+Die Erstfassung stand auf der These „was den Guide gut macht, skaliert nicht". Die These war
+zu grob. Was den Bremen-Guide gut macht, sind **drei verschiedene Zutaten**, die völlig
+unterschiedlich skalieren:
 
-Der Guide funktioniert wegen Sätzen wie „Bei Frost bleibt das Glockenspiel stumm — sonst
-zerspringt das Porzellan" und wegen des Antikolonial-Elefanten als „this place belongs to your
-story too". Das ist recherchierte Ortskenntnis mit Haltung; ein LLM halluziniert so etwas nicht.
+1. **Die Situation** — Unterkunft, Zeitraum, Interessen, wer mitkommt, welche Sprache.
+   Liefert die reisende Person selbst: zur Laufzeit, umsonst, genauer als jede Redaktion raten
+   kann. Bei Bremen war „Gäste aus Namibia, 7things, ein Tag" ein Briefing, kein Geistesblitz.
+   **Skaliert perfekt.**
+2. **Die Fakten** — stimmt der Preis, ist das offen, hält die Anekdote. Kann nur jemand vor Ort
+   liefern; der Bedarf wächst mit jeder Stadt. **Verifikation ist der Engpass, nicht die Prosa.**
+3. **Die Haltung** — die Entscheidung, den Antikolonial-Elefanten auf Stopp 10 zu setzen und
+   „this place belongs to your story too" zu schreiben. Redaktionell — aber sie gehört an den
+   **Ort**, nicht an die Tour: als wählbare Perspektive (`perspectives` im Schema), die das
+   Profil auslöst.
 
-Der Markt hat beide Enden schon durchgespielt: **Detour** produzierte handgemachte Audio-Touren,
-wurde 2018 an Bose verkauft und abgeschaltet — Produktion pro Stadt trug sich nicht.
-**Audiala** macht das Gegenteil (1.890 Städte, 117.000 Orte, KI-generiert) und liefert genau den
-flachen Brei, von dem sich dieser Guide abhebt.
+> Die Reisenden liefern die Situation. Der Ort braucht die Verifikation.
+> Die Haltung wandert in die Orte.
 
-**Konsequenz:** 8–12 Städte mit namentlichen Kurator:innen, nicht 50 automatisierte.
-Der Engpass ist nie der Service Worker — es ist der Satz über das Porzellan bei Frost.
+**Architektur-Konsequenz:** Das Artefakt pro Stadt ist keine Tour, sondern ein **verifizierter
+Ortsbestand**. Touren entstehen pro Person, auf dem Gerät, aus dem Profil. Die Filter-Engine
+(Cluster 1) ist damit kein Personalisierungs-Komfort, sondern die Lösung des Kurationsproblems:
+Der Mensch kuratiert Orte, die Reisenden kuratieren ihre Tour.
+
+**Ökonomie:** Sechzig verifizierte Orte bedienen jedes Profil — Familie mit Sechsjährigem,
+Rollstuhl, drei Stunden, vegetarisch. Der Kurationsaufwand fällt einmal pro Stadt an, nicht
+einmal pro Zielgruppe.
+
+**Zwei Risiken der neuen These:**
+
+- Verifikation wird kritischer, nicht unwichtiger: Wenn der Filter „vegetarisch, offen, unter
+  20 €" verspricht und zwei Angaben stimmen nicht, ist das Produkt kaputt — bei einer
+  handgeschriebenen Tour wäre es niemandem aufgefallen.
+- Null Eingabe bleibt Pflicht: Die Standardtour muss ohne jede Frage funktionieren, jede
+  Antwort macht sie besser. Profil progressiv erheben — „seid ihr mit Kindern unterwegs?" darf
+  beim dritten Stopp kommen, nicht vor dem ersten.
+
+Der Markt bestätigt die Zerlegung: **Detour** scheiterte, weil handgemachte Touren pro Stadt
+*und pro Publikum* produziert wurden. **Audiala** ist nicht Brei, *weil* ein Modell die Texte
+schrieb — sondern weil sie für niemanden geschrieben, an keinem Ort geprüft und von niemandem
+verantwortet sind. Beide Defekte sind strukturell vermeidbar: Bestand statt Zielgruppen-Tour,
+Profil statt Raten, namentliche Verifikation statt Anonymität.
+
+**Konsequenz bleibt:** 8–12 verifizierte Bestände mit Namen, nicht 50 automatisierte Städte.
+Der Engpass ist nie der Service Worker — es ist die Person, die weiß, ob das Glockenspiel bei
+Frost wirklich stumm bleibt.
 
 ## 3. Ist-Analyse
 
@@ -320,10 +352,19 @@ Offline-Filtern Glückssache.
   "cost":  { "amount": 0, "perPerson": true },
   "visit": { "minutes": 20 },
   "body":  { "de": { "snapshot": "…", "full": "…", "deep": "…" } },
+  "perspectives": {               // Haltung gehört an den Ort — das Profil wählt
+    "from-namibia": { "en": "This place belongs to your story too." },
+    "kids":         { "de": "…" }
+  },
   "funFact": { "de": "Bei Frost bleibt das Glockenspiel stumm — sonst zerspringt das Porzellan." },
-  "sources": ["https://…"], "factsChecked": "2026-07-01"
+  "sources": ["https://…"],
+  "verification": { "status": "verified", "by": "FJM", "on": "2026-07-01", "method": "on-site" }
 }
 ```
+
+Das verbindliche Schema liegt in `content/schema/` (JSON Schema, validierbar); der erste
+Bestand nach diesem Schema ist `content/windhoek/` — bewusst ohne Tour-Datei, denn der Bestand
+*ist* das Artefakt.
 
 Damit ist „vegetarisch + Kind 6 + Rollstuhl + max. 20 € + 3 Stunden" ein `Array.filter` im
 Browser — offline, ohne Login, in ~40 Zeilen. Gehzeit per Haversine / 4,5 km/h; kein
@@ -464,6 +505,14 @@ Universität öffnet „es gibt keinen Server, der kompromittiert werden könnte
    Alle drei echt, aber unterschiedliche Produkte und Kund:innen. Empfehlung: **Gruppen-Logistik**
    — angefangen ist sie schon, und der nächste Kunde ist jemand, der eine Gruppe durch eine Stadt
    bewegen muss.
+
+**Seit der Erstfassung entschieden: Windhoek ist der Testfall.** Nicht „Stadt Nr. 2 auf
+Verdacht", sondern die Rückrichtung eines Guides, der bereits existiert, für eine Beziehung,
+die bereits existiert — und der härteste Test des Schemas, weil die Datenanalyse in Abschnitt 6
+stillschweigend europäisch war (OSM-Dichte, GTFS, Wheelmap). Was Windhoek überlebt, überlebt
+alles. Schema: `content/schema/` · Erfassungs-Checkliste: `docs/erfassung-windhoek.md` ·
+Bestand: `content/windhoek/`. Refactoring **vor** der Reise — vor Ort ist die knappe Ressource
+das Dortsein, sie fließt in Erfassung, nicht in Node-Debugging.
 
 Unabhängig davon lohnt sich das Wochenend-Refactoring auch dann, wenn nie eine zweite Stadt
 entsteht: Es beseitigt die stille Precache-Fehlermeldung, den iOS-Sieben-Tage-Verlust und die

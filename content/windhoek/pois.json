@@ -1,0 +1,77 @@
+[
+  {
+    "id": "christuskirche",
+    "coord": [-22.56944, 17.08417],
+    "kind": "sight",
+    "name": { "en": "Christuskirche", "de": "Christuskirche" },
+    "tags": {
+      "interests": ["history", "architecture"],
+      "religion": "church",
+      "wheelchair": "unknown",
+      "dogs": "unknown"
+    },
+    "cost": { "amount": 0, "note": { "de": "TODO: offen? Eintritt? Zeiten von der Tür." } },
+    "body": {
+      "de": { "snapshot": "TODO vor Ort — Koordinate am Objekt neu setzen, Öffnungszeiten fotografieren, einen Fakt von einer lokalen Person bestätigen lassen." }
+    },
+    "sources": ["https://en.wikipedia.org/wiki/Christ_Church,_Windhoek"],
+    "verification": { "status": "draft" }
+  },
+  {
+    "id": "independence-memorial-museum",
+    "coord": [-22.5699, 17.0838],
+    "kind": "memorial",
+    "name": { "en": "Independence Memorial Museum", "de": "Independence Memorial Museum" },
+    "tags": {
+      "interests": ["history", "memory-culture"],
+      "values": ["memory-culture"],
+      "indoor": true,
+      "wheelchair": "unknown"
+    },
+    "cost": { "amount": 0, "note": { "de": "TODO: Eintritt wirklich frei? Von der Tafel, nicht aus dem Netz." } },
+    "body": {
+      "de": { "snapshot": "TODO vor Ort — das ist der Kandidat für das Bremen-Paar: hier die Perspektive 'from-bremen' erarbeiten, Gegenstück zum Elefanten." }
+    },
+    "related": [
+      { "city": "bremen", "poi": "elephant", "relation": "same-story" }
+    ],
+    "sources": ["https://en.wikipedia.org/wiki/Independence_Memorial_Museum_(Namibia)"],
+    "verification": { "status": "draft" }
+  },
+  {
+    "id": "parliament-gardens",
+    "coord": [-22.568, 17.087],
+    "kind": "park",
+    "name": { "en": "Parliament Gardens", "de": "Parlamentsgärten" },
+    "tags": {
+      "interests": ["nature"],
+      "shade": true,
+      "dogs": "unknown",
+      "wheelchair": "unknown"
+    },
+    "cost": { "amount": 0 },
+    "body": {
+      "de": { "snapshot": "TODO vor Ort — Schatten-Behauptung prüfen (Abkühl-Filter!), Bänke, Toiletten in der Nähe, wie fühlt es sich abends an (nur Positives erfassen: beleuchtet? belebt bis wann?)." }
+    },
+    "sources": ["https://en.wikipedia.org/wiki/Tintenpalast"],
+    "verification": { "status": "draft" }
+  },
+  {
+    "id": "namibia-craft-centre",
+    "coord": [-22.574, 17.083],
+    "kind": "market",
+    "name": { "en": "Namibia Craft Centre", "de": "Namibia Craft Centre" },
+    "tags": {
+      "interests": ["craft", "art", "food"],
+      "indoor": true,
+      "values": ["community", "diverse-owned"],
+      "wheelchair": "unknown"
+    },
+    "cost": { "amount": 0, "cashOnly": false, "note": { "de": "TODO: Kartenzahlung an den Ständen? Café mit vegetarischen Optionen?" } },
+    "body": {
+      "de": { "snapshot": "TODO vor Ort — Kandidat für diet-Tags (Café), Öffnungszeiten, und hier nach Menschen für die lokale Audio-Stimme fragen." }
+    },
+    "sources": ["https://www.namibiacraftcentre.com/"],
+    "verification": { "status": "draft" }
+  }
+]
