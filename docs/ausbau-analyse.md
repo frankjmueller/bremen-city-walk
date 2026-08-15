@@ -360,7 +360,83 @@ in `localStorage`.
 
 Das Handout mit QR-Code ist der fertige Vertriebskanal.
 
-## 9. Nicht bauen
+## 9. Angriffsfläche
+
+Bedrohungsmodell: nicht der Geheimdienst, sondern der gelangweilte Mensch mit einer Schleife,
+das Café, das die Konkurrenz gegenüber als „dauerhaft geschlossen" meldet, und der verärgerte
+Besucher. Dagegen ist der jetzige Aufbau bemerkenswert gut aufgestellt — weil es nichts gibt.
+
+Kein Server, keine Datenbank, kein Login, keine Session; keine Nutzereingabe erreicht jemals
+einen Server. Nichts zu injizieren, keine Sessions zu übernehmen, keine Credentials im Client.
+Statische Dateien hinter einem CDN sind das, was CDNs am besten wegstecken.
+
+**Der wichtigste Punkt:** Es fallen keine Kosten pro Request an. Damit ist
+**Denial of Wallet** ausgeschlossen — der Angriff, der Solo-Entwickler heute tatsächlich
+ruiniert (nicht die Seite lahmlegen, sondern die Rechnung hochtreiben; Serverless skaliert
+automatisch, ohne explizite Limits gibt es keine Obergrenze).
+
+**Offline-first ist Resilienz:** Selbst wenn der Origin verschwindet, funktionieren installierte
+Guides weiter. Ein Angriff auf die Website trifft nicht die Gruppe, die gerade läuft.
+
+### Vier reale Angriffsflächen
+
+1. **Der GitHub-Account ist das Produkt.** Größtes Restrisiko: Wer ihn übernimmt, deployt
+   beliebigen Inhalt an Menschen, die dem QR vertrauen — und der Service Worker verteilt es
+   zuverlässig. Gegenmittel: Hardware-Passkey statt SMS-2FA, Branch Protection auf `main`,
+   Deploy nur über Actions.
+2. **100 GB Bandbreite/Monat (soft limit).** Keine Rechnung, keine harte Sperre, aber GitHub
+   „may not be able to serve your site" bzw. eine Mail mit der Bitte, ein CDN davorzusetzen.
+   Bei ~7 MB pro Erstbesuch ≈ **14.000 Installationen/Monat** — im Normalbetrieb nie erreicht,
+   von einem Idioten mit einer Schleife in einer Stunde. Verfügbarkeits-, kein Sicherheitsproblem.
+3. **GitHub Pages kann keine HTTP-Header setzen.** Kein CSP, kein HSTS, keine
+   Permissions-Policy — kein `_headers`, kein `.htaccess`. Nur `<meta http-equiv>`, das schwächer
+   ist (kein `frame-ancestors`, kein sinnvolles Reporting). Für ein Hobbyprojekt egal; für ein
+   B2B-Security-Review ein Findings-Generator.
+4. **Subdomain-Takeover — genau beim White-Label.** Entsteht in dem Moment, in dem
+   `walk.hotel-x.de` angelegt wird: Bleibt der CNAME des Kunden stehen, während die Domain aus
+   dem Repo genommen wird, kann irgendwer eine GitHub-Pages-Site mit dieser CNAME anlegen und
+   unter dem Namen des Hotels ausliefern. GitHubs Domain-Verifikation ist optional und verhindert
+   nur, dass Fremde für den *eigenen* Account claimen — sie sichert die Kundendomain nicht
+   automatisch. **Prozessregel: Offboarding heißt zuerst DNS beim Kunden löschen, dann bei dir.**
+
+### Was jedes Feature aufmacht
+
+| Feature | Öffnet | Angriff |
+|---|---|---|
+| **Nutzer-Meldungen** | anonymer Schreib-Endpunkt + DB | **Drei Angriffe in einem:** Flood → Denial of Wallet; inhaltlicher Missbrauch („Restaurant X hat Ratten") → du bist der Verbreiter (Anschwärzung, üble Nachrede); Manipulation durch Konkurrenz |
+| **Gruppen-Sync (Raumcodes)** | beschreibbarer KV ohne Auth | Codes erraten, fremde Treffpunkte umschreiben, Codes squatten → lange Codes + kurze TTL + kein PII |
+| **Live-APIs im Client** | API-Key im Bundle | Kontingent abbrennen. Lösung trivial: nur aus dem *Build* aufrufen, nie zur Laufzeit — Key liegt in Actions Secrets |
+| **LLM zur Laufzeit** | metered Compute | Lehrbuchziel für Denial of Wallet. Content wird gebaut, nicht generiert |
+| **npm-Abhängigkeiten** | Supply Chain | Heute **null Dependencies** = null Risiko. MapLibre + Generator ändern das → pinnen, `npm ci`, Dependabot, bewusst niedrig halten |
+
+Genau deshalb ist der „Melden"-Button als vorbefüllter GitHub-Issue elegant: **GitHub trägt
+Spam-Abwehr, Rate Limiting und Identität**, und nichts wird veröffentlicht, bevor es gemergt ist.
+Kein eigener Endpunkt, kein eigenes Problem.
+
+### Härtung, gestaffelt
+
+**Diese Woche (kostenlos, ein Abend)**
+- Hardware-Passkey auf GitHub, Branch Protection auf `main`
+- **Cloudflare Free vor die Domain:** Cache Everything, eine Rate-Limiting-Regel, Bot Fight Mode
+  → Bandbreitenproblem und halber DDoS-Vektor erledigt, GitHub sieht fast keinen Traffic
+- `<meta http-equiv="Content-Security-Policy">` als Minimum
+
+**Wenn B2B ernst wird: Umzug auf Cloudflare Pages**
+- Echte Header via `_headers` (CSP, HSTS, `X-Content-Type-Options`, Permissions-Policy)
+- Gleiches Preisniveau (0 €), gleicher Git-Push-Deploy, EU-Hosting-Argument inklusive
+- Keine externen Skripte einführen — heute null, das ist die stärkste CSP, die es gibt
+
+**Pro White-Label-Kunde (Prozess, nicht Technik)**
+- Domain-Verifikation beim Anlegen, dokumentiertes Offboarding (DNS beim Kunden zuerst)
+- Periodischer Dangling-CNAME-Check über alle Kundendomains
+- Vertraglich festhalten, wer die DNS-Kontrolle hat
+
+**Merksatz:** Die Angriffsfläche ist heute fast null, weil es nichts gibt, das man angreifen
+kann. Jedes Feature aus Cluster 6 tauscht genau das gegen Bequemlichkeit — ein zweites, von der
+Kostenfrage unabhängiges Argument für Architektur A. Und im Gespräch mit einer Kommune oder
+Universität öffnet „es gibt keinen Server, der kompromittiert werden könnte" Türen.
+
+## 10. Nicht bauen
 
 - **Accounts, Login, Profil-Cloud** — `localStorage` + URL-Sharing deckt jeden echten Bedarf.
 - **Echtzeit-Crowds und Wartezeiten** — teuer, offline unmöglich, Prognosefehler sichtbar.
@@ -379,7 +455,7 @@ Das Handout mit QR-Code ist der fertige Vertriebskanal.
 - **Werbung und Paywall** — AdSense bringt bei optimistischen 20.000 Seitenaufrufen 40–300 €/Jahr,
   gegen Consent-Banner und verschandeltes Produkt. Offline-Nutzung bricht Ads ohnehin.
 
-## 10. Offene Entscheidungen
+## 11. Offene Entscheidungen
 
 1. **Nebenprojekt oder Vorhaben?** 2 h/Woche mit Affiliate und gelegentlichen Event-Aufträgen ist
    ein legitimes Ziel. 10–20 h mit BRIDGE, CAMPUSiDEEN und ggf. EXIST ist ein anderes Leben.
@@ -388,10 +464,6 @@ Das Handout mit QR-Code ist der fertige Vertriebskanal.
    Alle drei echt, aber unterschiedliche Produkte und Kund:innen. Empfehlung: **Gruppen-Logistik**
    — angefangen ist sie schon, und der nächste Kunde ist jemand, der eine Gruppe durch eine Stadt
    bewegen muss.
-3. **Was ist mit „DNS proof" gemeint?** Gelesen als Custom-Domain-Verifikation für
-   White-Label-Kunden (`walk.7things.de` weist per TXT-Record Domain-Kontrolle nach, wie GitHub
-   Pages und Vercel es machen). Zweite Lesart: Echtheitsnachweis gegen Fake-Guides. Beide münden
-   im selben Feature.
 
 Unabhängig davon lohnt sich das Wochenend-Refactoring auch dann, wenn nie eine zweite Stadt
 entsteht: Es beseitigt die stille Precache-Fehlermeldung, den iOS-Sieben-Tage-Verlust und die
