@@ -129,7 +129,53 @@ const CFG = __CFG__;
   const NEED_FAIL = {
     shade: 'kein Schatten bekannt', indoor: 'nicht drinnen',
     veg: 'kein vegetarisches Angebot bekannt', free: 'kostenpflichtig',
+    open: 'gerade geschlossen',
   };
+
+  /* Offline opening-hours evaluation: parses the OSM subset used in the
+     data ("Mo-Fr 09:00-17:00; Sa 10:00-17:00", "24/7"). Unknown or
+     unparsable hours never count against a place — draft honesty. */
+  const OSM_DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  const JS_DAY = { Su: 0, Mo: 1, Tu: 2, We: 3, Th: 4, Fr: 5, Sa: 6 };
+  const hoursCache = new Map();
+  function parseHours(spec) {
+    if (!spec) return null;
+    if (spec.trim() === '24/7') return 'always';
+    const rules = [];
+    for (const part of spec.split(';')) {
+      const m = /^([A-Za-z,\- ]+?)\s+(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})$/.exec(part.trim());
+      if (!m) return null;
+      const days = new Set();
+      for (const tok of m[1].split(',')) {
+        const r = /^([A-Za-z]{2})-([A-Za-z]{2})$/.exec(tok.trim());
+        if (r) {
+          const a = OSM_DAYS.indexOf(r[1]), b = OSM_DAYS.indexOf(r[2]);
+          if (a < 0 || b < 0) return null;
+          for (let i = a; ; i = (i + 1) % 7) { days.add(JS_DAY[OSM_DAYS[i]]); if (i === b) break; }
+        } else {
+          if (JS_DAY[tok.trim()] === undefined) return null;
+          days.add(JS_DAY[tok.trim()]);
+        }
+      }
+      rules.push({ days, from: +m[2] * 60 + +m[3], to: +m[4] * 60 + +m[5] });
+    }
+    return rules.length ? rules : null;
+  }
+  function openNow(p) { // null = unknown; else {open, until}
+    if (!hoursCache.has(p.id)) hoursCache.set(p.id, parseHours(p.dataset.hours));
+    const rules = hoursCache.get(p.id);
+    if (!rules) return null;
+    if (rules === 'always') return { open: true, until: null };
+    const d = new Date();
+    const day = d.getDay(), mins = d.getHours() * 60 + d.getMinutes();
+    for (const r of rules) {
+      if (r.days.has(day) && mins >= r.from && mins < r.to) {
+        const pad = n => String(n).padStart(2, '0');
+        return { open: true, until: `${pad(Math.floor(r.to / 60))}:${pad(r.to % 60)}` };
+      }
+    }
+    return { open: false, until: null };
+  }
 
   /* Returns null when the place matches the profile, else the reason —
      shown on the collapsed row. Nothing ever disappears from the list. */
@@ -139,6 +185,11 @@ const CFG = __CFG__;
     const ints = p.dataset.interests.split(' ').filter(Boolean);
     if (state.cat.length && !kinds.has(kind)) return 'andere Kategorie';
     for (const n of state.need) {
+      if (n === 'open') {
+        const st = openNow(p);
+        if (st && !st.open) return NEED_FAIL.open; // unknown hours pass
+        continue;
+      }
       if (!needPass(n, kind, flags)) return NEED_FAIL[n] || n;
     }
     if (state.int.length && CFG.contentKinds.indexOf(kind) >= 0
@@ -170,6 +221,18 @@ const CFG = __CFG__;
     let shown = 0;
     const matching = [], folded = [];
     order.forEach(p => {
+      // live open/closed line, evaluated offline from the stated hours
+      const st = openNow(p);
+      const po = p.querySelector('.popen');
+      if (st) {
+        po.hidden = false;
+        po.className = 'popen ' + (st.open ? 'open' : 'closed');
+        po.textContent = st.open
+          ? '🕐 Jetzt geöffnet' + (st.until ? ' · bis ' + st.until : '')
+          : '🕐 Jetzt geschlossen';
+      } else {
+        po.hidden = true;
+      }
       if (planOnly) {
         // the plan is an explicit selection — here hiding is the honest cut
         const inPlan = plan.includes(p.id.replace(/^poi-/, ''));
@@ -237,12 +300,22 @@ const CFG = __CFG__;
       planOnly = false;
       planOnlyBtn.setAttribute('aria-pressed', 'false');
     }
-    const mins = plan.reduce((s, id) => {
+    let mins = 0, costSum = 0, costUnknown = 0;
+    plan.forEach(id => {
       const el = document.getElementById('poi-' + id);
-      return s + (el && el.dataset.visit ? Number(el.dataset.visit) : 0);
-    }, 0);
+      if (!el) return;
+      if (el.dataset.visit) mins += Number(el.dataset.visit);
+      if (el.dataset.cost !== undefined) costSum += Number(el.dataset.cost);
+      else costUnknown++;
+    });
+    // budget line: never claim more than the data knows
+    let costTxt = '';
+    if (plan.length && costUnknown < plan.length) {
+      if (costSum > 0) costTxt = ` · ${costUnknown ? 'ab ' : ''}${costSum} ${CFG.currency}`;
+      else if (!costUnknown) costTxt = ' · kostenlos';
+    }
     barSummary.textContent = `${plan.length} ${plan.length === 1 ? 'Ort' : 'Orte'}` +
-      (mins ? ` · ${fmtMin(mins)} vor Ort (ohne Wege)` : '');
+      (mins ? ` · ${fmtMin(mins)} vor Ort (ohne Wege)` : '') + costTxt;
   }
   places.forEach(p => {
     p.querySelector('.padd').addEventListener('click', () => {
@@ -318,6 +391,11 @@ const CFG = __CFG__;
       apply(); // regroups: matching by distance first, collapsed behind the separator
     }, () => flash('Standort nicht freigegeben — Sortierung bleibt wie sie ist.'),
     { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
+  });
+
+  // returning to the tab re-evaluates "Jetzt geöffnet"
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) apply();
   });
 
   updatePlanUI();
