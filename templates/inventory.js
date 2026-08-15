@@ -80,17 +80,32 @@ const CFG = __CFG__;
     apply();
   });
 
+  /* Scoped semantics: AND across criteria, OR within one — but every
+     criterion only judges places it is meaningful for. The profile
+     describes the person; a place outside a criterion's scope passes it
+     vacuously ("vegetarisch + Geschichte" keeps both the veggie
+     restaurant AND the history museum). Categories stay a hard cut. */
+  function needPass(n, kind, flags) {
+    const scope = CFG.needScope[n];
+    if (scope && scope.indexOf(kind) < 0) return true; // not this place's question
+    if (n === 'shade') return flags.includes('shade') || flags.includes('indoor');
+    if (n === 'free') return !flags.includes('paid'); // unknown price stays (draft honesty)
+    return flags.includes(n); // veg, indoor, kids
+  }
+
   function apply() {
-    // categories: OR within; needs: AND; interests: OR within, AND across groups
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
     let shown = 0;
     places.forEach(p => {
+      const kind = p.dataset.kind;
       const flags = p.dataset.flags.split(' ').filter(Boolean);
       const ints = p.dataset.interests.split(' ').filter(Boolean);
       let ok = true;
-      if (state.cat.length) ok = kinds.has(p.dataset.kind);
-      if (ok && state.need.length) ok = state.need.every(n => flags.includes(n));
-      if (ok && state.int.length) ok = ints.some(i => state.int.includes(i));
+      if (state.cat.length) ok = kinds.has(kind);
+      if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
+      if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
+        ok = ints.some(i => state.int.includes(i));
+      }
       p.hidden = !ok;
       if (ok) shown++;
     });

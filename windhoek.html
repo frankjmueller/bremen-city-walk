@@ -268,6 +268,7 @@ footer p{margin:.3rem 0}
   background:var(--card);color:var(--ink);font-size:.86rem;font-family:inherit;cursor:pointer;
 }
 .chip[aria-pressed="true"]{background:var(--patina);color:#fff;border-color:var(--patina);font-weight:700}
+.fhint{font-size:.8rem;line-height:1.5;color:var(--muted);text-align:center;max-width:32rem;margin:.9rem auto 0}
 .fcount{margin:.8rem 0 0}
 .freset{background:none;border:none;color:var(--patina);font-family:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;margin:.3rem auto 0;display:block}
 .places{list-style:none;margin:1.4rem 0 0;padding:0}
@@ -341,12 +342,15 @@ footer p{margin:.3rem 0}
       <button type="button" class="chip" data-g="int" data-v="sweets" aria-pressed="false">Süßes</button>
       <button type="button" class="chip" data-g="int" data-v="science" aria-pressed="false">Wissenschaft</button>
     </div>
+    <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
+    Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
+    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
 
   <ol class="places" id="places">
-    <li class="place" data-kind="sight" data-flags="indoor" data-interests="history architecture">
+    <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -363,7 +367,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="" data-interests="history architecture memory-culture">
+    <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -379,7 +383,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture">
+    <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -396,7 +400,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="memorial" data-flags="" data-interests="history memory-culture">
+    <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -411,7 +415,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="" data-interests="history architecture">
+    <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -427,7 +431,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="park" data-flags="shade free" data-interests="nature history">
+    <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -443,7 +447,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="" data-interests="history architecture">
+    <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -458,7 +462,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="indoor" data-interests="history architecture photo">
+    <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -475,7 +479,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="viewpoint" data-flags="" data-interests="architecture history photo">
+    <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌄 Aussicht</span>
@@ -492,7 +496,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="free" data-interests="science photo">
+    <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -507,7 +511,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="market" data-flags="" data-interests="craft photo">
+    <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -520,7 +524,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="sight" data-flags="indoor" data-interests="history science">
+    <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
@@ -534,7 +538,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="art" data-flags="indoor" data-interests="art">
+    <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🎨 Kunst</span>
@@ -548,7 +552,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="park" data-flags="free kids" data-interests="nature history">
+    <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -564,7 +568,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="memorial" data-flags="free" data-interests="history memory-culture">
+    <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
@@ -579,7 +583,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="park" data-flags="free" data-interests="nature science">
+    <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
@@ -595,7 +599,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="market" data-flags="indoor" data-interests="craft art food">
+    <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -611,7 +615,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="market" data-flags="" data-interests="food craft">
+    <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
@@ -625,7 +629,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="food" data-flags="indoor veg" data-interests="food">
+    <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -641,7 +645,7 @@ footer p{margin:.3rem 0}
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" data-kind="food" data-flags="indoor" data-interests="food">
+    <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -655,7 +659,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="food" data-flags="indoor veg" data-interests="food">
+    <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -668,7 +672,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="food" data-flags="shade veg" data-interests="food">
+    <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
@@ -681,7 +685,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="icecream" data-flags="indoor" data-interests="sweets">
+    <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍦 Eis</span>
@@ -695,7 +699,7 @@ footer p{margin:.3rem 0}
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" data-kind="transit" data-flags="" data-interests="">
+    <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🚌 Transport</span>
@@ -721,7 +725,7 @@ footer p{margin:.3rem 0}
     <p>Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure
     Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.</p>
     <p>Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind
-    Partnerstädte. <span id="version">Stand v10 · 11ad53</span></p>
+    Partnerstädte. <span id="version">Stand v10 · b64066</span></p>
   </div>
 </footer>
 
@@ -758,6 +762,34 @@ const CFG = {
       "luggage",
       "transit"
     ]
+  },
+  "contentKinds": [
+    "sight",
+    "memorial",
+    "viewpoint",
+    "art",
+    "park",
+    "cooldown",
+    "playground"
+  ],
+  "needScope": {
+    "veg": [
+      "food",
+      "icecream",
+      "market"
+    ],
+    "free": [
+      "sight",
+      "memorial",
+      "viewpoint",
+      "art",
+      "park",
+      "cooldown",
+      "playground"
+    ],
+    "shade": null,
+    "indoor": null,
+    "kids": null
   },
   "countTpl": "{n} von {t} Orten"
 };
@@ -840,17 +872,32 @@ const CFG = {
     apply();
   });
 
+  /* Scoped semantics: AND across criteria, OR within one — but every
+     criterion only judges places it is meaningful for. The profile
+     describes the person; a place outside a criterion's scope passes it
+     vacuously ("vegetarisch + Geschichte" keeps both the veggie
+     restaurant AND the history museum). Categories stay a hard cut. */
+  function needPass(n, kind, flags) {
+    const scope = CFG.needScope[n];
+    if (scope && scope.indexOf(kind) < 0) return true; // not this place's question
+    if (n === 'shade') return flags.includes('shade') || flags.includes('indoor');
+    if (n === 'free') return !flags.includes('paid'); // unknown price stays (draft honesty)
+    return flags.includes(n); // veg, indoor, kids
+  }
+
   function apply() {
-    // categories: OR within; needs: AND; interests: OR within, AND across groups
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
     let shown = 0;
     places.forEach(p => {
+      const kind = p.dataset.kind;
       const flags = p.dataset.flags.split(' ').filter(Boolean);
       const ints = p.dataset.interests.split(' ').filter(Boolean);
       let ok = true;
-      if (state.cat.length) ok = kinds.has(p.dataset.kind);
-      if (ok && state.need.length) ok = state.need.every(n => flags.includes(n));
-      if (ok && state.int.length) ok = ints.some(i => state.int.includes(i));
+      if (state.cat.length) ok = kinds.has(kind);
+      if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
+      if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
+        ok = ints.some(i => state.int.includes(i));
+      }
       p.hidden = !ok;
       if (ok) shown++;
     });

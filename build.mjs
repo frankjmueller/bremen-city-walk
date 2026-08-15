@@ -249,9 +249,23 @@ function poiFlags(p) {
   if (p.tags?.indoor) f.push('indoor');
   if ((p.tags?.diet ?? []).some(d => d === 'vegetarian' || d === 'vegan')) f.push('veg');
   if (p.cost && p.cost.amount === 0) f.push('free');
+  if (p.cost && p.cost.amount > 0) f.push('paid');
   if (p.tags?.kids) f.push('kids');
   return f;
 }
+
+/* Criteria only judge places they are meaningful for — a museum must not
+   disappear because it serves no vegetarian food, and a restaurant must
+   not disappear because it isn't historical. Places outside a criterion's
+   scope pass it vacuously; the profile describes the person, not each place. */
+const CONTENT_KINDS = ['sight', 'memorial', 'viewpoint', 'art', 'park', 'cooldown', 'playground'];
+const NEED_SCOPE = {
+  veg: ['food', 'icecream', 'market'],       // diet is a food question
+  free: CONTENT_KINDS,                        // "kostenlos" means entry, not consumption
+  shade: null,                                // heat escape applies everywhere (shade OR indoor)
+  indoor: null,
+  kids: null,
+};
 
 function renderPlace(p, currency) {
   const [emoji, kindLabel] = KIND_META[p.kind];
@@ -266,7 +280,7 @@ function renderPlace(p, currency) {
   const draft = p.verification.status !== 'verified';
   const interests = p.tags?.interests ?? [];
   const out = [];
-  out.push(`    <li class="place" data-kind="${p.kind}" data-flags="${poiFlags(p).join(' ')}" data-interests="${interests.join(' ')}">`);
+  out.push(`    <li class="place" id="poi-${p.id}" data-kind="${p.kind}" data-flags="${poiFlags(p).join(' ')}" data-interests="${interests.join(' ')}">`);
   out.push('      <article class="card"><div class="pad">');
   out.push('        <div class="badges">');
   out.push(`          <span class="badge kind">${emoji} ${kindLabel}</span>`);
@@ -300,6 +314,7 @@ const INVENTORY_CSS = `
   background:var(--card);color:var(--ink);font-size:.86rem;font-family:inherit;cursor:pointer;
 }
 .chip[aria-pressed="true"]{background:var(--patina);color:#fff;border-color:var(--patina);font-weight:700}
+.fhint{font-size:.8rem;line-height:1.5;color:var(--muted);text-align:center;max-width:32rem;margin:.9rem auto 0}
 .fcount{margin:.8rem 0 0}
 .freset{background:none;border:none;color:var(--patina);font-family:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;margin:.3rem auto 0;display:block}
 .places{list-style:none;margin:1.4rem 0 0;padding:0}
@@ -338,6 +353,8 @@ function renderInventory(cityId) {
   const cfg = {
     storageKey: `walk-profile-${cityId}`,
     groups: CAT_GROUPS,
+    contentKinds: CONTENT_KINDS,
+    needScope: NEED_SCOPE,
     countTpl: '{n} von {t} Orten',
   };
   const js = read('templates/inventory.js').replace('__CFG__', JSON.stringify(cfg, null, 2));
@@ -388,6 +405,9 @@ ${NEEDS.map(([v, label]) => chip('need', v, label)).join('\n')}
     <div class="fgroup">
 ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
     </div>
+    <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
+    Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
+    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.</p>
     <p class="fcount" id="fcount"></p>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
