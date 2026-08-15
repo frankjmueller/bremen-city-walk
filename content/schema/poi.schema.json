@@ -4,7 +4,7 @@
   "title": "Ort (POI)",
   "description": "Ein verifizierter Ort im Stadtbestand. Orte sind unabhängig von Touren; Touren referenzieren Orte nur. Alle Filterattribute sind aufzählbare Enums — Freitext ist in Filterfeldern verboten, sonst ist Offline-Filtern Glückssache. Ein Ort ohne 'verification.status: verified' darf im Build erscheinen, wird aber in der App als ungeprüft gekennzeichnet.",
   "type": "object",
-  "required": ["id", "coord", "kind", "name", "sources", "verification"],
+  "required": ["id", "kind", "name", "sources", "verification"],
   "additionalProperties": false,
   "properties": {
     "id": {
@@ -12,7 +12,10 @@
       "pattern": "^[a-z0-9][a-z0-9-]*$",
       "description": "Stabil und URL-tauglich. Nie ändern — Touren und related-Verweise hängen daran."
     },
-    "coord": { "$ref": "#/$defs/coord" },
+    "coord": {
+      "$ref": "#/$defs/coord",
+      "description": "Darf bei status draft fehlen (ehrliches TODO statt geratener Koordinate); Pflicht ab status verified."
+    },
     "kind": {
       "type": "string",
       "enum": ["sight", "memorial", "food", "icecream", "wc", "water", "park", "cooldown", "playground", "art", "viewpoint", "shop", "market", "luggage", "transit"],
@@ -82,9 +85,8 @@
     "cost": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["amount"],
       "properties": {
-        "amount": { "type": "number", "minimum": 0, "description": "0 = frei. In Stadtwährung (city.currency)." },
+        "amount": { "type": "number", "minimum": 0, "description": "0 = frei. In Stadtwährung (city.currency). Darf im Draft fehlen, wenn nur eine note existiert." },
         "perPerson": { "type": "boolean", "default": true },
         "cashOnly": { "type": "boolean", "description": "Wichtig überall, wo Kartenzahlung nicht selbstverständlich ist." },
         "note": { "$ref": "#/$defs/i18n" }
@@ -206,6 +208,8 @@
       "then": { "required": ["status", "by", "on", "method"] }
     }
   },
+  "if": { "properties": { "verification": { "properties": { "status": { "const": "verified" } } } } },
+  "then": { "required": ["id", "kind", "name", "sources", "verification", "coord"] },
   "$defs": {
     "coord": {
       "type": "array",

@@ -222,18 +222,20 @@ function validatePois(list, cityId) {
   const seen = new Set();
   for (const p of list) {
     const where = `${cityId}/${p.id ?? '?'}`;
-    for (const f of ['id', 'coord', 'kind', 'name', 'sources', 'verification']) {
+    for (const f of ['id', 'kind', 'name', 'sources', 'verification']) {
       if (!(f in p)) throw new Error(`${where}: missing '${f}'`);
     }
     if (seen.has(p.id)) throw new Error(`${where}: duplicate id`);
     seen.add(p.id);
     if (!KIND_META[p.kind]) throw new Error(`${where}: unknown kind '${p.kind}'`);
-    const [lat, lng] = p.coord;
-    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) throw new Error(`${where}: coord out of range`);
+    if (p.coord) {
+      const [lat, lng] = p.coord;
+      if (Math.abs(lat) > 90 || Math.abs(lng) > 180) throw new Error(`${where}: coord out of range`);
+    }
     const v = p.verification;
     if (!['draft', 'verified', 'stale'].includes(v.status)) throw new Error(`${where}: bad verification.status`);
-    if (v.status === 'verified' && !(v.by && v.on && v.method)) {
-      throw new Error(`${where}: 'verified' requires by/on/method`);
+    if (v.status === 'verified' && !(v.by && v.on && v.method && p.coord)) {
+      throw new Error(`${where}: 'verified' requires by/on/method and a coord`);
     }
     for (const i of p.tags?.interests ?? []) {
       if (!INTEREST_LABEL[i]) throw new Error(`${where}: unknown interest '${i}'`);
@@ -255,7 +257,9 @@ function renderPlace(p, currency) {
   const [emoji, kindLabel] = KIND_META[p.kind];
   const name = p.name.de || p.name.en;
   const meta = [];
-  if (p.cost) meta.push(p.cost.amount === 0 ? 'kostenlos' : `${p.cost.amount} ${currency === 'NAD' ? 'N$' : currency}`);
+  if (typeof p.cost?.amount === 'number') {
+    meta.push(p.cost.amount === 0 ? 'kostenlos' : `${p.cost.amount} ${currency === 'NAD' ? 'N$' : currency}`);
+  }
   if (p.visit?.minutes) meta.push(`~${p.visit.minutes} min`);
   if (p.hours?.osm) meta.push(p.hours.osm);
   const notes = [p.cost?.note?.de, p.hours?.note?.de].filter(Boolean);
@@ -275,9 +279,13 @@ function renderPlace(p, currency) {
   if (p.funFact?.de) out.push(`        <p class="pfun">⚡ ${p.funFact.de}</p>`);
   if (notes.length) out.push(`        <p class="pnote">${notes.join(' · ')}</p>`);
   if (interests.length) out.push(`        <p class="ptags">${interests.map(i => INTEREST_LABEL[i]).join(' · ')}</p>`);
-  out.push(`        <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=${p.coord[0]}%2C${p.coord[1]}" target="_blank" rel="noopener">`);
-  out.push(`          ${PIN}`);
-  out.push('          In Google Maps öffnen</a>');
+  if (p.coord) {
+    out.push(`        <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=${p.coord[0]}%2C${p.coord[1]}" target="_blank" rel="noopener">`);
+    out.push(`          ${PIN}`);
+    out.push('          In Google Maps öffnen</a>');
+  } else {
+    out.push('        <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>');
+  }
   out.push('      </div></article>');
   out.push('    </li>');
   return out.join('\n');
