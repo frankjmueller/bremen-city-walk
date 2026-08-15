@@ -17,3 +17,9 @@ All photographs from [Wikimedia Commons](https://commons.wikimedia.org/).
 - **Universum Bremen** (`assets/img/universum.webp`) — Matthias Süßen, CC BY-SA 3.0. [Source](https://commons.wikimedia.org/w/index.php?curid=34838040)
 - **Lloyd Passage** (`assets/img/lloyd.webp`) — Rami Tarawneh, CC BY-SA 2.5. [Source](https://commons.wikimedia.org/w/index.php?curid=1062202)
 - **Ostertorsteinweg (Viertel)** (`assets/img/viertel.webp`) — ROMWriter, CC BY-SA 3.0. [Source](https://commons.wikimedia.org/w/index.php?curid=1267475)
+
+## Code
+
+- `templates/vendor-qrcode.js`: [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)
+  v1.4.4 by Kazuhiko Arase, MIT license — vendored unmodified for the offline
+  sync-QR feature. "QR Code" is a registered trademark of DENSO WAVE INCORPORATED.

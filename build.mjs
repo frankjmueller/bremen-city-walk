@@ -447,8 +447,9 @@ body.has-wheel .pacc{display:block}
   color:var(--muted);margin:1.4rem 0 .9rem;
 }
 .pdist{font-size:.85rem;color:var(--patina);font-weight:700;margin:.15rem 0 .1rem}
+.frow{display:flex;gap:.6rem;justify-content:center;margin-top:.7rem}
 .fsort{
-  display:block;margin:.7rem auto 0;border:1.5px solid var(--line);border-radius:999px;
+  border:1.5px solid var(--line);border-radius:999px;
   background:var(--card);color:var(--ink);font-size:.86rem;font-family:inherit;
   padding:.4em 1em;cursor:pointer;
 }
@@ -481,7 +482,63 @@ body.has-plan main{padding-bottom:4.5rem}
 .crow-name{color:var(--ink);font-weight:600;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
 .crow-why{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
 .crow-chev{flex:none;transition:transform .15s}
-@media (prefers-reduced-motion: reduce){.crow-chev{transition:none}}
+
+/* ————— micro-interactions ————— */
+.chip,.padd,.fsort,.planbar button{transition:background-color .12s,color .12s,border-color .12s,transform .07s}
+.chip:active,.padd:active,.fsort:active,.planbar button:active{transform:scale(.94)}
+
+/* ————— bottom sheet, toast, QR ————— */
+.sheet-backdrop{
+  position:fixed;inset:0;z-index:50;background:rgba(20,12,8,.5);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.sheet-backdrop.on{opacity:1}
+.sheet{
+  background:var(--card);color:var(--ink);width:100%;max-width:640px;
+  border-radius:20px 20px 0 0;
+  padding:.8rem 1.2rem calc(1.3rem + env(safe-area-inset-bottom));
+  box-shadow:0 -8px 32px rgba(0,0,0,.35);
+  transform:translateY(28px);transition:transform .2s;
+}
+.sheet-backdrop.on .sheet{transform:none}
+.sheet-grip{width:42px;height:4px;border-radius:2px;background:var(--line);margin:0 auto .9rem}
+.sheet h3{margin:.1rem 0 .3rem;font-size:1.25rem}
+.sheet-sub{font-size:.86rem;color:var(--muted);margin:.2rem 0 .7rem;line-height:1.5}
+.srow{
+  display:flex;align-items:center;gap:.7rem;padding:.6rem .15rem;
+  border-bottom:1px solid var(--line);font-size:.96rem;cursor:pointer;
+}
+.srow:last-of-type{border-bottom:none}
+.srow input{width:1.2rem;height:1.2rem;accent-color:var(--patina);flex:none}
+.srow b{flex:1}
+.srow span{color:var(--muted);font-size:.85rem;flex:none}
+.srow.off{opacity:.45;cursor:default}
+.s-note{font-size:.8rem;color:var(--muted);margin:.7rem 0 0;min-height:1.2em}
+.sheet-actions{display:flex;gap:.6rem;margin-top:.9rem}
+.sheet-actions button,.sheet-actions .sheet-btn{
+  flex:1;background:var(--patina);color:#fff;border:none;border-radius:12px;
+  padding:.8em .8em;font-weight:700;font-family:inherit;font-size:.95rem;
+  cursor:pointer;text-align:center;text-decoration:none;
+  transition:transform .07s;
+}
+.sheet-actions button:active{transform:scale(.97)}
+.sheet-actions button:disabled{opacity:.4;cursor:default}
+.sheet-actions .ghost{background:none;color:var(--patina);border:1.5px solid var(--patina)}
+.qrbox{display:flex;justify-content:center;background:#fff;border-radius:12px;padding:12px;margin:.5rem 0}
+.qrbox canvas{max-width:100%;height:auto;image-rendering:pixelated}
+#toast{
+  position:fixed;left:50%;bottom:calc(4.8rem + env(safe-area-inset-bottom));z-index:60;
+  transform:translate(-50%,10px);
+  background:var(--ink);color:var(--paper);padding:.6em 1.15em;border-radius:999px;
+  font-size:.88rem;font-weight:600;box-shadow:0 4px 18px rgba(0,0,0,.35);
+  opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;
+  max-width:88vw;text-align:center;
+}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion: reduce){
+  .sheet-backdrop,.sheet,#toast,.chip,.padd,.fsort,.planbar button,.crow-chev{transition:none}
+}
 .draftnote{
   max-width:34rem;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
   background:rgba(0,0,0,.28);border:1px solid rgba(217,164,65,.45);
@@ -503,6 +560,8 @@ function renderInventory(cityId) {
   const chip = (g, v, label) => `      <button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${label}</button>`;
   const cfg = {
     cityId,
+    pages: Object.fromEntries(Object.entries(INVENTORY_PAGES).map(([id, p]) => [id, p.output])),
+    shareTitle: page.title,
     storageKey: `walk-profile-${cityId}`,
     planKey: `walk-plan-${cityId}`,
     currency: { NAD: 'N$', EUR: '€' }[c.currency] || c.currency,
@@ -512,7 +571,9 @@ function renderInventory(cityId) {
     bands: KID_BANDS,
     countTpl: '{n} von {t} Orten',
   };
-  const js = read('templates/inventory.js').replace('__CFG__', JSON.stringify(cfg, null, 2));
+  const js = read('templates/vendor-qrcode.js') + '\n'
+    + read('templates/inventory.js').replace('__CFG__', JSON.stringify(cfg, null, 2)) + '\n'
+    + read('templates/sync.js');
   const drafts = list.filter(p => p.verification.status !== 'verified').length;
 
   return `<!DOCTYPE html>
@@ -568,10 +629,14 @@ ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
     Kinder, Hund und Rollstuhl sind Begleitung, kein Filter: Sie zeigen auf jeder Karte, was
     darüber bekannt ist. Was nicht passt, verschwindet nie — es rückt <b>zusammengeklappt ans
     Listenende</b>, mit dem Grund dran; antippen zeigt es trotzdem. ⛔ markiert bekannte
-    Probleme (z.&nbsp;B. geschlossen). Mit ➕ sammelt ihr Orte in euren Tagesplan — teilbar
-    als Link, wie der Treffpunkt in Bremen.</p>
+    Probleme (z.&nbsp;B. geschlossen). Mit ➕ sammelt ihr Orte in euren Tagesplan, und über
+    <b>„Sync &amp; teilen"</b> wandern Plan, Profil und privates Overlay als Link oder QR auf
+    andere Geräte — die Daten stecken im Link selbst, kein Server, kein Konto.</p>
     <p class="fcount" id="fcount"></p>
-    <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
+    <div class="frow">
+      <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe</button>
+      <button type="button" class="fsort" id="sync-open">🔄 Sync &amp; teilen</button>
+    </div>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
 
@@ -589,6 +654,14 @@ ${list.map(p => renderPlace(p, c.currency)).join('\n')}
   <button type="button" id="plan-share">Teilen</button>
   <button type="button" id="plan-clear" aria-label="Plan leeren">✕</button>
 </div>
+
+<div class="sheet-backdrop" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
 
 <footer>
   <div class="wrap">
