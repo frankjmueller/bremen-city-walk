@@ -144,7 +144,8 @@ const CFG = __CFG__;
     if (state.int.length && CFG.contentKinds.indexOf(kind) >= 0
         && !ints.some(i => state.int.includes(i))) return 'anderes Interesse';
     if (state.comp.includes('dog') && p.dataset.dogs === 'no') return 'Hunde verboten';
-    const bands = state.comp.filter(c => c !== 'dog').map(c => CFG.bands[c]);
+    if (state.comp.includes('wheel') && p.dataset.wheelchair === 'no') return 'nicht rollstuhlgerecht';
+    const bands = state.comp.filter(c => c !== 'dog' && c !== 'wheel').map(c => CFG.bands[c]);
     if (bands.length) {
       const oldest = Math.max(...bands.map(b => b[1]));
       const youngest = Math.min(...bands.map(b => b[0]));
@@ -158,18 +159,24 @@ const CFG = __CFG__;
     return null;
   }
 
+  const csep = document.getElementById('csep');
+  let order = origOrder.slice(); // current display order (nearby sort swaps it)
+
   function apply() {
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
     document.body.classList.toggle('has-dog', state.comp.includes('dog'));
-    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog'));
+    document.body.classList.toggle('has-wheel', state.comp.includes('wheel'));
+    document.body.classList.toggle('has-kids', state.comp.some(c => c !== 'dog' && c !== 'wheel'));
     let shown = 0;
-    places.forEach(p => {
+    const matching = [], folded = [];
+    order.forEach(p => {
       if (planOnly) {
         // the plan is an explicit selection — here hiding is the honest cut
         const inPlan = plan.includes(p.id.replace(/^poi-/, ''));
         p.hidden = !inPlan;
         p.classList.remove('collapsed', 'expanded');
         if (inPlan) shown++;
+        matching.push(p);
         return;
       }
       p.hidden = false;
@@ -179,14 +186,21 @@ const CFG = __CFG__;
         p.classList.remove('expanded');
         p.querySelector('.crow').setAttribute('aria-expanded', 'false');
         shown++;
+        matching.push(p);
+      } else {
+        folded.push(p);
       }
       p.querySelector('.crow-why').textContent = why || '';
     });
-    const collapsed = planOnly ? 0 : places.length - shown;
+    // matching places first (in current order), collapsed ones behind a separator
+    matching.forEach(p => list.appendChild(p));
+    csep.hidden = planOnly || folded.length === 0;
+    list.appendChild(csep);
+    folded.forEach(p => list.appendChild(p));
     const base = planOnly
       ? `${shown} ${shown === 1 ? 'Ort' : 'Orte'} im Plan`
       : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length)
-        + (collapsed ? ' passen — Rest zusammengeklappt' : '');
+        + (folded.length ? ' passen — Rest unten zusammengeklappt' : '');
     count.textContent = base;
     count.dataset.base = base;
     empty.hidden = true; // the list can never be empty anymore
@@ -276,10 +290,11 @@ const CFG = __CFG__;
   }
   sortBtn.addEventListener('click', () => {
     if (sorted) {
-      origOrder.forEach(el => list.appendChild(el));
+      order = origOrder.slice();
       places.forEach(p => { p.querySelector('.pdist').hidden = true; });
       sorted = false;
       sortBtn.setAttribute('aria-pressed', 'false');
+      apply();
       return;
     }
     if (!navigator.geolocation) { flash('Standort hier nicht verfügbar.'); return; }
@@ -293,13 +308,14 @@ const CFG = __CFG__;
       }));
       withDist.sort((a, b) => a.d - b.d);
       withDist.forEach(({ el, d }) => {
-        list.appendChild(el);
         const dEl = el.querySelector('.pdist');
         dEl.textContent = isFinite(d) ? '📍 ' + fmtDist(d) : '';
         dEl.hidden = !isFinite(d);
       });
+      order = withDist.map(x => x.el);
       sorted = true;
       sortBtn.setAttribute('aria-pressed', 'true');
+      apply(); // regroups: matching by distance first, collapsed behind the separator
     }, () => flash('Standort nicht freigegeben — Sortierung bleibt wie sie ist.'),
     { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
   });
