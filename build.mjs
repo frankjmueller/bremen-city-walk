@@ -215,8 +215,14 @@ const CAT_GROUPS = {
 const CAT_LABEL = { sehen: 'Sehen', essen: 'Essen', gruen: 'Grün & kühl', einkaufen: 'Einkaufen', praktisch: 'Praktisch' };
 const NEEDS = [
   ['shade', '🌳 Schatten'], ['indoor', '🏠 Drinnen'], ['veg', '🥦 Vegetarisch'],
-  ['free', '🆓 Kostenlos'], ['kids', '👶 Mit Kind'],
+  ['free', '🆓 Kostenlos'],
 ];
+/* Companions travel with you all day — they never empty the list over
+   missing data; they hide only known conflicts and surface known info. */
+const COMPANIONS = [
+  ['k0', '👶 0–3'], ['k4', '🧒 4–7'], ['k8', '🧑 8–12'], ['k13', '🎧 13+'], ['dog', '🐕 Hund'],
+];
+const KID_BANDS = { k0: [0, 3], k4: [4, 7], k8: [8, 12], k13: [13, 17] };
 
 function validatePois(list, cityId) {
   const seen = new Set();
@@ -264,7 +270,6 @@ const NEED_SCOPE = {
   free: CONTENT_KINDS,                        // "kostenlos" means entry, not consumption
   shade: null,                                // heat escape applies everywhere (shade OR indoor)
   indoor: null,
-  kids: null,
 };
 
 function renderPlace(p, currency) {
@@ -279,19 +284,44 @@ function renderPlace(p, currency) {
   const notes = [p.cost?.note?.de, p.hours?.note?.de].filter(Boolean);
   const draft = p.verification.status !== 'verified';
   const interests = p.tags?.interests ?? [];
+  const attrs = [
+    `id="poi-${p.id}"`,
+    `data-kind="${p.kind}"`,
+    `data-flags="${poiFlags(p).join(' ')}"`,
+    `data-interests="${interests.join(' ')}"`,
+    `data-dogs="${p.tags?.dogs ?? 'unknown'}"`,
+  ];
+  if (p.tags?.kids?.min !== undefined) attrs.push(`data-kidsmin="${p.tags.kids.min}"`);
+  if (p.tags?.kids?.max !== undefined) attrs.push(`data-kidsmax="${p.tags.kids.max}"`);
+  if (p.visit?.minutes) attrs.push(`data-visit="${p.visit.minutes}"`);
+  if (p.coord) attrs.push(`data-lat="${p.coord[0]}"`, `data-lng="${p.coord[1]}"`);
   const out = [];
-  out.push(`    <li class="place" id="poi-${p.id}" data-kind="${p.kind}" data-flags="${poiFlags(p).join(' ')}" data-interests="${interests.join(' ')}">`);
+  out.push(`    <li class="place" ${attrs.join(' ')}>`);
   out.push('      <article class="card"><div class="pad">');
   out.push('        <div class="badges">');
   out.push(`          <span class="badge kind">${emoji} ${kindLabel}</span>`);
   if (draft) out.push('          <span class="badge draft">⚠︎ ungeprüft</span>');
   else out.push(`          <span class="badge ok">✓ geprüft ${p.verification.on}</span>`);
+  out.push('          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>');
   out.push('        </div>');
   out.push(`        <h3>${name}</h3>`);
+  out.push('        <p class="pdist" hidden></p>');
   if (meta.length) out.push(`        <p class="pmeta">${meta.join(' · ')}</p>`);
   if (p.body?.de?.snapshot) out.push(`        <p class="psnap">${p.body.de.snapshot}</p>`);
   if (p.funFact?.de) out.push(`        <p class="pfun">⚡ ${p.funFact.de}</p>`);
   if (notes.length) out.push(`        <p class="pnote">${notes.join(' · ')}</p>`);
+  // companion lines: hidden by default, shown when the matching profile is active
+  const DOG_LINE = {
+    yes: '🐕 Hunde erlaubt', leash: '🐕 An der Leine erlaubt',
+    no: '🚫 Keine Hunde', unknown: '🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)',
+  };
+  out.push(`        <p class="pdog">${DOG_LINE[p.tags?.dogs ?? 'unknown']}</p>`);
+  if (p.tags?.kids?.min !== undefined) {
+    const kn = p.tags.kids.note?.de ? ` — ${p.tags.kids.note.de}` : '';
+    out.push(`        <p class="pkids">🧒 Ab ${p.tags.kids.min} Jahren${kn}</p>`);
+  } else {
+    out.push('        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>');
+  }
   if (interests.length) out.push(`        <p class="ptags">${interests.map(i => INTEREST_LABEL[i]).join(' · ')}</p>`);
   if (p.coord) {
     out.push(`        <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=${p.coord[0]}%2C${p.coord[1]}" target="_blank" rel="noopener">`);
@@ -307,6 +337,8 @@ function renderPlace(p, currency) {
 
 const INVENTORY_CSS = `
 /* ————— inventory page (filter pilot) ————— */
+/* author display beats the UA's [hidden] rule — make hidden always win */
+[hidden]{display:none!important}
 .fgroup{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0;justify-content:center}
 .fgroup-label{width:100%;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:.5rem 0 0}
 .chip{
@@ -332,6 +364,37 @@ const INVENTORY_CSS = `
 .ptags{font-size:.78rem;color:var(--muted);letter-spacing:.02em;margin:.4rem 0 0}
 .maps-sm{padding:.6em .9em;font-size:.9rem;margin-top:.7rem}
 #empty{text-align:center;color:var(--muted);margin:2rem 0}
+.padd{
+  margin-left:auto;border:1.5px solid var(--patina);border-radius:999px;
+  background:var(--card);color:var(--patina);font-size:.78rem;font-weight:700;
+  padding:.22em .7em;cursor:pointer;font-family:inherit;flex:none;
+}
+.padd[aria-pressed="true"]{background:var(--patina);color:#fff}
+.pdog,.pkids{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
+body.has-dog .pdog{display:block}
+body.has-kids .pkids{display:block}
+.pdist{font-size:.85rem;color:var(--patina);font-weight:700;margin:.15rem 0 .1rem}
+.fsort{
+  display:block;margin:.7rem auto 0;border:1.5px solid var(--line);border-radius:999px;
+  background:var(--card);color:var(--ink);font-size:.86rem;font-family:inherit;
+  padding:.4em 1em;cursor:pointer;
+}
+.fsort[aria-pressed="true"]{background:var(--patina);color:#fff;border-color:var(--patina);font-weight:700}
+.planbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  display:flex;gap:.55rem;align-items:center;
+  background:var(--patina-deep);color:#EAF5F0;
+  padding:.7rem max(1rem, env(safe-area-inset-left)) calc(.7rem + env(safe-area-inset-bottom));
+  box-shadow:0 -2px 12px rgba(0,0,0,.25);
+}
+.planbar span{flex:1;font-size:.88rem;font-weight:700;min-width:0}
+.planbar button{
+  flex:none;background:rgba(255,255,255,.14);color:#fff;
+  border:1px solid rgba(255,255,255,.35);border-radius:999px;
+  padding:.4em .85em;font-family:inherit;font-size:.84rem;cursor:pointer;
+}
+.planbar button[aria-pressed="true"]{background:var(--gold);color:#4A2317;border-color:var(--gold);font-weight:700}
+body.has-plan main{padding-bottom:4.5rem}
 .draftnote{
   max-width:34rem;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
   background:rgba(0,0,0,.28);border:1px solid rgba(217,164,65,.45);
@@ -352,9 +415,11 @@ function renderInventory(cityId) {
   const chip = (g, v, label) => `      <button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${label}</button>`;
   const cfg = {
     storageKey: `walk-profile-${cityId}`,
+    planKey: `walk-plan-${cityId}`,
     groups: CAT_GROUPS,
     contentKinds: CONTENT_KINDS,
     needScope: NEED_SCOPE,
+    bands: KID_BANDS,
     countTpl: '{n} von {t} Orten',
   };
   const js = read('templates/inventory.js').replace('__CFG__', JSON.stringify(cfg, null, 2));
@@ -401,14 +466,22 @@ ${cats.map(([g]) => chip('cat', g, CAT_LABEL[g])).join('\n')}
     <div class="fgroup">
 ${NEEDS.map(([v, label]) => chip('need', v, label)).join('\n')}
     </div>
+    <p class="fgroup-label">Wer ist dabei?</p>
+    <div class="fgroup">
+${COMPANIONS.map(([v, label]) => chip('comp', v, label)).join('\n')}
+    </div>
     <p class="fgroup-label">Interessen</p>
     <div class="fgroup">
 ${interestsPresent.map(i => chip('int', i, INTEREST_LABEL[i])).join('\n')}
     </div>
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
-    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.</p>
+    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
+    Kinder und Hund sind Begleitung, kein Filter: Sie blenden nur bekannte Konflikte aus und
+    zeigen auf jeder Karte, was über Hunde und Kinder-Eignung bekannt ist. Mit ➕ sammelt ihr
+    Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
+    <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
 
@@ -418,6 +491,13 @@ ${list.map(p => renderPlace(p, c.currency)).join('\n')}
   <p id="empty" hidden>Nichts übrig — Filter etwas lockern.</p>
 
 </main>
+
+<div class="planbar" id="planbar" hidden>
+  <span id="plan-summary"></span>
+  <button type="button" id="plan-only" aria-pressed="false">Nur Plan</button>
+  <button type="button" id="plan-share">Teilen</button>
+  <button type="button" id="plan-clear" aria-label="Plan leeren">✕</button>
+</div>
 
 <footer>
   <div class="wrap">

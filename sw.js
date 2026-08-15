@@ -5,7 +5,7 @@
    serves cache-first, and answers HTTP Range requests from cache (required
    for audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v10-b6406626';
+const CACHE_NAME = 'bremen-walk-v10-14379be4';
 
 const ASSETS = [
   './',

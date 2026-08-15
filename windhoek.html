@@ -261,6 +261,8 @@ footer p{margin:.3rem 0}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
 
 /* ————— inventory page (filter pilot) ————— */
+/* author display beats the UA's [hidden] rule — make hidden always win */
+[hidden]{display:none!important}
 .fgroup{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0;justify-content:center}
 .fgroup-label{width:100%;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:.5rem 0 0}
 .chip{
@@ -286,6 +288,37 @@ footer p{margin:.3rem 0}
 .ptags{font-size:.78rem;color:var(--muted);letter-spacing:.02em;margin:.4rem 0 0}
 .maps-sm{padding:.6em .9em;font-size:.9rem;margin-top:.7rem}
 #empty{text-align:center;color:var(--muted);margin:2rem 0}
+.padd{
+  margin-left:auto;border:1.5px solid var(--patina);border-radius:999px;
+  background:var(--card);color:var(--patina);font-size:.78rem;font-weight:700;
+  padding:.22em .7em;cursor:pointer;font-family:inherit;flex:none;
+}
+.padd[aria-pressed="true"]{background:var(--patina);color:#fff}
+.pdog,.pkids{display:none;font-size:.85rem;margin:.35rem 0;color:var(--muted)}
+body.has-dog .pdog{display:block}
+body.has-kids .pkids{display:block}
+.pdist{font-size:.85rem;color:var(--patina);font-weight:700;margin:.15rem 0 .1rem}
+.fsort{
+  display:block;margin:.7rem auto 0;border:1.5px solid var(--line);border-radius:999px;
+  background:var(--card);color:var(--ink);font-size:.86rem;font-family:inherit;
+  padding:.4em 1em;cursor:pointer;
+}
+.fsort[aria-pressed="true"]{background:var(--patina);color:#fff;border-color:var(--patina);font-weight:700}
+.planbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  display:flex;gap:.55rem;align-items:center;
+  background:var(--patina-deep);color:#EAF5F0;
+  padding:.7rem max(1rem, env(safe-area-inset-left)) calc(.7rem + env(safe-area-inset-bottom));
+  box-shadow:0 -2px 12px rgba(0,0,0,.25);
+}
+.planbar span{flex:1;font-size:.88rem;font-weight:700;min-width:0}
+.planbar button{
+  flex:none;background:rgba(255,255,255,.14);color:#fff;
+  border:1px solid rgba(255,255,255,.35);border-radius:999px;
+  padding:.4em .85em;font-family:inherit;font-size:.84rem;cursor:pointer;
+}
+.planbar button[aria-pressed="true"]{background:var(--gold);color:#4A2317;border-color:var(--gold);font-weight:700}
+body.has-plan main{padding-bottom:4.5rem}
 .draftnote{
   max-width:34rem;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
   background:rgba(0,0,0,.28);border:1px solid rgba(217,164,65,.45);
@@ -327,7 +360,14 @@ footer p{margin:.3rem 0}
       <button type="button" class="chip" data-g="need" data-v="indoor" aria-pressed="false">🏠 Drinnen</button>
       <button type="button" class="chip" data-g="need" data-v="veg" aria-pressed="false">🥦 Vegetarisch</button>
       <button type="button" class="chip" data-g="need" data-v="free" aria-pressed="false">🆓 Kostenlos</button>
-      <button type="button" class="chip" data-g="need" data-v="kids" aria-pressed="false">👶 Mit Kind</button>
+    </div>
+    <p class="fgroup-label">Wer ist dabei?</p>
+    <div class="fgroup">
+      <button type="button" class="chip" data-g="comp" data-v="k0" aria-pressed="false">👶 0–3</button>
+      <button type="button" class="chip" data-g="comp" data-v="k4" aria-pressed="false">🧒 4–7</button>
+      <button type="button" class="chip" data-g="comp" data-v="k8" aria-pressed="false">🧑 8–12</button>
+      <button type="button" class="chip" data-g="comp" data-v="k13" aria-pressed="false">🎧 13+</button>
+      <button type="button" class="chip" data-g="comp" data-v="dog" aria-pressed="false">🐕 Hund</button>
     </div>
     <p class="fgroup-label">Interessen</p>
     <div class="fgroup">
@@ -344,371 +384,471 @@ footer p{margin:.3rem 0}
     </div>
     <p class="fhint">Jeder Filter wirkt nur, wo er Sinn ergibt: „Vegetarisch" prüft Essens-Orte,
     Interessen prüfen Sehenswertes, „Kostenlos" meint den Eintritt. Ein Museum fliegt also
-    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.</p>
+    nicht raus, weil es kein Essen hat — und das Restaurant nicht, weil es nicht historisch ist.
+    Kinder und Hund sind Begleitung, kein Filter: Sie blenden nur bekannte Konflikte aus und
+    zeigen auf jeder Karte, was über Hunde und Kinder-Eignung bekannt ist. Mit ➕ sammelt ihr
+    Orte in euren Tagesplan — teilbar als Link, wie der Treffpunkt in Bremen.</p>
     <p class="fcount" id="fcount"></p>
+    <button type="button" class="fsort" id="fsort" aria-pressed="false">📍 Nach Nähe sortieren</button>
     <button type="button" class="freset" id="freset" hidden>Filter zurücksetzen</button>
   </section>
 
   <ol class="places" id="places">
-    <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture">
+    <li class="place" id="poi-christuskirche" data-kind="sight" data-flags="indoor" data-interests="history architecture" data-dogs="unknown" data-visit="20" data-lat="-22.56778" data-lng="17.08722">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Christuskirche</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~20 min</p>
         <p class="psnap">Evangelisch-lutherische Kirche von Architekt Gottlieb Redecker, Grundsteinlegung 1907, geweiht am 16. Oktober 1910; neoromanischer Bau mit Jugendstil-Einflüssen aus lokalem Quarzsandstein. Wahrzeichen der Stadt, direkt an Parlamentsgärten und Tintenpalast.</p>
         <p class="pfun">⚡ Der Turm aus lokalem Quarzsandstein ist 24 Meter hoch.</p>
         <p class="pnote">Angaben widersprüchlich: Mo–Sa 09:00–17:00 laut audiala.com, Besucher-Reviews (2023) melden dagegen sehr eingeschränkte Öffnung. TODO vor Ort: Zeiten von der Tür fotografieren.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56778%2C17.08722" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture">
+    <li class="place" id="poi-alte-feste" data-kind="sight" data-flags="" data-interests="history architecture memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.56933" data-lng="17.08837">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Alte Feste</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~10 min</p>
         <p class="psnap">Älteste erhaltene Festung Windhoeks an der Robert Mugabe Avenue, ehemals Museum, seit der Eröffnung des Independence Memorial Museum geschlossen. Nach der Renovierung sind u. a. ein Nationalmuseum für Genozid- und Kolonialgeschichte sowie Kunsthandwerk-Werkstätten geplant. Im Innenhof lagert seit 2013 das abgebaute deutsche Reiterdenkmal.</p>
         <p class="pnote">Gebäude seit ca. 2015 geschlossen und renovierungsbedürftig; Deutschland unterstützt die Renovierung 2025/26 mit 4,2 Mio. NAD (Auswärtiges Amt). Nur von außen zu besichtigen. TODO vor Ort: aktuellen Baustand prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56933%2C17.08837" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture">
+    <li class="place" id="poi-independence-memorial-museum" data-kind="memorial" data-flags="indoor free" data-interests="history memory-culture" data-dogs="unknown" data-visit="60" data-lat="-22.5688" data-lng="17.0881">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Independence Memorial Museum</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~60 min · Mo-Fr 09:00-17:00; Sa 10:00-17:00</p>
         <p class="psnap">2014 eröffnetes, von der nordkoreanischen Firma Mansudae gebautes Museum zum antikolonialen Befreiungskampf; drei Etagen behandeln u. a. den deutschen Genozid an Ovaherero und Nama (1904–1908) — dieselbe Kolonialgeschichte, an die in Bremen der Antikolonialdenkmal-Elefant erinnert. Vor dem Museum steht die Sam-Nujoma-Statue am Platz des früheren deutschen Reiterdenkmals; das Reiterdenkmal selbst lagert heute im Hof der Alten Feste.</p>
         <p class="pfun">⚡ Eröffnet am 20. März 2014, dem Vorabend des 24. Unabhängigkeitstags, durch Präsident Pohamba.</p>
         <p class="pnote">Eintritt frei, Spende erwartet (laut dark-tourism.com, abgerufen Aug 2026). TODO vor Ort: von der Tafel bestätigen. · So geschlossen; Stand laut dark-tourism.com/kupi.com, abgerufen Aug 2026. TODO vor Ort prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5688%2C17.0881" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture">
+    <li class="place" id="poi-genocide-memorial" data-kind="memorial" data-flags="" data-interests="history memory-culture" data-dogs="unknown" data-visit="10" data-lat="-22.5688" data-lng="17.0881">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Genozid-Denkmal</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~10 min</p>
         <p class="psnap">Denkmal für die Opfer des Genozids an Ovaherero und Nama (1904–1908) durch die deutsche 'Schutztruppe', errichtet von Mansudae und 2014 zusammen mit dem Independence Memorial Museum enthüllt, das es flankiert; es steht vor der Alten Feste nahe der Christuskirche. TODO vor Ort: exakte Koordinate am Denkmal setzen (hier Museums-Koordinate als Näherung).</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5688%2C17.0881" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture">
+    <li class="place" id="poi-tintenpalast" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="15" data-lat="-22.56667" data-lng="17.08917">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Tintenpalast (Parlament)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~15 min</p>
         <p class="psnap">1912–13 nach Entwurf von Gottlieb Redecker durch die Firma Sander & Kock aus regionalen Materialien als deutsches Verwaltungsgebäude errichtet, eingeweiht am 12. April 1913; heute Sitz des Parlaments Namibias. Davor liegen die Parlamentsgärten.</p>
         <p class="pnote">Sitz des namibischen Parlaments; Innenbesichtigung ungeklärt. TODO vor Ort: ob Führungen möglich sind.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56667%2C17.08917" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history">
+    <li class="place" id="poi-parliament-gardens" data-kind="park" data-flags="shade free" data-interests="nature history" data-dogs="unknown" data-visit="30" data-lat="-22.56694" data-lng="17.08806">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Parlamentsgärten</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~30 min</p>
         <p class="psnap">Kleiner Park zwischen Tintenpalast und Christuskirche, 1932 nach Plänen des Landschaftsarchitekten Hugo Stössel angelegt (ursprünglich 'Tintenpalast-Gärten'), mit altem Olivenhain aus der früheren Plantage. TODO vor Ort: Schatten/Bänke/Abendstimmung prüfen.</p>
         <p class="pfun">⚡ Hier steht Namibias erstes nach der Unabhängigkeit errichtetes Denkmal: die Bronzestatue des Herero-Chiefs Hosea Kutako.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Natur · Geschichte</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56694%2C17.08806" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture">
+    <li class="place" id="poi-turnhalle" data-kind="sight" data-flags="" data-interests="history architecture" data-dogs="unknown" data-visit="10" data-lat="-22.56056" data-lng="17.08639">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Turnhalle</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~10 min</p>
         <p class="psnap">1909 eingeweihtes Gebäude (Entwurf Otto W. C. Busch) in der Bahnhof Street, ursprünglich Turnhalle eines deutschen Turnvereins; 1975–77 Schauplatz der Turnhallen-Konferenz, die der namibischen Verfassungsgeschichte den Namen gab. Besichtigung von innen ungeklärt — TODO vor Ort.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56056%2C17.08639" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo">
+    <li class="place" id="poi-windhoek-railway-station" data-kind="sight" data-flags="indoor" data-interests="history architecture photo" data-dogs="unknown" data-visit="30" data-lat="-22.5594" data-lng="17.081">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Bahnhof Windhoek & TransNamib-Museum</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~30 min</p>
         <p class="psnap">Bahnhof von 1912 im kapholländischen Stil, betrieben von TransNamib; im Gebäude befindet sich das kleine Trans-Namib-Eisenbahnmuseum (gegründet 1. Juli 1993) zur namibischen Verkehrsgeschichte.</p>
         <p class="pfun">⚡ Der Nordflügel wurde 1929 von den South African Railways passend zum Bestandsbau ergänzt.</p>
         <p class="pnote">Öffnungszeiten des Eisenbahnmuseums nicht belegbar — TODO vor Ort. Personenzüge (StarLine) sind seit 2021 ausgesetzt (Stand laut seat61.com, abgerufen Aug 2026).</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Architektur · Foto</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5594%2C17.081" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo">
+    <li class="place" id="poi-heinitzburg" data-kind="viewpoint" data-flags="" data-interests="architecture history photo" data-dogs="unknown" data-visit="45" data-lat="-22.57444" data-lng="17.0925">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌄 Aussicht</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Heinitzburg</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~45 min</p>
         <p class="psnap">Eine der drei Windhoeker 'Burgen', 1914 von Wilhelm Sander erbaut, heute Boutique-Hotel und Restaurant (Relais & Châteaux) mit Blick über die Stadt und das Khomas-Hochland.</p>
         <p class="pfun">⚡ Sander verkaufte die Burg 1916 an Graf von Schwerin, der sie nach dem Geburtsnamen seiner Frau Margarete von Heynitz benannte.</p>
         <p class="pnote">Zugang als Hotel-/Restaurantgast; Konsumkosten. TODO vor Ort: ob Aussicht auch ohne Verzehr zugänglich ist.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Architektur · Geschichte · Foto</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.57444%2C17.0925" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo">
+    <li class="place" id="poi-gibeon-meteorites" data-kind="sight" data-flags="free" data-interests="science photo" data-dogs="unknown" data-visit="15">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Gibeon-Meteoriten (Post Street Mall)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~15 min · 24/7</p>
         <p class="psnap">Rund 30 Eisenmeteorite des Gibeon-Schauers (Südnamibia) sind auf Stahlsäulen des Meteoriten-Brunnens in der Post Street Mall montiert (Aufstellung 1995); die Sammlung ist seit dem 15. Februar 1950 Nationaldenkmal. 1911–13 wurden 33 Fragmente bei Gibeon eingesammelt und nach Windhoek gebracht. TODO vor Ort: Koordinate erfassen (keine OSM/Wikipedia-Quelle gefunden).</p>
         <p class="pfun">⚡ Der Gibeon-Schauer gilt als der größte bekannte Meteoritenschauer der Welt.</p>
         <p class="pnote">Frei zugänglich im Fußgängerbereich.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Wissenschaft · Foto</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo">
+    <li class="place" id="poi-post-street-mall" data-kind="market" data-flags="" data-interests="craft photo" data-dogs="unknown" data-visit="30">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Post Street Mall</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~30 min</p>
         <p class="psnap">Fußgängerzone im Stadtzentrum mit Geschäften und Ständen, an denen u. a. Kunsthandwerk, Kleidung und Accessoires verkauft werden; hier steht auch der Meteoriten-Brunnen. TODO vor Ort: Koordinate erfassen, Eindruck/Sicherheit und Standzeiten der Händler prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Handwerk · Foto</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science">
+    <li class="place" id="poi-owela-museum" data-kind="sight" data-flags="indoor" data-interests="history science" data-dogs="unknown" data-visit="5">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🏛 Sehenswert</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Owela-Museum (Nationalmuseum Namibias)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~5 min</p>
         <p class="psnap">Schausammlung des Nationalmuseums (zoologische und kulturkundliche Bestände, benannt nach dem Owela-Brettspiel) an der Lüderitz Street, im selben Gebäude wie die Stadtbibliothek; das Gebäude von 1958 ist baufällig, das Museum derzeit geschlossen. TODO vor Ort: Koordinate erfassen.</p>
         <p class="pnote">Laut Wikipedia (Stand 2023) und Museumsverband Namibia geschlossen bzw. 'temporarily closed'. TODO vor Ort: Status prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Wissenschaft</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art">
+    <li class="place" id="poi-national-art-gallery" data-kind="art" data-flags="indoor" data-interests="art" data-dogs="unknown" data-visit="45">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🎨 Kunst</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Nationale Kunstgalerie Namibias (NAGN)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~45 min</p>
         <p class="psnap">Staatliche Kunstgalerie (gegründet 1990) an der Ecke Robert Mugabe Avenue/John Meinert Street mit wechselnden Ausstellungen namibischer Kunst. TODO vor Ort: Koordinate erfassen (keine OSM/Wikipedia-Quelle gefunden), Eintrittspreis notieren.</p>
         <p class="pnote">Quellen nennen ca. Di–Fr 08:00–17:00 und Sa 09:00–14:00, Mo teils nur nachmittags, So geschlossen — Angaben uneinheitlich. TODO vor Ort prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Kunst</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history">
+    <li class="place" id="poi-zoo-park" data-kind="park" data-flags="free kids" data-interests="nature history" data-dogs="unknown" data-kidsmin="0" data-visit="30" data-lat="-22.56748" data-lng="17.08487">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Zoo Park</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~30 min</p>
         <p class="psnap">Öffentlicher Park an der Independence Avenue mit Teich, Kinderspielplatz und Freilichtbühne; die Anlage geht auf ein 1897 errichtetes deutsches Schutztruppen-Denkmal zurück. Die Elefanten-Säule der Bildhauerin Dörthe Berner erinnert an einen 1961 hier ausgegrabenen prähistorischen Elefanten-Jagdplatz. Koordinate = Kriegerdenkmal im Park; TODO vor Ort: Schatten prüfen.</p>
         <p class="pfun">⚡ Die 1961 im Park gefundenen Elefantenreste sind 5.000–20.000 Jahre alt — einer der ältesten bekannten Elefanten-Jagdplätze der Menschheitsgeschichte.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Ab 0 Jahren</p>
         <p class="ptags">Natur · Geschichte</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56748%2C17.08487" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture">
+    <li class="place" id="poi-kriegerdenkmal-zoo-park" data-kind="memorial" data-flags="free" data-interests="history memory-culture" data-dogs="unknown" data-visit="5" data-lat="-22.56748" data-lng="17.08487">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🕯 Erinnerung</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Kriegerdenkmal im Zoo Park</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~5 min</p>
         <p class="psnap">Am 6. April 1897 errichtetes Schutztruppen-Denkmal für deutsche Soldaten des Kriegs gegen die Witbooi (1893–94): ein rund zwei Meter hoher, in Deutschland vorgefertigter Eisen-Obelisk mit Reichsadler; seit 1969 Nationaldenkmal. Beispiel unkommentierter kolonialer Erinnerungskultur im Stadtzentrum.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Geschichte · Erinnerung</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.56748%2C17.08487" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science">
+    <li class="place" id="poi-national-botanic-garden" data-kind="park" data-flags="free" data-interests="nature science" data-dogs="unknown" data-visit="60" data-lat="-22.57167" data-lng="17.09472">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🌳 Park</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Nationaler Botanischer Garten Namibias</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">kostenlos · ~60 min · Mo-Fr 08:00-17:00</p>
         <p class="psnap">12 Hektar großer Garten des National Botanical Research Institute auf einem Hügel zwischen Zentrum und Klein Windhoek, ausschließlich mit namibischen Pflanzen — der einzige botanische Garten des Landes. Wenig Schatten zu erwarten (Trockenvegetation) — TODO vor Ort prüfen.</p>
         <p class="pnote">Eintritt frei laut NBRI/wheretostay (abgerufen Aug 2026); eine Quelle nennt Ausnahmen am Wochenende — TODO vor Ort. · Zusätzlich jeden 2. Samstag im Monat 08:00–11:00; Zugang über das NBRI-Haupttor (Hügel Street). Stand laut NBRI-Website, abgerufen Aug 2026.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Natur · Wissenschaft</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.57167%2C17.09472" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food">
+    <li class="place" id="poi-namibia-craft-centre" data-kind="market" data-flags="indoor" data-interests="craft art food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Namibia Craft Centre</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~45 min · Mo-Fr 09:00-17:30; Sa 09:00-16:00; Su 09:00-13:30</p>
         <p class="psnap">Kunsthandwerk-Zentrum im Old-Breweries-Komplex, 40 Tal Street (eröffnet 1990, seit 1996 unter Management der Rössing Foundation, mit Omba Gallery): über 50 Stände von Kunsthandwerkerinnen und Kunsthandwerkern aus ländlichen Regionen, Frauengruppen und Kleinunternehmen — Lederarbeiten, Korbflechterei, Keramik, Schmuck. Koordinate aus Projekt-Skelett — TODO vor Ort präzisieren; Kartenzahlung an Ständen prüfen.</p>
         <p class="pnote">Stand laut Verzeichniseinträgen (findglocal/cityseeker), abgerufen Aug 2026 — TODO vor Ort bestätigen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Handwerk · Kunst · Essen</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.574%2C17.083" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft">
+    <li class="place" id="poi-green-market-klein-windhoek" data-kind="market" data-flags="" data-interests="food craft" data-dogs="unknown" data-visit="45">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🧺 Markt</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Green Market / Bio-Markt</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~45 min · Sa 07:30-12:15</p>
         <p class="psnap">Wochenmarkt mit rund 40 Ständen: lokales Gemüse, Kräuter, Brot, Milchprodukte, dazu Pflanzen, Kunsthandwerk und Handgemachtes; das Markt-Café wird wöchentlich wechselnd von Organisationen für Gemeinschaftsprojekte betrieben. TODO vor Ort: Koordinate erfassen, Bargeld-Frage klären.</p>
         <p class="pnote">Nur samstags vormittags, auf dem Gelände der Stephanuskirche, 3 Dr Kenneth David Kaunda Street, Klein Windhoek. Stand laut Recycle Namibia Forum/windhoek-info, abgerufen Aug 2026.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen · Handwerk</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food">
+    <li class="place" id="poi-craft-cafe" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="45" data-lat="-22.574" data-lng="17.083">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Craft Café</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~45 min</p>
         <p class="psnap">Café im ersten Stock des Namibia Craft Centre (Old Breweries, Tal Street) mit hausgemachter Küche: Salate mit namibischem Bio-Gemüse, vegetarische Quiches, frisch gepresste Säfte, hausgebackenes Brot und Kuchen. Koordinate = Craft Centre (Skelett) — TODO vor Ort präzisieren.</p>
         <p class="pnote">Angaben widersprüchlich/veraltet; firmiert in manchen Quellen als 'Craft Bistro'. TODO vor Ort: Zeiten und aktuellen Namen prüfen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.574%2C17.083" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
       </div></article>
     </li>
-    <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food">
+    <li class="place" id="poi-slowtown-coffee-cbd" data-kind="food" data-flags="indoor" data-interests="food" data-dogs="unknown" data-visit="30">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Slowtown Coffee Roasters (Innenstadt)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~30 min · Mo-Fr 07:30-17:00; Sa 09:00-13:00</p>
         <p class="psnap">Namibische Kaffeerösterei mit Filiale an der Independence Avenue im Geschäftszentrum; eigene Röstungen und klassische Espresso-Getränke. Weitere Filialen u. a. in Grove Mall und Maerua Mall. TODO vor Ort: Koordinate erfassen, Essensangebot (vegetarisch?) prüfen.</p>
         <p class="pnote">Stand laut Slowtown-Website/The Namibian, abgerufen Aug 2026.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food">
+    <li class="place" id="poi-indus-indian-restaurant" data-kind="food" data-flags="indoor veg" data-interests="food" data-dogs="unknown" data-visit="60">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>INDUS Indian Restaurant (früher Garnish)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~60 min</p>
         <p class="psnap">Indisches Restaurant am 1 City Plaza, Sam Nujoma Drive; laut Rezensionen mit klar gekennzeichneten vegetarischen und veganen Hauptgerichten (eigene Vegan-Seite in der Karte, z. B. Paneer Tikka Masala, Veg Kolhapuri). Firmierte früher als 'Garnish Indian Restaurant'. TODO vor Ort: Namen/Standort bestätigen, Koordinate erfassen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food">
+    <li class="place" id="poi-fresh-n-wild-utopia" data-kind="food" data-flags="shade veg" data-interests="food" data-dogs="unknown" data-visit="60">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍽 Essen</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Fresh 'n Wild at Utopia</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~60 min</p>
         <p class="psnap">Café/Bistro/Deli in einem Garten mit altem Baumbestand und Teich, 64 Nelson Mandela Avenue (Klein Windhoek); Menü mit vegetarisch/vegan-freundlichen Hauptgerichten aus lokalen Zutaten (z. B. gebratener Halloumi auf mariniertem Quinoa), Baukasten-Prinzip aus Proteinen, Beilagen und Saucen. TODO vor Ort: Koordinate und Öffnungszeiten erfassen.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Essen</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets">
+    <li class="place" id="poi-cramers-ice-cream" data-kind="icecream" data-flags="indoor" data-interests="sweets" data-dogs="unknown" data-visit="20">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🍦 Eis</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Cramer's Eiscafé</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~20 min</p>
         <p class="psnap">Eiscafé im Gustav Voigts Centre an der Independence Avenue; das Eis wird auf einer Bio-Milchfarm bei Steinhausen (Region Omaheke, ca. 180 km nordöstlich von Windhoek) handwerklich hergestellt, dazu Frozen Yoghurt, Waffeln und Kaffee. TODO vor Ort: Koordinate und Öffnungszeiten erfassen.</p>
         <p class="pfun">⚡ Rezensionen loben ungewöhnliche Sorten wie Ziegenkäse-Kirsche oder Koriander-Himbeere sowie Frozen Yoghurt aus der Monkey Orange.</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <p class="ptags">Süßes</p>
         <p class="pnote">📍 Koordinate fehlt noch — wird vor Ort erfasst.</p>
       </div></article>
     </li>
-    <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="">
+    <li class="place" id="poi-intercape-bus-stop" data-kind="transit" data-flags="" data-interests="" data-dogs="unknown" data-visit="5" data-lat="-22.5594" data-lng="17.081">
       <article class="card"><div class="pad">
         <div class="badges">
           <span class="badge kind">🚌 Transport</span>
           <span class="badge draft">⚠︎ ungeprüft</span>
+          <button type="button" class="padd" aria-pressed="false">➕ Plan</button>
         </div>
         <h3>Intercape-Fernbushalt (am Bahnhof)</h3>
+        <p class="pdist" hidden></p>
         <p class="pmeta">~5 min</p>
         <p class="psnap">Halt der Intercape-Fernbusse (u. a. Richtung Südafrika) in der Bahnhof Street am TransNamib-Bahnhof, in Buchungsportalen als 'Opposite Intercape Office' geführt, nahe Garden of Remembrance. Koordinate = Bahnhof (Wikipedia) als Näherung. TODO vor Ort: genauen Haltepunkt, Ticketbüro und städtische Taxi-Situation verifizieren — offizielle städtische Busabfahrten waren online nicht seriös belegbar.</p>
         <p class="pnote">Abfahrten fahrplanabhängig; Intercape Namibia Tel. +264 82 410 1000 (laut Busbud, abgerufen Aug 2026).</p>
+        <p class="pdog">🐕 Hunde: unbekannt — vor Ort fragen (und notieren!)</p>
+        <p class="pkids">🧒 Kinder-Eignung unbekannt — wird vor Ort erfasst</p>
         <a class="maps maps-sm" href="https://www.google.com/maps/search/?api=1&query=-22.5594%2C17.081" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           In Google Maps öffnen</a>
@@ -719,21 +859,30 @@ footer p{margin:.3rem 0}
 
 </main>
 
+<div class="planbar" id="planbar" hidden>
+  <span id="plan-summary"></span>
+  <button type="button" id="plan-only" aria-pressed="false">Nur Plan</button>
+  <button type="button" id="plan-share">Teilen</button>
+  <button type="button" id="plan-clear" aria-label="Plan leeren">✕</button>
+</div>
+
 <footer>
   <div class="wrap">
     <p>Feldtest-Bestand Windhoek · Kuration &amp; Verifikation vor Ort: Frank J. Müller</p>
     <p>Koordinaten aus OpenStreetMap/Wikipedia (Entwurf). Google-Maps-Buttons öffnen eure
     Maps-App — mit heruntergeladener Offline-Karte von Windhoek auch ohne Netz.</p>
     <p>Teil des <a href="index.html">Bremen City Walk</a> · Bremen und Windhoek sind
-    Partnerstädte. <span id="version">Stand v10 · b64066</span></p>
+    Partnerstädte. <span id="version">Stand v10 · 14379b</span></p>
   </div>
 </footer>
 
 <script>
 /* Inventory page: client-side place filter — the profile pilot.
-   No login, no backend: the profile lives in localStorage. */
+   No login, no backend: profile and day plan live in localStorage,
+   sharing is a URL the group passes around. */
 const CFG = {
   "storageKey": "walk-profile-windhoek",
+  "planKey": "walk-plan-windhoek",
   "groups": {
     "sehen": [
       "sight",
@@ -788,8 +937,25 @@ const CFG = {
       "playground"
     ],
     "shade": null,
-    "indoor": null,
-    "kids": null
+    "indoor": null
+  },
+  "bands": {
+    "k0": [
+      0,
+      3
+    ],
+    "k4": [
+      4,
+      7
+    ],
+    "k8": [
+      8,
+      12
+    ],
+    "k13": [
+      13,
+      17
+    ]
   },
   "countTpl": "{n} von {t} Orten"
 };
@@ -838,20 +1004,49 @@ const CFG = {
   }).catch(() => setStatus(false, 'Offline-Speichern nicht verfügbar'));
 })();
 
+/* ————— profile, filters, day plan, nearby sort ————— */
 (function () {
   const chips = Array.from(document.querySelectorAll('.chip'));
   const places = Array.from(document.querySelectorAll('.place'));
+  const list = document.getElementById('places');
+  const origOrder = places.slice();
   const count = document.getElementById('fcount');
   const empty = document.getElementById('empty');
   const reset = document.getElementById('freset');
+  const sortBtn = document.getElementById('fsort');
+  const bar = document.getElementById('planbar');
+  const barSummary = document.getElementById('plan-summary');
+  const planOnlyBtn = document.getElementById('plan-only');
 
-  let state = { cat: [], need: [], int: [] };
+  let state = { cat: [], need: [], int: [], comp: [] };
   try {
     const saved = JSON.parse(localStorage.getItem(CFG.storageKey));
     if (saved) state = Object.assign(state, saved);
   } catch (e) { /* fresh profile */ }
+  state.comp = state.comp || [];
+  let plan = [];
+  try { plan = JSON.parse(localStorage.getItem(CFG.planKey)) || []; } catch (e) { /* fresh plan */ }
+  plan = plan.filter(id => document.getElementById('poi-' + id));
+  let planOnly = false;
+
+  let flashTimer = null;
+  function flash(text) {
+    count.textContent = text;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => { count.textContent = count.dataset.base || ''; }, 5000);
+  }
+
+  // adopt a shared day plan from the URL: ?plan=id1,id2
+  const params = new URLSearchParams(location.search);
+  if (params.has('plan')) {
+    plan = params.get('plan').split(',').filter(id => document.getElementById('poi-' + id));
+    localStorage.setItem(CFG.planKey, JSON.stringify(plan));
+    history.replaceState(null, '', location.pathname + location.hash);
+    setTimeout(() => flash('Geteilter Tagesplan übernommen ✓'), 100);
+  }
 
   function persist() { localStorage.setItem(CFG.storageKey, JSON.stringify(state)); }
+  function persistPlan() { localStorage.setItem(CFG.planKey, JSON.stringify(plan)); }
 
   chips.forEach(ch => {
     const g = ch.dataset.g, v = ch.dataset.v;
@@ -866,7 +1061,7 @@ const CFG = {
   });
 
   reset.addEventListener('click', () => {
-    state = { cat: [], need: [], int: [] };
+    state = { cat: [], need: [], int: [], comp: [] };
     persist();
     chips.forEach(ch => ch.setAttribute('aria-pressed', 'false'));
     apply();
@@ -882,29 +1077,162 @@ const CFG = {
     if (scope && scope.indexOf(kind) < 0) return true; // not this place's question
     if (n === 'shade') return flags.includes('shade') || flags.includes('indoor');
     if (n === 'free') return !flags.includes('paid'); // unknown price stays (draft honesty)
-    return flags.includes(n); // veg, indoor, kids
+    return flags.includes(n); // veg, indoor
+  }
+
+  /* Companions (kids by age, dog) travel with you all day — they must
+     never empty the list over missing data. Only known conflicts hide a
+     place; known info is surfaced on the cards instead. */
+  function compPass(el) {
+    if (!state.comp.length) return true;
+    if (state.comp.includes('dog') && el.dataset.dogs === 'no') return false;
+    const bands = state.comp.filter(c => c !== 'dog').map(c => CFG.bands[c]);
+    if (bands.length) {
+      const oldest = Math.max(...bands.map(b => b[1]));
+      const youngest = Math.min(...bands.map(b => b[0]));
+      if (el.dataset.kidsmin !== undefined && Number(el.dataset.kidsmin) > oldest) return false;
+      if (el.dataset.kidsmax !== undefined && Number(el.dataset.kidsmax) < youngest) return false;
+    }
+    return true;
   }
 
   function apply() {
     const kinds = new Set(state.cat.flatMap(c => CFG.groups[c] || []));
+    const hasKids = state.comp.some(c => c !== 'dog');
+    document.body.classList.toggle('has-dog', state.comp.includes('dog'));
+    document.body.classList.toggle('has-kids', hasKids);
     let shown = 0;
     places.forEach(p => {
-      const kind = p.dataset.kind;
-      const flags = p.dataset.flags.split(' ').filter(Boolean);
-      const ints = p.dataset.interests.split(' ').filter(Boolean);
-      let ok = true;
-      if (state.cat.length) ok = kinds.has(kind);
-      if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
-      if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
-        ok = ints.some(i => state.int.includes(i));
+      let ok;
+      if (planOnly) {
+        ok = plan.includes(p.id.replace(/^poi-/, ''));
+      } else {
+        const kind = p.dataset.kind;
+        const flags = p.dataset.flags.split(' ').filter(Boolean);
+        const ints = p.dataset.interests.split(' ').filter(Boolean);
+        ok = true;
+        if (state.cat.length) ok = kinds.has(kind);
+        if (ok && state.need.length) ok = state.need.every(n => needPass(n, kind, flags));
+        if (ok && state.int.length && CFG.contentKinds.indexOf(kind) >= 0) {
+          ok = ints.some(i => state.int.includes(i));
+        }
+        if (ok) ok = compPass(p);
       }
       p.hidden = !ok;
       if (ok) shown++;
     });
-    count.textContent = CFG.countTpl.replace('{n}', shown).replace('{t}', places.length);
+    const base = planOnly
+      ? `${shown} ${shown === 1 ? 'Ort' : 'Orte'} im Plan`
+      : CFG.countTpl.replace('{n}', shown).replace('{t}', places.length);
+    count.textContent = base;
+    count.dataset.base = base;
     empty.hidden = shown > 0;
-    reset.hidden = !(state.cat.length || state.need.length || state.int.length);
+    reset.hidden = !(state.cat.length || state.need.length || state.int.length || state.comp.length);
   }
+
+  /* ————— day plan: tap places together, see the time, share the link ————— */
+  function fmtMin(m) {
+    if (m >= 60) {
+      const h = Math.floor(m / 60), r = m % 60;
+      return r ? `~${h} h ${r} min` : `~${h} h`;
+    }
+    return `~${m} min`;
+  }
+  function updatePlanUI() {
+    places.forEach(p => {
+      const btn = p.querySelector('.padd');
+      const active = plan.includes(p.id.replace(/^poi-/, ''));
+      btn.setAttribute('aria-pressed', String(active));
+      btn.textContent = active ? '✓ im Plan' : '➕ Plan';
+    });
+    bar.hidden = plan.length === 0;
+    document.body.classList.toggle('has-plan', plan.length > 0);
+    if (plan.length === 0 && planOnly) {
+      planOnly = false;
+      planOnlyBtn.setAttribute('aria-pressed', 'false');
+    }
+    const mins = plan.reduce((s, id) => {
+      const el = document.getElementById('poi-' + id);
+      return s + (el && el.dataset.visit ? Number(el.dataset.visit) : 0);
+    }, 0);
+    barSummary.textContent = `${plan.length} ${plan.length === 1 ? 'Ort' : 'Orte'}` +
+      (mins ? ` · ${fmtMin(mins)} vor Ort (ohne Wege)` : '');
+  }
+  places.forEach(p => {
+    p.querySelector('.padd').addEventListener('click', () => {
+      const id = p.id.replace(/^poi-/, '');
+      const i = plan.indexOf(id);
+      if (i >= 0) plan.splice(i, 1); else plan.push(id);
+      persistPlan();
+      updatePlanUI();
+      if (planOnly) apply();
+    });
+  });
+  planOnlyBtn.addEventListener('click', () => {
+    planOnly = !planOnly;
+    planOnlyBtn.setAttribute('aria-pressed', String(planOnly));
+    apply();
+  });
+  document.getElementById('plan-share').addEventListener('click', () => {
+    const url = location.origin + location.pathname + '?plan=' + plan.join(',');
+    if (navigator.share) {
+      navigator.share({ title: 'Windhoek — unser Tagesplan', url }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url)
+        .then(() => flash('Plan-Link kopiert — an die Gruppe schicken.'))
+        .catch(() => {});
+    }
+  });
+  document.getElementById('plan-clear').addEventListener('click', () => {
+    plan = [];
+    persistPlan();
+    updatePlanUI();
+    apply();
+  });
+
+  /* ————— nearby sort: GPS works offline; draft coords are approximate ————— */
+  let sorted = false;
+  function haversine(lat1, lng1, lat2, lng2) {
+    const r = x => x * Math.PI / 180, R = 6371000;
+    const h = Math.sin(r(lat2 - lat1) / 2) ** 2 +
+      Math.cos(r(lat1)) * Math.cos(r(lat2)) * Math.sin(r(lng2 - lng1) / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  function fmtDist(m) {
+    return m < 950 ? `≈ ${Math.max(50, Math.round(m / 50) * 50)} m`
+      : `≈ ${(m / 1000).toFixed(1).replace('.', ',')} km`;
+  }
+  sortBtn.addEventListener('click', () => {
+    if (sorted) {
+      origOrder.forEach(el => list.appendChild(el));
+      places.forEach(p => { p.querySelector('.pdist').hidden = true; });
+      sorted = false;
+      sortBtn.setAttribute('aria-pressed', 'false');
+      return;
+    }
+    if (!navigator.geolocation) { flash('Standort hier nicht verfügbar.'); return; }
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+      const withDist = places.map(p => ({
+        el: p,
+        d: p.dataset.lat
+          ? haversine(latitude, longitude, Number(p.dataset.lat), Number(p.dataset.lng))
+          : Infinity, // places without coordinates go last
+      }));
+      withDist.sort((a, b) => a.d - b.d);
+      withDist.forEach(({ el, d }) => {
+        list.appendChild(el);
+        const dEl = el.querySelector('.pdist');
+        dEl.textContent = isFinite(d) ? '📍 ' + fmtDist(d) : '';
+        dEl.hidden = !isFinite(d);
+      });
+      sorted = true;
+      sortBtn.setAttribute('aria-pressed', 'true');
+    }, () => flash('Standort nicht freigegeben — Sortierung bleibt wie sie ist.'),
+    { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
+  });
+
+  updatePlanUI();
   apply();
 })();
 </script>
