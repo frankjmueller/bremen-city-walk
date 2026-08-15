@@ -1,0 +1,439 @@
+{
+  "id": "teens",
+  "lang": "de",
+  "head": {
+    "title": "Bremen für euch — Teenie-Guide (offline)",
+    "description": "Ein Tag Bremen für Teenager: Universum, City, Shopping & die besten Storys — funktioniert komplett offline."
+  },
+  "hero": {
+    "eyebrow": "Teenie-Edition · Offline-Guide · Bremen",
+    "h1": "Moin<span class=\"gold\">!</span>",
+    "sub": "Ein Tag Bremen für euch — <b>Wissenschaft zum Anfassen, Shopping\n  und die besten Storys der Stadt</b>. Alles auf diesem Guide (Bilder, Karten-Buttons,\n  Audio) ist auf eurem Handy gespeichert und läuft <b>ohne Internet</b>.",
+    "statusInitial": "Prüfe Offline-Speicher…",
+    "installLabel": "Als App installieren",
+    "langLink": "<a class=\"lang\" href=\"index.html\">🇬🇧 English version for the Namibia group →</a>"
+  },
+  "howto": [
+    "<span><b>1</b> Seite einmal mit Internet öffnen</span>",
+    "<span><b>2</b> Auf das grüne „Offline bereit“ warten</span>",
+    "<span><b>3</b> Losziehen — Flugmodus ist okay</span>"
+  ],
+  "routeCard": {
+    "aria": "Routenübersicht",
+    "h2": "Euer Tag — wie Perlen auf einer Schnur",
+    "intro": "Tippt auf eine Perle, um zur Station zu springen. Tempo? Euer Ding — ihr habt Zeit.",
+    "svg": "map-teens.svg"
+  },
+  "stops": [
+    {
+      "beadHtml": "<div class=\"bead\">U</div>",
+      "imgHtml": "<img src=\"assets/img/universum.webp\" alt=\"Das silberne, walförmige Gebäude des Universum Bremen\">",
+      "eyebrow": "Vormittag · Direkt an der Uni",
+      "titleHtml": "Universum Bremen",
+      "walkHtml": "Ein paar Minuten zu Fuß — der riesige silberne Wal ist nicht zu übersehen.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Das beste Museum ist eins, in dem man <b>alles anfassen darf</b>. Über\n          <b>300 Mitmach-Stationen</b> zu Technik, Mensch und Natur: Blitze, optische\n          Täuschungen, Experimente mit eurem eigenen Körper. Plant locker 2–3 Stunden.\n          Danach: rauf auf den 27-Meter-Turm nebenan."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Wal? Muschel? UFO? Die Bremer streiten\n          seit dem Jahr 2000, was das Gebäude eigentlich darstellt. Der Architekt verrät es nicht."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Praktisch:</b> Mo–Fr ab 9 Uhr, Eintritt 18 € / ermäßigt 12 €.\n          Gerade läuft die Sonderausstellung <b>„LIEBE“</b> — ihr wurdet gewarnt. 😄"
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-universum.mp3",
+        "aria": "Abspielen: Der silberne Wal",
+        "label": "🎧 Der silberne Wal"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.10667%2C8.84500",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-u",
+      "liClass": "",
+      "comment": null,
+      "poi": "universum"
+    },
+    {
+      "beadHtml": "<div class=\"bead\" aria-hidden=\"true\">🚋</div>",
+      "imgHtml": "<img src=\"assets/img/tram.webp\" alt=\"Straßenbahnen der BSAG an der Domsheide\" loading=\"lazy\">",
+      "eyebrow": "Mittags · Ab in die City",
+      "titleHtml": "Mit der Tram in die Stadt",
+      "walkHtml": "Haltestelle <b>Universität/Zentralbereich</b>, direkt beim Universum.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Nehmt die <b>Linie 6 Richtung Flughafen</b> und steigt nach ca. 17 Minuten an der\n          <b>Domsheide</b> aus — mitten in der Altstadt, die Domtürme zeigen euch den Weg."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Tickets:</b> Am einfachsten die <b>FAIRTIQ-App</b> (vor dem\n          Einsteigen einchecken, am Ziel auschecken — Ausweis dabeihaben) oder ein\n          <b>TagesTicket</b> am Automaten (Karte geht). Gilt den ganzen Tag, auch für den Rückweg."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-willkommen.mp3",
+        "aria": "Abspielen: Moin und die Sieben Faulen",
+        "label": "🎧 Moin! — und die Legende der Sieben Faulen"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086",
+        "label": "Domsheide — hier steigt ihr aus"
+      },
+      "liId": "start",
+      "liClass": "transit",
+      "comment": null,
+      "poi": "tram-domsheide"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">1</div>",
+      "imgHtml": "<img src=\"assets/img/musicians.webp\" alt=\"Die Bronzestatue der Bremer Stadtmusikanten\" loading=\"lazy\">",
+      "eyebrow": "Stop 1 · Am Rathaus, Westseite",
+      "titleHtml": "Die Stadtmusikanten",
+      "walkHtml": "3 min von der Domsheide, um die linke Rathaus-Ecke.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Esel, Hund, Katze, Hahn — vier Tiere, die abgehauen sind, eine Räuberbande\n          mit purem Lärm vertrieben haben und <b>in Bremen nie angekommen sind</b>.\n          Der Stadt egal: Sie hat die vier adoptiert und ihnen 1951 diese Bronze spendiert."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Das Ritual:</b> Beide Vorderbeine des Esels mit <b>beiden Händen</b>\n          anfassen und was wünschen. Nur eine Hand? Dann begrüßt hier bloß ein Esel den anderen. 🫏"
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Die Beine glänzen golden, weil das\n          Millionen Hände vor euch auch schon probiert haben."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-musikanten.mp3",
+        "aria": "Abspielen: Vier Tiere, ein Wunsch",
+        "label": "🎧 Vier Tiere, ein Wunsch"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07620%2C8.80716",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-1",
+      "liClass": "",
+      "comment": null,
+      "poi": "musicians"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">2</div>",
+      "imgHtml": "<img src=\"assets/img/rathaus.webp\" alt=\"Das Bremer Rathaus am Marktplatz\" loading=\"lazy\">",
+      "eyebrow": "Stop 2 · Marktplatz · UNESCO-Welterbe",
+      "titleHtml": "Roland &amp; Rathaus",
+      "walkHtml": "Ein paar Schritte zurück auf den Marktplatz.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Der 10-Meter-Steintyp mit Schwert ist <b>Roland</b>, seit 1404 Bremens\n          Bodyguard. Er starrt absichtlich zum Dom — die Ansage der Bürger an den Bischof:\n          Diese Stadt regieren wir selbst. Solange Roland steht, bleibt Bremen frei."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Für den Notfall lagert angeblich ein\n          <b>Ersatzkopf</b> im Keller. Und der Abstand zwischen Rolands Knien war früher\n          ein amtliches Längenmaß — die „Bremer Elle“."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Gruselfaktor:</b> Im Dom nebenan liegen im <b>Bleikeller</b>\n          acht echte Mumien — keine Deko, echte. Kleiner Eintritt, großer Schauer."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-roland.mp3",
+        "aria": "Abspielen: Der Typ mit dem Ersatzkopf",
+        "label": "🎧 Der Typ mit dem Ersatzkopf"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07586%2C8.80730",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-2",
+      "liClass": "",
+      "comment": null,
+      "poi": "roland"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">3</div>",
+      "imgHtml": "<img src=\"assets/img/loch.webp\" alt=\"Der Bremer Marktplatz mit Rathaus, Dom und Bürgerschaft\" loading=\"lazy\">",
+      "eyebrow": "Stop 3 · Vor der gläsernen Bürgerschaft",
+      "titleHtml": "Das Bremer Loch",
+      "walkHtml": "30 Sekunden — Blick nach unten! Ein Gullydeckel im Pflaster.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Münze rein — und aus dem Boden schreit ein Esel, bellt ein Hund, miaut eine\n          Katze, kräht ein Hahn. Die Stadtmusikanten bedanken sich persönlich bei euch.\n          Das Geld geht komplett an Menschen in Bremen, die Hilfe brauchen."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Die <b>lauteste Spendendose Deutschlands</b>\n          sammelt jedes Jahr mehrere zehntausend Euro — 50 Cent reichen für ein Konzert."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-loch.mp3",
+        "aria": "Abspielen: Die lauteste Spendendose Deutschlands",
+        "label": "🎧 Die lauteste Spendendose Deutschlands"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07560%2C8.80785",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-3",
+      "liClass": "",
+      "comment": null,
+      "poi": "loch"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">4</div>",
+      "imgHtml": "<img src=\"assets/img/boettcher.webp\" alt=\"Der goldene Lichtbringer über dem Eingang zur Böttcherstraße\" loading=\"lazy\">",
+      "eyebrow": "Stop 4 · Gleich am Marktplatz",
+      "titleHtml": "Böttcherstraße",
+      "walkHtml": "2 min — sucht das goldene Relief über dem schmalen Backstein-Eingang.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Hundert Meter Straße, komplett bezahlt mit <b>entkoffeiniertem Kaffee</b>:\n          Kaffeehändler Ludwig Roselius hat ihn erfunden und mit den Kaffee-HAG-Millionen\n          in den 1920ern diese Fantasiestraße gebaut — Backstein, Bronze, Gold."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Das <b>Glockenspiel</b> mitten in der\n          Straße besteht aus 30 Porzellanglocken — es spielt von 12 bis 18 Uhr zu jeder\n          vollen Stunde. Bei Frost bleibt es stumm, sonst zerspringt das Porzellan."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Zucker-Alarm:</b> Im Handwerkerhof bei Nr. 8 macht die\n          <b>Bremer Bonbon Manufaktur</b> Bonbons von Hand — durch die Scheibe zugucken kostet nix."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-boettcher.mp3",
+        "aria": "Abspielen: Die Straße, die Kaffee bezahlt hat",
+        "label": "🎧 Die Straße, die Kaffee bezahlt hat"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07508%2C8.80609",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-4",
+      "liClass": "",
+      "comment": null,
+      "poi": "boettcher"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">5</div>",
+      "imgHtml": "<img src=\"assets/img/schnoor.webp\" alt=\"Bunte enge Gasse im Schnoorviertel\" loading=\"lazy\">",
+      "eyebrow": "Stop 5 · Das älteste Viertel",
+      "titleHtml": "Der Schnoor",
+      "walkHtml": "6 min — die Böttcherstraße runter, links Richtung Fluss, den Schildern nach.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Bremens ältestes Viertel und der fotogenste Ort der Stadt: <b>Schnoor</b>\n          heißt „Schnur“, weil sich die Mini-Häuser wie Perlen aneinanderreihen.\n          Gassen, schmaler als eure ausgebreiteten Arme, das kleinste Haus der Stadt,\n          und an jeder Ecke ein Foto-Spot."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Bonbons, Teil 2:</b> Bei <b>Marterburg 30</b> hat die Bonbon\n          Manufaktur ihre Schau-Werkstatt — zugucken, wie die Dinger entstehen."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-schnoor.mp3",
+        "aria": "Abspielen: Perlen auf der Schnur",
+        "label": "🎧 Perlen auf der Schnur"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07278%2C8.80972",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-5",
+      "liClass": "",
+      "comment": null,
+      "poi": "schnoor"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">6</div>",
+      "imgHtml": "<img src=\"assets/img/schlachte.webp\" alt=\"Die Schlachte-Promenade an der Weser\" loading=\"lazy\">",
+      "eyebrow": "Stop 6 · An der Weser",
+      "titleHtml": "Schlachte — Eis-Pause",
+      "walkHtml": "8 min — zurück zum Fluss und rechts am Wasser entlang.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Fünfhundert Jahre lang war das hier der Hafen — Schiffe aus ganz Europa,\n          Wein, Wolle, Gewürze. Heute: Bremens sonnigste Meile. <b>Eis holen, Bank\n          suchen, Füße baumeln lassen</b>, der Weser beim Fließen zusehen."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> „Schlachte“ kommt von den Holzpfählen\n          („slachte“), die man ins Ufer gerammt hat, damit der Kai nicht wegschwimmt."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-schlachte.mp3",
+        "aria": "Abspielen: Der alte Hafen",
+        "label": "🎧 Der alte Hafen"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07611%2C8.80222",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-6",
+      "liClass": "",
+      "comment": null,
+      "poi": "schlachte"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">7</div>",
+      "imgHtml": "<img src=\"assets/img/lloyd.webp\" alt=\"Der gläserne Eingang der Lloyd Passage\" loading=\"lazy\">",
+      "eyebrow": "Stop 7 · Obernstraße &amp; Lloyd Passage",
+      "titleHtml": "Shopping-Block",
+      "walkHtml": "8 min — hoch in die Obernstraße, dann treiben lassen.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Jetzt seid ihr mitten im Shopping-Dreieck: <b>Obernstraße</b> (die großen\n          Ketten), <b>Lloyd Passage</b> (überdacht — Regen egal) und <b>Sögestraße</b>\n          (Cafés + Läden). Alles liegt direkt nebeneinander, ihr könnt nichts verfehlen."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Die Lloyd Passage war die <b>erste\n          überdachte öffentliche Straße Deutschlands</b> — eine normale Straße, über die\n          man einfach ein Glasdach gebaut hat."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Snack-Stopp:</b> Haltet Ausschau nach einer\n          <b>Müller &amp; Egerer</b>-Bäckerei — Kaffee + Teilchen, dann weiter."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-lloyd.mp3",
+        "aria": "Abspielen: Shopping unterm Glasdach",
+        "label": "🎧 Shopping unterm Glasdach"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07814%2C8.80468",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-7",
+      "liClass": "",
+      "comment": null,
+      "poi": "lloyd"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">8</div>",
+      "imgHtml": "<img src=\"assets/img/pigs.webp\" alt=\"Die Bronzeschweine in der Sögestraße\" loading=\"lazy\">",
+      "eyebrow": "Stop 8 · Sögestraße",
+      "titleHtml": "Die Schweine",
+      "walkHtml": "Mittendrin im Shopping-Block — am Ende der Sögestraße.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Bremens geduldigste Einwohner: ein bronzener Schweinehirt und seine Herde,\n          seit 1974. Die <b>Sögestraße</b> heißt wörtlich „Straße der Säue“ — im\n          Mittelalter wurden hier jeden Morgen die Schweine der Stadt zur Weide getrieben,\n          mitten durch die Einkaufsstraße."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Vermutlich die einzige Shoppingmeile\n          der Welt, die offiziell nach ihren Schweinen benannt ist. Draufsetzen ist erlaubt."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-schweine.mp3",
+        "aria": "Abspielen: Die Straße der Säue",
+        "label": "🎧 Die Straße der Säue"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07798%2C8.80800",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-8",
+      "liClass": "",
+      "comment": null,
+      "poi": "pigs"
+    },
+    {
+      "beadHtml": "<div class=\"bead\">9</div>",
+      "imgHtml": "<img src=\"assets/img/viertel.webp\" alt=\"Der Ostertorsteinweg im Bremer Viertel mit Läden und Straßenbahnschienen\" loading=\"lazy\">",
+      "eyebrow": "Stop 9 · Bonus-Level · Ostertor",
+      "titleHtml": "Das Viertel",
+      "walkHtml": "15 min zu Fuß (an der Kunsthalle vorbei) — oder Tram ab Domsheide, 2 Stationen.",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Noch Energie? Dann ins <b>Viertel</b> — Bremens buntester Stadtteil.\n          Hier gibt's, was die Innenstadt nicht hat: <b>Second-Hand- und Vintage-Läden,\n          Plattenläden, Streetart</b> an jeder Ecke und schräge kleine Cafés.\n          Einfach den Ostertorsteinweg entlangtreiben lassen."
+        },
+        {
+          "type": "funfact",
+          "html": "<b>⚡ Fun Fact:</b> Offiziell heißt das Gebiet Ostertor\n          und Steintor — aber kein Mensch in Bremen sagt das. Es heißt einfach: das Viertel."
+        }
+      ],
+      "player": {
+        "src": "assets/audio/de-viertel.mp3",
+        "aria": "Abspielen: Bonus-Level Viertel",
+        "label": "🎧 Bonus-Level: das Viertel"
+      },
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.07271%2C8.81994",
+        "label": "In Google Maps öffnen"
+      },
+      "liId": "stop-9",
+      "liClass": "",
+      "comment": null,
+      "poi": "viertel"
+    },
+    {
+      "beadHtml": "<div class=\"bead\" aria-hidden=\"true\">🏠</div>",
+      "imgHtml": null,
+      "eyebrow": "Feierabend · Zurück zur Uni",
+      "titleHtml": "Heimweg",
+      "walkHtml": "Zurück zur <b>Domsheide</b> (vom Viertel 15 min zu Fuß oder 2 Tram-Stationen).",
+      "blocks": [
+        {
+          "type": "p",
+          "html": "Ab Domsheide bringt euch die <b>Linie 6 Richtung Universität</b> zurück —\n          steigt an der <b>Universität/Zentralbereich</b> oder <b>Universität-Süd</b> aus,\n          je nachdem, wo ihr hinwollt. Euer Tagesticket gilt noch; mit FAIRTIQ einfach\n          wieder einchecken."
+        },
+        {
+          "type": "tip",
+          "html": "<b>Abkürzung jederzeit:</b> Egal wo ihr seid — die 6 Richtung\n          Universität bringt euch immer zurück."
+        }
+      ],
+      "player": null,
+      "maps": {
+        "href": "https://www.google.com/maps/search/?api=1&query=53.0752%2C8.8086",
+        "label": "Domsheide — Tram nach Hause"
+      },
+      "liId": "home",
+      "liClass": "transit",
+      "comment": null,
+      "poi": "tram-domsheide"
+    }
+  ],
+  "practicalComment": null,
+  "routeComment": null,
+  "practical": {
+    "aria": "Praktische Infos",
+    "h2": "Gut zu wissen",
+    "grid": [
+      "<div><b>🚨 Notfall</b>112 (Rettung/Feuerwehr) · 110 (Polizei).</div>",
+      "<div><b>🚰 Leitungswasser</b>Könnt ihr überall bedenkenlos trinken.</div>",
+      "<div><b>💳 Bezahlen</b>Karte geht fast überall; etwas Kleingeld fürs Bremer Loch einstecken!</div>",
+      "<div><b>🌦️ Juli-Wetter</b>16–25 °C, wechselhaft — dünne Regenjacke mitnehmen.</div>",
+      "<div><b>🛍️ Sonntags</b>Läden zu; Cafés, Eisdielen &amp; Museen offen.</div>",
+      "<div><b>📵 Kein Netz?</b>Egal. Dieser Guide läuft offline — und Google Maps mit\n      heruntergeladener Bremen-Karte auch.</div>"
+    ],
+    "meetLabel": "Treffpunkt &amp; Uhrzeit mit euren Eltern (zum Bearbeiten antippen):",
+    "meetHint": "Wird auf diesem Handy gespeichert — bleibt auch nach dem Schließen."
+  },
+  "versionPrefix": "Guide-Version",
+  "footerHtml": "    <p>Mit <span class=\"heart\">♥</span> gebaut in Bremen · Juli 2026 ·\n    <a href=\"index.html\">English version</a></p>\n    <p>Funktioniert offline, sobald einmal vollständig geladen. Die Google-Maps-Buttons\n    öffnen eure Maps-App — mit heruntergeladener Offline-Karte von Bremen auch ohne Netz.</p>\n    <h3>Fotos (Wikimedia Commons)</h3>\n    <p>\n      Universum: Matthias Süßen, CC BY-SA 3.0 ·\n      Lloyd Passage: Rami Tarawneh, CC BY-SA 2.5 ·\n      Viertel: ROMWriter, CC BY-SA 3.0 ·\n      Tram, Rathaus, Marktplatz, Böttcherstraße, Schlachte: Jürgen Howaldt / Matthias Süßen / Roehrensee (CC) ·\n      Stadtmusikanten: Ad Meskens, CC BY-SA 4.0 ·\n      Schnoor: Matthias Süßen, CC BY-SA 4.0 ·\n      Schweine: J Doll, CC BY 3.0 — Details in\n      <a href=\"https://github.com/frankjmueller/bremen-city-walk/blob/main/ATTRIBUTION.md\">ATTRIBUTION.md</a>.\n    </p>\n    <p>Stimme: synthetisch (edge-tts). Fakten geprüft Juli 2026 — Öffnungszeiten können sich ändern.\n    <span id=\"version\">__VERSION__</span></p>",
+  "ui": {
+    "meetKey": "bremen-walk-meet-teens",
+    "statusUnsupported": "Offline-Speichern wird von diesem Browser nicht unterstützt",
+    "statusFileProto": "Über den Web-Link öffnen, um den Offline-Modus zu aktivieren",
+    "statusSaving": "Guide wird für offline gespeichert…",
+    "statusProgress": "Wird gespeichert… {c}/{t}",
+    "statusReady": "Offline bereit — Flugmodus ist okay ✓",
+    "statusUnavailable": "Offline-Speichern nicht verfügbar",
+    "iosTip": "<b>Auf dem iPhone / iPad:</b> unten in Safari den <span class=\"share\">⇧</span> Teilen-Button antippen, runterscrollen und <b>„Zum Home-Bildschirm“</b> wählen. Der Guide öffnet sich dann als Vollbild-App — ohne Browserleisten, offline.",
+    "androidTip": "<b>Auf Android:</b> oben rechts in Chrome das <b>⋮-Menü</b> antippen und <b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b> wählen. (Samsung Internet: Menü → „Seite hinzufügen zu“ → „Startbildschirm“.) Der Guide öffnet sich dann als Vollbild-App — ohne Browserleisten, offline.",
+    "statusIncomplete": "Offline unvollständig — {n} Dateien fehlen. Zum Wiederholen antippen.",
+    "statusRetrying": "Versuche erneut…",
+    "audioMissing": "Audio noch nicht gespeichert — Guide einmal mit Internet öffnen."
+  },
+  "output": "teens.html",
+  "extraCss": ".hero h1{font-size:clamp(2.4rem,10vw,3.6rem)}"
+}

@@ -5,55 +5,9 @@
    serves cache-first, and answers HTTP Range requests from cache (required
    for audio playback on iOS Safari while offline). */
 
-const CACHE_NAME = 'bremen-walk-v9-76cf28ad';
+const CACHE_NAME = '__CACHE_NAME__';
 
-const ASSETS = [
-  './',
-  './index.html',
-  './teens.html',
-  './manifest.json',
-  './assets/audio/boettcher.mp3',
-  './assets/audio/de-boettcher.mp3',
-  './assets/audio/de-lloyd.mp3',
-  './assets/audio/de-loch.mp3',
-  './assets/audio/de-musikanten.mp3',
-  './assets/audio/de-roland.mp3',
-  './assets/audio/de-schlachte.mp3',
-  './assets/audio/de-schnoor.mp3',
-  './assets/audio/de-schweine.mp3',
-  './assets/audio/de-universum.mp3',
-  './assets/audio/de-viertel.mp3',
-  './assets/audio/de-willkommen.mp3',
-  './assets/audio/dom.mp3',
-  './assets/audio/elephant.mp3',
-  './assets/audio/loch.mp3',
-  './assets/audio/muehle.mp3',
-  './assets/audio/musicians.mp3',
-  './assets/audio/pigs.mp3',
-  './assets/audio/roland.mp3',
-  './assets/audio/schlachte.mp3',
-  './assets/audio/schnoor.mp3',
-  './assets/audio/welcome.mp3',
-  './assets/fonts/bricolage.woff2',
-  './assets/img/boettcher.webp',
-  './assets/img/dom.webp',
-  './assets/img/elephant.webp',
-  './assets/img/lloyd.webp',
-  './assets/img/loch.webp',
-  './assets/img/muehle.webp',
-  './assets/img/musicians.webp',
-  './assets/img/pigs.webp',
-  './assets/img/rathaus.webp',
-  './assets/img/schlachte.webp',
-  './assets/img/schnoor.webp',
-  './assets/img/tram.webp',
-  './assets/img/universum.webp',
-  './assets/img/viertel.webp',
-  './icons/apple-touch-icon.png',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-512.png'
-];
+const ASSETS = __ASSETS__;
 
 /* Fetch every asset that is not cached yet. Per-file with one retry —
    unlike cache.addAll(), a single failed download no longer kills the
