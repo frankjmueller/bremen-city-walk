@@ -407,8 +407,11 @@
       "<div><b>🛍️ Sundays</b>Shops are closed; cafés, restaurants &amp; museums are open.</div>",
       "<div><b>👋 “Moin”</b>Means hello — at any time of day. Try it, it works wonders.</div>"
     ],
-    "meetLabel": "Meeting point &amp; time (tap to edit):",
-    "meetHint": "Saved on this phone — survives closing the app."
+    "meetLabel": "Meeting point:",
+    "meetHint": "Saved on this phone — survives closing the app.",
+    "meetTimeLabel": "Time",
+    "meetShareLabel": "📤 Share with the group",
+    "meetCalLabel": "⏰ Add to calendar"
   },
   "versionPrefix": "Guide version",
   "footerHtml": "    <p>Made with <span class=\"heart\">♥</span> in Bremen for our friends from Namibia · July 2026</p>\n    <p>Works offline once fully loaded. Google Maps buttons open your Maps app —\n    with offline maps of Bremen downloaded, they work without internet too.</p>\n    <h3>Photo credits (Wikimedia Commons)</h3>\n    <p id=\"credits\">\n      Tram: Roehrensee, CC BY 4.0 ·\n      Cathedral: Ulamm, CC BY-SA 3.0 ·\n      Town hall &amp; square: Matthias Süßen, CC BY-SA 4.0 ·\n      Town Musicians: Ad Meskens, CC BY-SA 4.0 ·\n      Roland, Böttcherstraße, Schlachte, Marktplatz: Jürgen Howaldt, CC BY-SA 2.0 de ·\n      Schnoor, Elephant: Matthias Süßen, CC BY-SA 4.0 ·\n      Pigs: J Doll, CC BY 3.0 ·\n      Windmill: Charvosi, public domain.\n    </p>\n    <p>Narration recorded with a synthetic voice. Facts checked July 2026 — opening hours can change.\n    <span id=\"version\">__VERSION__</span></p>",
@@ -424,7 +427,14 @@
     "androidTip": "<b>On Android:</b> tap the <b>⋮ menu</b> in the top-right corner of Chrome and choose <b>“Add to Home screen”</b> → <b>“Install”</b>. (Samsung Internet: menu → “Add page to” → “Home screen”.) The guide then opens full-screen like a real app — no browser bars, works offline.",
     "statusIncomplete": "Offline incomplete — {n} files missing. Tap to retry.",
     "statusRetrying": "Retrying…",
-    "audioMissing": "Audio not saved yet — open the guide once with internet."
+    "audioMissing": "Audio not saved yet — open the guide once with internet.",
+    "meetAdopted": "Shared meeting point saved ✓",
+    "meetCopied": "Link copied — send it to your group.",
+    "meetNeedTime": "Pick a time first.",
+    "shareTitle": "Bremen City Walk — meeting point",
+    "icsSummaryPrefix": "Meeting point: ",
+    "icsFallback": "Bremen City Walk meeting point",
+    "icsAlarm": "Meeting point in 15 minutes"
   },
   "output": "index.html",
   "extraCss": ""

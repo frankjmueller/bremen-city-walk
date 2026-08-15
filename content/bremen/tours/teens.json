@@ -415,8 +415,11 @@
       "<div><b>🛍️ Sonntags</b>Läden zu; Cafés, Eisdielen &amp; Museen offen.</div>",
       "<div><b>📵 Kein Netz?</b>Egal. Dieser Guide läuft offline — und Google Maps mit\n      heruntergeladener Bremen-Karte auch.</div>"
     ],
-    "meetLabel": "Treffpunkt &amp; Uhrzeit mit euren Eltern (zum Bearbeiten antippen):",
-    "meetHint": "Wird auf diesem Handy gespeichert — bleibt auch nach dem Schließen."
+    "meetLabel": "Treffpunkt mit euren Eltern:",
+    "meetHint": "Wird auf diesem Handy gespeichert — bleibt auch nach dem Schließen.",
+    "meetTimeLabel": "Uhrzeit",
+    "meetShareLabel": "📤 Mit der Gruppe teilen",
+    "meetCalLabel": "⏰ In den Kalender"
   },
   "versionPrefix": "Guide-Version",
   "footerHtml": "    <p>Mit <span class=\"heart\">♥</span> gebaut in Bremen · Juli 2026 ·\n    <a href=\"index.html\">English version</a></p>\n    <p>Funktioniert offline, sobald einmal vollständig geladen. Die Google-Maps-Buttons\n    öffnen eure Maps-App — mit heruntergeladener Offline-Karte von Bremen auch ohne Netz.</p>\n    <h3>Fotos (Wikimedia Commons)</h3>\n    <p>\n      Universum: Matthias Süßen, CC BY-SA 3.0 ·\n      Lloyd Passage: Rami Tarawneh, CC BY-SA 2.5 ·\n      Viertel: ROMWriter, CC BY-SA 3.0 ·\n      Tram, Rathaus, Marktplatz, Böttcherstraße, Schlachte: Jürgen Howaldt / Matthias Süßen / Roehrensee (CC) ·\n      Stadtmusikanten: Ad Meskens, CC BY-SA 4.0 ·\n      Schnoor: Matthias Süßen, CC BY-SA 4.0 ·\n      Schweine: J Doll, CC BY 3.0 — Details in\n      <a href=\"https://github.com/frankjmueller/bremen-city-walk/blob/main/ATTRIBUTION.md\">ATTRIBUTION.md</a>.\n    </p>\n    <p>Stimme: synthetisch (edge-tts). Fakten geprüft Juli 2026 — Öffnungszeiten können sich ändern.\n    <span id=\"version\">__VERSION__</span></p>",
@@ -432,7 +435,14 @@
     "androidTip": "<b>Auf Android:</b> oben rechts in Chrome das <b>⋮-Menü</b> antippen und <b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b> wählen. (Samsung Internet: Menü → „Seite hinzufügen zu“ → „Startbildschirm“.) Der Guide öffnet sich dann als Vollbild-App — ohne Browserleisten, offline.",
     "statusIncomplete": "Offline unvollständig — {n} Dateien fehlen. Zum Wiederholen antippen.",
     "statusRetrying": "Versuche erneut…",
-    "audioMissing": "Audio noch nicht gespeichert — Guide einmal mit Internet öffnen."
+    "audioMissing": "Audio noch nicht gespeichert — Guide einmal mit Internet öffnen.",
+    "meetAdopted": "Geteilter Treffpunkt übernommen ✓",
+    "meetCopied": "Link kopiert — schickt ihn an eure Gruppe.",
+    "meetNeedTime": "Erst eine Uhrzeit wählen.",
+    "shareTitle": "Bremen City Walk — Treffpunkt",
+    "icsSummaryPrefix": "Treffpunkt: ",
+    "icsFallback": "Treffpunkt Bremen City Walk",
+    "icsAlarm": "Treffpunkt in 15 Minuten"
   },
   "output": "teens.html",
   "extraCss": ".hero h1{font-size:clamp(2.4rem,10vw,3.6rem)}"

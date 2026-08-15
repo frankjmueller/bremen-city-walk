@@ -201,9 +201,93 @@ const CFG = __CFG__;
   });
 })();
 
-/* ————— Meeting point, saved locally ————— */
+/* ————— Meeting point: place + time, shareable via URL, calendar reminder.
+   Still no backend: the "sync" is a link the group passes around. ————— */
 (function () {
-  const el = document.getElementById('meet');
-  el.value = localStorage.getItem(CFG.meetKey) || '';
-  el.addEventListener('input', () => localStorage.setItem(CFG.meetKey, el.value));
+  const place = document.getElementById('meet-place');
+  const time = document.getElementById('meet-time');
+  const note = document.getElementById('meet-note');
+  const KEY = CFG.meetKey + '-v2';
+
+  let noteTimer = null;
+  function flash(text) {
+    note.textContent = text;
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(() => { note.textContent = CFG.meetHint; }, 6000);
+  }
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function persist() {
+    localStorage.setItem(KEY, JSON.stringify({ place: place.value, time: time.value }));
+  }
+
+  let data = load();
+  // migrate the old free-text value ("15:00 am Roland") into the place field
+  if (!data.place && localStorage.getItem(CFG.meetKey)) {
+    data.place = localStorage.getItem(CFG.meetKey);
+  }
+
+  // adopt a shared meeting point from the URL: ?meet=Roland&at=15:00
+  const params = new URLSearchParams(location.search);
+  if (params.has('meet') || params.has('at')) {
+    data = { place: params.get('meet') || '', time: params.get('at') || '' };
+    place.value = data.place; time.value = data.time || '';
+    persist();
+    flash(CFG.meetAdopted);
+    // clean the URL so a later reload doesn't overwrite manual edits
+    history.replaceState(null, '', location.pathname + location.hash);
+  } else {
+    place.value = data.place || '';
+    time.value = data.time || '';
+  }
+
+  place.addEventListener('input', persist);
+  time.addEventListener('input', persist);
+
+  document.getElementById('meet-share').addEventListener('click', () => {
+    const url = location.origin + location.pathname
+      + '?meet=' + encodeURIComponent(place.value)
+      + '&at=' + encodeURIComponent(time.value);
+    if (navigator.share) {
+      navigator.share({ title: CFG.shareTitle, url }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => flash(CFG.meetCopied)).catch(() => {});
+    }
+  });
+
+  document.getElementById('meet-cal').addEventListener('click', () => {
+    if (!time.value) { flash(CFG.meetNeedTime); time.focus(); return; }
+    const [h, m] = time.value.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    if (d < new Date()) d.setDate(d.getDate() + 1); // time already past → tomorrow
+    const pad = n => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(h)}${pad(m)}00`;
+    const esc = s => s.replace(/([,;\\])/g, '\\$1');
+    const summary = place.value ? CFG.icsSummaryPrefix + place.value : CFG.icsFallback;
+    const ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Bremen City Walk//DE',
+      'BEGIN:VEVENT',
+      'UID:' + Date.now() + '@bremen-walk',
+      'DTSTAMP:' + stamp,
+      'DTSTART:' + stamp, // floating local time — right for a same-day meetup
+      'SUMMARY:' + esc(summary),
+      'BEGIN:VALARM', 'TRIGGER:-PT15M', 'ACTION:DISPLAY',
+      'DESCRIPTION:' + esc(CFG.icsAlarm),
+      'END:VALARM', 'END:VEVENT', 'END:VCALENDAR', '',
+    ].join('\r\n');
+    const file = new File([ics], 'treffpunkt.ics', { type: 'text/calendar' });
+    // iOS: the share sheet is the only reliable road into the Calendar app
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: summary }).catch(() => {});
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = 'treffpunkt.ics';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+    }
+  });
 })();

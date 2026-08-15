@@ -92,6 +92,14 @@ function renderPage(tour) {
     audioMissing: tour.ui.audioMissing,
     iosTip: tour.ui.iosTip,
     androidTip: tour.ui.androidTip,
+    meetHint: tour.practical.meetHint,
+    meetAdopted: tour.ui.meetAdopted,
+    meetCopied: tour.ui.meetCopied,
+    meetNeedTime: tour.ui.meetNeedTime,
+    shareTitle: tour.ui.shareTitle,
+    icsSummaryPrefix: tour.ui.icsSummaryPrefix,
+    icsFallback: tour.ui.icsFallback,
+    icsAlarm: tour.ui.icsAlarm,
   };
   const js = appJs.replace('__CFG__', JSON.stringify(cfg, null, 2));
 
@@ -153,9 +161,17 @@ ${tour.practicalComment ? '  ' + tour.practicalComment + '\n' : ''}  <section cl
       ${tour.practical.grid.join('\n      ')}
     </div>
     <div class="meet">
-      <label for="meet">${tour.practical.meetLabel}</label>
-      <input id="meet" type="text" maxlength="120" autocomplete="off" spellcheck="false">
-      <small>${tour.practical.meetHint}</small>
+      <label for="meet-place">${tour.practical.meetLabel}</label>
+      <input id="meet-place" type="text" maxlength="120" autocomplete="off" spellcheck="false">
+      <div class="meet-row">
+        <label for="meet-time">${tour.practical.meetTimeLabel}</label>
+        <input id="meet-time" type="time">
+      </div>
+      <div class="meet-actions">
+        <button type="button" id="meet-share">${tour.practical.meetShareLabel}</button>
+        <button type="button" id="meet-cal">${tour.practical.meetCalLabel}</button>
+      </div>
+      <small id="meet-note">${tour.practical.meetHint}</small>
     </div>
   </section>
 
