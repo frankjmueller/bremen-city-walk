@@ -214,8 +214,8 @@ const CAT_GROUPS = {
 };
 const CAT_LABEL = { sehen: 'Sehen', essen: 'Essen', gruen: 'Grün & kühl', einkaufen: 'Einkaufen', praktisch: 'Praktisch' };
 const NEEDS = [
-  ['shade', '🌳 Schatten'], ['indoor', '🏠 Drinnen'], ['veg', '🥦 Vegetarisch'],
-  ['free', '🆓 Kostenlos'],
+  ['open', '🕐 Jetzt offen'], ['shade', '🌳 Schatten'], ['indoor', '🏠 Drinnen'],
+  ['veg', '🥦 Vegetarisch'], ['free', '🆓 Kostenlos'],
 ];
 /* Companions travel with you all day — they never empty the list over
    missing data; they hide only known conflicts and surface known info. */
@@ -296,6 +296,8 @@ function renderPlace(p, currency) {
   if (p.tags?.kids?.min !== undefined) attrs.push(`data-kidsmin="${p.tags.kids.min}"`);
   if (p.tags?.kids?.max !== undefined) attrs.push(`data-kidsmax="${p.tags.kids.max}"`);
   if (p.visit?.minutes) attrs.push(`data-visit="${p.visit.minutes}"`);
+  if (typeof p.cost?.amount === 'number') attrs.push(`data-cost="${p.cost.amount}"`);
+  if (p.hours?.osm) attrs.push(`data-hours="${p.hours.osm}"`);
   if (p.coord) attrs.push(`data-lat="${p.coord[0]}"`, `data-lng="${p.coord[1]}"`);
   const out = [];
   out.push(`    <li class="place" ${attrs.join(' ')}>`);
@@ -316,6 +318,7 @@ function renderPlace(p, currency) {
   out.push(`        <h3>${name}</h3>`);
   out.push('        <p class="pdist" hidden></p>');
   if (meta.length) out.push(`        <p class="pmeta">${meta.join(' · ')}</p>`);
+  out.push('        <p class="popen" hidden></p>');
   if (p.body?.de?.snapshot) out.push(`        <p class="psnap">${p.body.de.snapshot}</p>`);
   if (p.funFact?.de) out.push(`        <p class="pfun">⚡ ${p.funFact.de}</p>`);
   if (notes.length) out.push(`        <p class="pnote">${notes.join(' · ')}</p>`);
@@ -372,6 +375,9 @@ const INVENTORY_CSS = `
 .badge.draft{background:color-mix(in srgb, var(--gold) 22%, var(--card));color:var(--brick)}
 .badge.ok{background:color-mix(in srgb, var(--patina) 18%, var(--card));color:var(--patina)}
 .pmeta{font-size:.85rem;color:var(--muted);margin:.1rem 0 .3rem}
+.popen{font-size:.85rem;font-weight:700;margin:.15rem 0 .3rem}
+.popen.open{color:var(--patina)}
+.popen.closed{color:var(--brick)}
 .psnap{margin:.3rem 0}
 .pfun{font-size:.9rem;margin:.4rem 0;color:var(--patina)}
 .pnote{font-size:.82rem;color:var(--muted);margin:.35rem 0}
@@ -451,6 +457,7 @@ function renderInventory(cityId) {
   const cfg = {
     storageKey: `walk-profile-${cityId}`,
     planKey: `walk-plan-${cityId}`,
+    currency: c.currency === 'NAD' ? 'N$' : c.currency,
     groups: CAT_GROUPS,
     contentKinds: CONTENT_KINDS,
     needScope: NEED_SCOPE,
